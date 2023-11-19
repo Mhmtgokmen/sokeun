@@ -134,7 +134,7 @@ class _soniletisimbilgisialmaState
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Bizi nereden duydunuz?',
+                                    'İl',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -237,7 +237,7 @@ class _soniletisimbilgisialmaState
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Bizi nereden duydunuz?',
+                                    'İlçe',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -373,7 +373,7 @@ class _soniletisimbilgisialmaState
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Bizi nereden duydunuz?',
+                                    'İl',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -476,7 +476,7 @@ class _soniletisimbilgisialmaState
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Bizi nereden duydunuz?',
+                                    'İlçe',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
