@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:sokeun/model/admin_user_role_model.dart';
@@ -19,8 +18,7 @@ class ustasayfasiScreeeenD extends ConsumerStatefulWidget {
   const ustasayfasiScreeeenD({super.key, required this.role});
 
   @override
-  ConsumerState<ustasayfasiScreeeenD> createState() =>
-      _ustasayfasiScreeeenDState();
+  ConsumerState<ustasayfasiScreeeenD> createState() => _ustasayfasiScreeeenDState();
 }
 
 class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {

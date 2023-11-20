@@ -55,13 +55,15 @@ class _kodilepuankazanScreeenPAGEEState
                               color: Colors.white,
                             ),
                             child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                      width: ekrangenisligi / 1.2,
-                                      child: Image.asset("assetss/foto/img_33.png")),
-                                ],
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                        width: ekrangenisligi / 1.2,
+                                        child: Image.asset("assetss/foto/img_33.png")),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -93,36 +95,38 @@ class _kodilepuankazanScreeenPAGEEState
                                     return SizedBox(
                                       height: ekranyuksekligi / 2.7,
                                       child: Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            SizedBox(
-                                                width: ekrangenisligi / 1.1,
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              SizedBox(
+                                                  width: ekrangenisligi / 1.1,
+                                                  child: Image.asset(
+                                                      "assetss/foto/img_30.png")),
+                                              SizedBox(
+                                                height: 21,
+                                              ),
+                                              SizedBox(
+                                                width: ekrangenisligi / 1.8,
+                                                height: ekranyuksekligi / 16,
                                                 child: Image.asset(
-                                                    "assetss/foto/img_30.png")),
-                                            SizedBox(
-                                              height: 21,
-                                            ),
-                                            SizedBox(
-                                              width: ekrangenisligi / 1.8,
-                                              height: ekranyuksekligi / 16,
-                                              child: Image.asset(
-                                                  "assetss/foto/img_44.png"),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            SizedBox(
-                                              width: ekrangenisligi / 1.8,
-                                              height: ekranyuksekligi / 16,
-                                              child: Image.asset(
-                                                  "assetss/foto/img_43.png"),
-                                            ),
-                                          ],
+                                                    "assetss/foto/img_44.png"),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              SizedBox(
+                                                width: ekrangenisligi / 1.8,
+                                                height: ekranyuksekligi / 16,
+                                                child: Image.asset(
+                                                    "assetss/foto/img_43.png"),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );
@@ -159,8 +163,8 @@ class _kodilepuankazanScreeenPAGEEState
                           height: 15,
                         ),
                         SizedBox(
-                            width: ekrangenisligi / 3,
-                            child: Image.asset("assetss/foto/img_37.png")),
+                            width: ekrangenisligi / 4,
+                            child: Image.asset("assetss/logo.png")),
                       ],
                     ),
                   ),

@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sokeun/model/admin_user_role_model.dart';
-
+import 'package:flutter/material.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:sokeun/model/admin_user_role_model.dart';
+import 'package:sokeun/model/indentity_model.dart';
+import 'package:sokeun/model/login_model.dart';
+import 'package:sokeun/model/provinces_model.dart';
+import 'package:sokeun/model/register_comp_model.dart';
+import 'package:sokeun/providers/login_user_provider.dart';
+import 'package:sokeun/providers/provinces_provider.dart';
+import 'package:sokeun/screen/register/register_contact_info.dart';
+import 'package:sokeun/service/api.service.dart';
+import '../../../service/api.service.dart';
 import '../../../widgets/login_button.dart';
 import '../register_contact_info.dart';
 
-class tezgahtarsayfasiScrenD extends StatefulWidget {
-  const tezgahtarsayfasiScrenD({super.key, required this.role});
+class tezgahtarsayfasiScrenD extends ConsumerStatefulWidget {
   final AdminUserRole role;
+  const tezgahtarsayfasiScrenD({super.key, required this.role});
   @override
-  State<tezgahtarsayfasiScrenD> createState() => _tezgahtarsayfasiScrenDState();
+  ConsumerState<tezgahtarsayfasiScrenD> createState() => _tezgahtarsayfasiScrenDState();
 }
 
-class _tezgahtarsayfasiScrenDState extends State<tezgahtarsayfasiScrenD> {
+class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD> {
   final isimkontrol = TextEditingController();
   final SOYadikontrol = TextEditingController();
   final tCkimliknokontrol = TextEditingController();
@@ -25,13 +37,97 @@ class _tezgahtarsayfasiScrenDState extends State<tezgahtarsayfasiScrenD> {
   final bayikontrol = TextEditingController();
   final Sifreeekkontrol = TextEditingController();
   final SifreTekrarKontroletme = TextEditingController();
+  late ApiService apiService;
 
-  void iletisimbilgilerinegecismetodu() {
+  Future<void> iletisimbilgilerinegecismetodu() async {
+    apiService = ApiService();
+    AdminUserRole selectedRole = widget.role;
+    print("Roleler $selectedRole");
+    String firstname = isimkontrol.text.trim();
+    String lastname = SOYadikontrol.text.trim();
+    String mail = Mailadresikontroletme.text.trim();
+    String kimlik = tCkimliknokontrol.text.trim();
+
+
+    LoginResponse? user = ref.read(loginUserProvider);
+
+    Map<String, dynamic> data = {
+      "identity": kimlik,
+      "firstname": firstname,
+      "lastname": lastname,
+      "birthday": selectedDate //2023-10-29 18:01:54
+    };
+    print("Date : $selectedDate");
     if (Formkeytezgahtar.currentState!.validate()) {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => soniletisimbilgisialma()));
+      try {
+        var response = await apiService.post(
+          "verify/identity",
+          data,
+          token: user!.data.accessToken,
+        );
+
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseDate = response.data;
+          IdentityModel identityResponse = IdentityModel.fromJson(responseDate);
+          print("Model $responseDate");
+          if (identityResponse.status == true) {
+            if (Formkeytezgahtar.currentState!.validate()) {
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(identityResponse.message),
+                  duration: const Duration(seconds: 1),
+                ),
+              );
+              // ignore: use_build_context_synchronously
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const soniletisimbilgisialma(),
+                ),
+              );
+            }
+          } else {
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(identityResponse.message),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        } else {
+          // API'den beklenmeyen bir cevap geldi
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Beklenmeyen bir hata oluştu. API'den beklenen format sağlanmadı."),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      } catch (e) {
+        // Hata durumunda
+        print("Hata Detayı: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Bir hata oluştu: $e"),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     }
+
   }
+
+
+  @override
+  void initState() {
+    print(widget.role.id);
+    super.initState();
+  }
+
 
   final Formkeytezgahtar = GlobalKey<FormState>();
 
@@ -41,8 +137,12 @@ class _tezgahtarsayfasiScrenDState extends State<tezgahtarsayfasiScrenD> {
   ];
 
   String? kadinerkeksecim;
-
+  String? selectedProvince;
+  String? ilSecim;
+  String? ilceeSecim;
   DateTime selectedDate = DateTime.now();
+  String formattedDate = "";
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -51,15 +151,23 @@ class _tezgahtarsayfasiScrenDState extends State<tezgahtarsayfasiScrenD> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
     );
-    if (picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
-        selectedDate = picked!;
+        selectedDate = picked;
       });
+    }
+    formattedDate =
+    "${selectedDate.year}-${selectedDate.month}-${selectedDate.day} ${selectedDate.hour}:${selectedDate.minute}:${selectedDate.second}";
+
+    print("Doğum tarihi: $formattedDate");
   }
-  @override
-  void initState() {
-    print(widget.role.id);
-    super.initState();
+
+  String _twoDigits(int n) {
+    if (n >= 10) {
+      return "$n";
+    } else {
+      return "0$n";
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -206,11 +314,108 @@ class _tezgahtarsayfasiScrenDState extends State<tezgahtarsayfasiScrenD> {
                       height: 14,
                     ),
 
-                    Dogumyeriisayfam(
-                      controller: DogumYeriiii,
-                      hintext: "Doğum Yeri",
-                      obscurttext: false,
-                    ),
+                    DropdownButtonHideUnderline(child: Consumer(
+                      builder: (context, ref, child) {
+                        List<ProvinceModel> proviceItems =
+                        ref.watch(userProvinceProvider);
+                        return DropdownButton2<String>(
+                          isExpanded: true,
+                          hint: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Dogum Yeri',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          items: proviceItems
+                              .map((ProvinceModel item) =>
+                              DropdownMenuItem<String>(
+                                value: item.name,
+                                child: Text(
+                                  item.name ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                              .toList(),
+                          value:selectedProvince,
+                          onChanged: (String? value) {
+                            setState(() {
+                              selectedProvince = value!;
+                            });
+                          },
+                          buttonStyleData: ButtonStyleData(
+                            height: 50,
+                            width: ekrangenisligi / 1.1,
+                            padding: const EdgeInsets.only(left: 6, right: 6),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Colors.white,
+                              ),
+                              color: Colors.white,
+                            ),
+                            elevation: 2,
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                            ),
+                            iconSize: 14,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.grey,
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(5.0, 5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(-5.0, -5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                              ],
+                            ),
+                            scrollbarTheme: ScrollbarThemeData(
+                              radius: const Radius.circular(20),
+                              thickness: MaterialStateProperty.all<double>(6),
+                              thumbVisibility:
+                              MaterialStateProperty.all<bool>(true),
+                            ),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                            padding: EdgeInsets.only(left: 14, right: 14),
+                          ),
+                        );
+                      },
+                    )),
 
                     SizedBox(
                       height: 14,
@@ -335,21 +540,216 @@ class _tezgahtarsayfasiScrenDState extends State<tezgahtarsayfasiScrenD> {
                       height: 14,
                     ),
 
-                    ilkontroletmesayfammm(
-                      controller: ilkontroletme,
-                      hintext: "İl",
-                      obscurttext: false,
-                    ),
+                    DropdownButtonHideUnderline(child: Consumer(
+                      builder: (context, ref, child) {
+                        List<ProvinceModel> proviceItems =
+                        ref.watch(userProvinceProvider);
+                        return DropdownButton2<String>(
+                          isExpanded: true,
+                          hint: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'İl',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          items: proviceItems
+                              .map((ProvinceModel item) =>
+                              DropdownMenuItem<String>(
+                                value: item.name,
+                                child: Text(
+                                  item.name ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                              .toList(),
+                          value:ilSecim,
+                          onChanged: (String? value) {
+                            setState(() {
+                              ilSecim = value!;
+                            });
+                          },
+                          buttonStyleData: ButtonStyleData(
+                            height: 50,
+                            width: ekrangenisligi / 1.1,
+                            padding: const EdgeInsets.only(left: 6, right: 6),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Colors.white,
+                              ),
+                              color: Colors.white,
+                            ),
+                            elevation: 2,
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                            ),
+                            iconSize: 14,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.grey,
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(5.0, 5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(-5.0, -5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                              ],
+                            ),
+                            scrollbarTheme: ScrollbarThemeData(
+                              radius: const Radius.circular(20),
+                              thickness: MaterialStateProperty.all<double>(6),
+                              thumbVisibility:
+                              MaterialStateProperty.all<bool>(true),
+                            ),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                            padding: EdgeInsets.only(left: 14, right: 14),
+                          ),
+                        );
+                      },
+                    )),
 
                     SizedBox(
                       height: 14,
                     ),
 
-                    ilceekontroletmesayfammm(
-                      controller: ilcekontroletme,
-                      hintext: "İlçe",
-                      obscurttext: false,
-                    ),
+                    DropdownButtonHideUnderline(child: Consumer(
+                      builder: (context, ref, child) {
+                        List<ProvinceModel> proviceItems =
+                        ref.watch(userProvinceProvider);
+                        return DropdownButton2<String>(
+                          isExpanded: true,
+                          hint: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'İlçe',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          items: proviceItems
+                              .map((ProvinceModel item) =>
+                              DropdownMenuItem<String>(
+                                value: item.name,
+                                child: Text(
+                                  item.name ?? "",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                              .toList(),
+                          value:ilceeSecim,
+                          onChanged: (String? value) {
+                            setState(() {
+                              ilceeSecim = value!;
+                            });
+                          },
+                          buttonStyleData: ButtonStyleData(
+                            height: 50,
+                            width: ekrangenisligi / 1.1,
+                            padding: const EdgeInsets.only(left: 6, right: 6),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Colors.white,
+                              ),
+                              color: Colors.white,
+                            ),
+                            elevation: 2,
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                            ),
+                            iconSize: 14,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.grey,
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(5.0, 5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(-5.0, -5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                              ],
+                            ),
+                            scrollbarTheme: ScrollbarThemeData(
+                              radius: const Radius.circular(20),
+                              thickness: MaterialStateProperty.all<double>(6),
+                              thumbVisibility:
+                              MaterialStateProperty.all<bool>(true),
+                            ),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                            padding: EdgeInsets.only(left: 14, right: 14),
+                          ),
+                        );
+                      },
+                    )),
+
 
                     SizedBox(
                       height: 14,

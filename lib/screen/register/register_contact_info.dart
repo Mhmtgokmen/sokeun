@@ -4,6 +4,7 @@ import 'package:sokeun/model/provinces_model.dart';
 import 'package:sokeun/providers/provinces_provider.dart';
 import 'package:sokeun/screen/register/kayitScreeen/OnaySayfasiScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../model/admin_user_role_model.dart';
 import '../../widgets/login_button.dart';
 
 class soniletisimbilgisialma extends ConsumerStatefulWidget {
@@ -52,7 +53,7 @@ class _soniletisimbilgisialmaState
     }
   }
 
-  final List<String> itemss = [
+  late final List<String> itemssnerdenduydun = [
     'Ustam Burada Reklamı',
     'Myk Sınavı',
     'Eğitim',
@@ -574,106 +575,12 @@ class _soniletisimbilgisialmaState
                       const SizedBox(
                         height: 17,
                       ),
-                      DropdownButtonHideUnderline(
-                        child: Consumer(builder: (context, ref, child) {
-                          List<ProvinceModel> proviceItems =
-                              ref.watch(userProvinceProvider);
-                          print("iller: $proviceItems");
-                          return DropdownButton2<String>(
-                            isExpanded: true,
-                            hint: const Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Bizi nereden duydunuz?',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            items: proviceItems
-                                .map((ProvinceModel item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item.name,
-                                      child: Text(
-                                        item.name ?? "",
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: bizinerdenduydunuz,
-                            onChanged: (String? value) {
-                              setState(() {
-                                bizinerdenduydunuz = value!;
-                              });
-                            },
-                            buttonStyleData: ButtonStyleData(
-                              height: 50,
-                              width: ekrangenisligi / 1.1,
-                              padding: const EdgeInsets.only(left: 6, right: 6),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                  color: Colors.white,
-                                ),
-                                color: Colors.white,
-                              ),
-                              elevation: 2,
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              iconSize: 14,
-                              iconEnabledColor: Colors.black,
-                              iconDisabledColor: Colors.grey,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 200,
-                              width: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.grey.shade100,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(5.0, 5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
-                                  ),
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(-5.0, -5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
-                                  ),
-                                ],
-                              ),
-                              scrollbarTheme: ScrollbarThemeData(
-                                radius: const Radius.circular(40),
-                                thickness: MaterialStateProperty.all<double>(6),
-                                thumbVisibility:
-                                    MaterialStateProperty.all<bool>(true),
-                              ),
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                              padding: EdgeInsets.only(left: 14, right: 14),
-                            ),
-                          );
-                        }),
-                      ),
+
+
+                    BizinerdenduydunScren(),
+
+
+
                       const SizedBox(
                         height: 13,
                       ),
@@ -993,6 +900,141 @@ class Telefonnumarasayfamm extends StatelessWidget {
               fillColor: Colors.white,
               hintText: hintext,
               hintStyle: TextStyle(color: Colors.grey.shade400)),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+// BİZİ NERDEN DUYDUN BUTONU
+
+class BizinerdenduydunScren extends StatefulWidget {
+  const BizinerdenduydunScren({super.key});
+
+  @override
+  State<BizinerdenduydunScren> createState() => _BizinerdenduydunScrenState();
+}
+
+class _BizinerdenduydunScrenState extends State<BizinerdenduydunScren> {
+  final List<String> itemssnerdenduydun = [
+    'Ustam Burada Reklamı',
+    'Myk Sınavı',
+    'Eğitim',
+    'Bayi',
+    'Arkadaş',
+    'Radyo',
+    'Gazete',
+    'İnternet ve Sosyal Medya',
+  ];
+
+
+  String? valueuyruk;
+
+  @override
+  Widget build(BuildContext context) {
+    var ekranAyari = MediaQuery.of(context);
+    var ekrangenisligi = ekranAyari.size.width;
+    // var ekranyukseklikayari = ekranAyari.size.height;
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2<String>(
+        isExpanded: true,
+        hint: const Row(
+          children: [
+            Icon(
+              Icons.language,
+              size: 16,
+              color: Colors.black,
+            ),
+            SizedBox(
+              width: 4,
+            ),
+            Expanded(
+              child: Text(
+                'Bizi nereden duydun?',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        items: itemssnerdenduydun
+            .map((String item) => DropdownMenuItem<String>(
+          value: item,
+          child: Text(
+            item,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ))
+            .toList(),
+        value: valueuyruk,
+        onChanged: (String? valuee) {
+          setState(() {
+            valueuyruk = valuee;
+          });
+        },
+        buttonStyleData: ButtonStyleData(
+          height: 50,
+          width: ekrangenisligi / 1.1,
+          padding: const EdgeInsets.only(left: 6, right: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(
+              color: Colors.white,
+            ),
+            color: Colors.white,
+          ),
+          elevation: 2,
+        ),
+        iconStyleData: const IconStyleData(
+          icon: Icon(
+            Icons.arrow_forward_ios_outlined,
+          ),
+          iconSize: 14,
+          iconEnabledColor: Colors.black,
+          iconDisabledColor: Colors.grey,
+        ),
+        dropdownStyleData: DropdownStyleData(
+          maxHeight: 200,
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: Colors.grey.shade100,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade200,
+                offset: const Offset(5.0, 5.0),
+                blurRadius: 20,
+                spreadRadius: 1.0,
+              ),
+              BoxShadow(
+                color: Colors.grey.shade200,
+                offset: const Offset(-5.0, -5.0),
+                blurRadius: 20,
+                spreadRadius: 1.0,
+              ),
+            ],
+          ),
+          scrollbarTheme: ScrollbarThemeData(
+            radius: const Radius.circular(40),
+            thickness: MaterialStateProperty.all<double>(6),
+            thumbVisibility:
+            MaterialStateProperty.all<bool>(true),
+          ),
+        ),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+          padding: EdgeInsets.only(left: 14, right: 14),
         ),
       ),
     );

@@ -221,7 +221,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
                     ),
                     SizedBox(
                         width: ekrangenisligi / 4,
-                        child: Image.asset("assetss/foto/img_37.png")),
+                        child: Image.asset("assetss/logo.png")),
                     const SizedBox(
                       height: 35,
                     ),

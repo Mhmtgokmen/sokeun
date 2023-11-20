@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-
+import 'shop_screen.dart';
 class ChoosegiffScreen extends StatefulWidget {
   const ChoosegiffScreen({super.key});
 
@@ -45,6 +45,15 @@ class _ChoosegiffScreenState extends State<ChoosegiffScreen> {
     return Scaffold(
       backgroundColor:Colors.white ,
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>ShopScreen()));
+                 },
+              icon: Icon(Icons.shopping_cart,color: Colors.red[600],),
+          ),
+
+        ],
         title: Text("Hediye Seç",style: TextStyle(color: Colors.red[600],fontWeight: FontWeight.bold),),
         centerTitle: true,
         backgroundColor: Colors.white,

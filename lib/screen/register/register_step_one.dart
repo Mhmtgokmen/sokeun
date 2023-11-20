@@ -91,9 +91,12 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                       ),
                       child: Row(
                         children: [
-                          Text(
-                            "Telefon Numaranız: ${userLoginInformation?.data.phone}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Text(
+                              "Telefon Numaranız: ${userLoginInformation?.data.phone}",
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           )
                         ],
                       ),
@@ -110,9 +113,12 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                       ),
                       child: Row(
                         children: [
-                          Text(
-                            "SMS Şifresi: $password",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Text(
+                              "SMS Şifresi: $password",
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           )
                         ],
                       ),
