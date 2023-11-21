@@ -194,6 +194,9 @@ class _soniletisimbilgisialmaState
   Districts? selectedDeliveryDistricts;
   bool? telnoizinvermeenalt = false;
 
+  bool isTextFieldVisible = false;
+
+
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
@@ -203,6 +206,7 @@ class _soniletisimbilgisialmaState
     return Form(
       key: Soniletisimkey,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
             "İletişim Bilgileri",
@@ -224,6 +228,7 @@ class _soniletisimbilgisialmaState
                       const SizedBox(
                         height: 8,
                       ),
+
                       Row(
                         children: [
                           Padding(
@@ -471,9 +476,11 @@ class _soniletisimbilgisialmaState
                         hintext: "İletişim telefon numarası",
                         obscurttext: false,
                       ),
+                      if (!isTextFieldVisible)
                       const SizedBox(
                         height: 15,
                       ),
+                      if (!isTextFieldVisible)
                       Row(
                         children: [
                           Padding(
@@ -489,16 +496,20 @@ class _soniletisimbilgisialmaState
                           ),
                         ],
                       ),
+                      if (!isTextFieldVisible)
                       const SizedBox(
                         height: 12,
                       ),
+                      if (!isTextFieldVisible)
                       Adressssayfammm(
                           controller: gonderiadresikontrol,
                           hintext: "Adres",
                           obscurttext: false),
+                      if (!isTextFieldVisible)
                       const SizedBox(
                         height: 13,
                       ),
+                      if (!isTextFieldVisible)
                       DropdownButtonHideUnderline(
                         child: Consumer(builder: (context, ref, child) {
                           List<ProvinceModel> proviceItems =
@@ -600,9 +611,11 @@ class _soniletisimbilgisialmaState
                           );
                         }),
                       ),
+                      if (!isTextFieldVisible)
                       const SizedBox(
                         height: 13,
                       ),
+                      if (!isTextFieldVisible)
                       DropdownButtonHideUnderline(
                         child: Consumer(
                           builder: (context, ref, child) {
@@ -713,9 +726,11 @@ class _soniletisimbilgisialmaState
                           },
                         ),
                       ),
+                      if (!isTextFieldVisible)
                       const SizedBox(
                         height: 13,
                       ),
+                      if (!isTextFieldVisible)
                       Telefonnumarasayfamm(
                           controller: gonderitelefonkontrol,
                           hintext: "İletişim telefon numarası",
@@ -723,10 +738,13 @@ class _soniletisimbilgisialmaState
                       const SizedBox(
                         height: 17,
                       ),
+                      if (!isTextFieldVisible)
                       BizinerdenduydunScren(),
+                      if (!isTextFieldVisible)
                       const SizedBox(
                         height: 13,
                       ),
+
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -753,12 +771,13 @@ class _soniletisimbilgisialmaState
                         child: Row(
                           children: [
                             Checkbox(
-                                value: iletisimBilgileriGonderiAdresineKopyala,
+                                value: isTextFieldVisible,
                                 activeColor: Colors.red,
-                                onChanged: (bool? value) {
+                                onChanged: (value) {
                                   setState(() {
-                                    iletisimBilgileriGonderiAdresineKopyala =
+                                    isTextFieldVisible =
                                         value!;
+                                    print(value);
                                   });
                                 }),
                             const Text(

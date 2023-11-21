@@ -149,6 +149,8 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
 
   DateTime selectedDate = DateTime.now();
   String formattedDate = "";
+  bool isTextFieldVisible = true;
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -463,6 +465,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                                   const SizedBox(
                                     width: 4,
                                   ),
+
                                   Expanded(
                                     child: Text(
                                       'Cinsiyet',
