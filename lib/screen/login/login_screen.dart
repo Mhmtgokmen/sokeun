@@ -55,6 +55,11 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
                 duration: const Duration(seconds: 2),
               ),
             );
+            // ignore: use_build_context_synchronously
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const LoginaltButonGiris()));
             print("Token: ${loginResponse.data.accessToken}");
           } else {
             // ignore: use_build_context_synchronously
@@ -75,8 +80,6 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
           ),
         );
       }
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LoginaltButonGiris()));
     }
   }
 
@@ -90,20 +93,17 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
     apiService = ApiService();
 
     Map<String, dynamic> data = {
-      "admin_user_id": "6",
+      "admin_user_id": "3",
     };
 
     try {
-      var response =
-          await apiService.post("app-settings", data);
+      var response = await apiService.post("app-settings", data);
 
       if (response.statusCode == 200) {
         if (response.data["status"] == true) {
           var adminUserRoles = response.data["data"]["admin_user_role"] ?? [];
           var adminUserLevels = response.data["data"]["admin_user_level"] ?? [];
           var userProvinces = response.data["data"]["provinces"] ?? [];
-          var userDistricts =
-              response.data["data"]["districts"] ?? []; // Bu satır düzeltildi
 
           List<ProvinceModel> provinces =
               userProvinces.map<ProvinceModel>((json) {

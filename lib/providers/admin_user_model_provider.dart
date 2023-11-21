@@ -4,3 +4,7 @@ import 'package:sokeun/model/admin_user_role_model.dart';
 final adminUserRoleProvider = StateProvider<List<AdminUserRole>>((ref) {
   return [];
 });
+
+final selectedAdminUserRoleProvider = StateProvider<int>((ref) {
+  return 0;
+});

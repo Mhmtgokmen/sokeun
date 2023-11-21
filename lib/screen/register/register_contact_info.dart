@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:sokeun/model/admin_user_role_model.dart';
+import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/model/provinces_model.dart';
+import 'package:sokeun/model/register_comp_model.dart';
+import 'package:sokeun/providers/admin_user_model_provider.dart';
+import 'package:sokeun/providers/login_user_provider.dart';
 import 'package:sokeun/providers/provinces_provider.dart';
 import 'package:sokeun/screen/register/kayitScreeen/OnaySayfasiScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../model/admin_user_role_model.dart';
+import 'package:sokeun/service/api.service.dart';
 import '../../widgets/login_button.dart';
 
 class soniletisimbilgisialma extends ConsumerStatefulWidget {
@@ -31,12 +36,104 @@ class _soniletisimbilgisialmaState
   final bizinerdenduydunuzkontrol = TextEditingController();
   final gonderitelefonkontrol = TextEditingController();
   final denemelerimapp = TextEditingController();
-
+  late ApiService apiService;
 ////////////////
 
   bool iletisimBilgileriGonderiAdresineKopyala = false;
 
-  void OnayaGecmeMetodu() {
+  Future<void> OnayaGecmeMetodu() async {
+    apiService = ApiService();
+    String address = gonderiadresikontrol.text.trim();
+    String contact_number = gonderitelefonkontrol.text.trim();
+
+    LoginResponse? user = ref.read(loginUserProvider);
+    final password = ref.read(userPasswordProvider);
+    final roleId = ref.read(selectedAdminUserRoleProvider);
+
+    Map<String, dynamic> data = {
+      "username": "",
+      "firstname": user!.data.firstname,
+      "lastname": user.data.lastname,
+      "email": user.data.email,
+      "nation": "Türkiye",
+      "address": address,
+      "province_id": selectedProvinceId,
+      "district_id": selectedDistricts!.id,
+      "contact_number": contact_number,
+      "user_type": roleId,
+      "identity": user.data.citizenNumber,
+      "gender": user.data.gender,
+      "team": null,
+      "pants_size": "",
+      "shirt_size": "",
+      "born_city_id": user.data.bornCityId,
+      "is_address_equal_to_delivery": "0", // 1 or 0
+      "delivery_address": null,
+      "company_name": "",
+      "tax": "",
+      "delivery_province_id": selectedDeliveryProvinceId,
+      "delivery_district_id": selectedDeliveryDistricts!.id,
+      "tax_number": "",
+      "document_name": "",
+      "document_number": user.data.documentNumber,
+      "password": password.password,
+      "password_confirm": password.confirmPassword
+    };
+    try {
+      var response = await apiService.post(
+        "https://development.coneexa.com/api/register-complete",
+        data,
+        token: user.data.accessToken,
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseDate = response.data;
+        RegisterComplateModel registerResponse =
+            RegisterComplateModel.fromJson(responseDate);
+        print("Model $responseDate");
+        if (registerResponse.status == true) {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(registerResponse.message),
+              duration: const Duration(seconds: 1),
+            ),
+          );
+        } else {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(registerResponse.message),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const soniletisimbilgisialma()));
+      } else {
+        // API'den beklenmeyen bir cevap geldi
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                "Beklenmeyen bir hata oluştu. API'den beklenen format sağlanmadı."),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      // Hata durumunda
+      print("Hata Detayı: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Bir hata oluştu: $e"),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+
     if (Soniletisimkey.currentState!.validate()) {
       if (telnoizinvermeenalt == false) {
         ScaffoldMessenger.of(context)
@@ -63,16 +160,45 @@ class _soniletisimbilgisialmaState
     'Gazete',
     'İnternet ve Sosyal Medya',
   ];
+  @override
+  void initState() {
+    LoginResponse? user = ref.read(loginUserProvider);
+    final password = ref.read(userPasswordProvider);
+    final roleId = ref.read(selectedAdminUserRoleProvider);
+
+    print("role :$roleId");
+
+    print("adı :${user!.data.firstname}");
+    print("soy ad :${user.data.lastname}");
+    print("Dogum Trihi :${user.data.birthday}");
+    print("email :${user.data.email}");
+    print("borncity :${user.data.bornCityId}");
+    print("gender :${user.data.gender}");
+    print("tc :${user.data.citizenNumber}");
+    print("document :${user.data.documentNumber}");
+    print("tel :${user.data.phone}");
+    print("şifre :${password.password}");
+    print("şifret :${password.confirmPassword}");
+    // print("şifreTekrar :${user.data.phone}");
+    super.initState();
+  }
 
   final Soniletisimkey = GlobalKey<FormState>();
   String? bizinerdenduydunuz;
+
+  ProvinceModel? selectedProvince;
+  int? selectedProvinceId;
+  Districts? selectedDistricts;
+  ProvinceModel? selectedDeliveryProvince;
+  int? selectedDeliveryProvinceId;
+  Districts? selectedDeliveryDistricts;
   bool? telnoizinvermeenalt = false;
 
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
 
     return Form(
       key: Soniletisimkey,
@@ -123,12 +249,11 @@ class _soniletisimbilgisialmaState
                       const SizedBox(
                         height: 14,
                       ),
-                                           DropdownButtonHideUnderline(
+                      DropdownButtonHideUnderline(
                         child: Consumer(builder: (context, ref, child) {
                           List<ProvinceModel> proviceItems =
                               ref.watch(userProvinceProvider);
-                          print("iller: $proviceItems");
-                          return DropdownButton2<String>(
+                          return DropdownButton2<ProvinceModel>(
                             isExpanded: true,
                             hint: const Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -148,8 +273,8 @@ class _soniletisimbilgisialmaState
                             ),
                             items: proviceItems
                                 .map((ProvinceModel item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item.name,
+                                    DropdownMenuItem<ProvinceModel>(
+                                      value: item,
                                       child: Text(
                                         item.name ?? "",
                                         style: const TextStyle(
@@ -161,10 +286,12 @@ class _soniletisimbilgisialmaState
                                       ),
                                     ))
                                 .toList(),
-                            value: bizinerdenduydunuz,
-                            onChanged: (String? value) {
+                            value: selectedProvince,
+                            onChanged: (ProvinceModel? value) {
                               setState(() {
-                                bizinerdenduydunuz = value!;
+                                selectedProvince = value!;
+                                selectedProvinceId = value.id;
+                                selectedDistricts = null;
                               });
                             },
                             buttonStyleData: ButtonStyleData(
@@ -227,104 +354,114 @@ class _soniletisimbilgisialmaState
                         height: 14,
                       ),
                       DropdownButtonHideUnderline(
-                        child: Consumer(builder: (context, ref, child) {
-                          List<ProvinceModel> proviceItems =
-                              ref.watch(userProvinceProvider);
-                          print("iller: $proviceItems");
-                          return DropdownButton2<String>(
-                            isExpanded: true,
-                            hint: const Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'İlçe',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            items: proviceItems
-                                .map((ProvinceModel item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item.name,
-                                      child: Text(
-                                        item.name ?? "",
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                        child: Consumer(
+                          builder: (context, ref, child) {
+                            List<ProvinceModel> proviceItems =
+                                ref.read(userProvinceProvider);
+                            ProvinceModel selectedProvince =
+                                proviceItems.firstWhere(
+                              (province) => province.id == selectedProvinceId,
+                              orElse: () => ProvinceModel(),
+                            );
+                            List<Districts> selectedProvinceDistricts =
+                                selectedProvince.districts ?? [];
+                            return DropdownButton2<Districts>(
+                              isExpanded: true,
+                              hint: const Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'İlçe',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
                                       ),
-                                    ))
-                                .toList(),
-                            value: bizinerdenduydunuz,
-                            onChanged: (String? value) {
-                              setState(() {
-                                bizinerdenduydunuz = value!;
-                              });
-                            },
-                            buttonStyleData: ButtonStyleData(
-                              height: 50,
-                              width: ekrangenisligi / 1.1,
-                              padding: const EdgeInsets.only(left: 6, right: 6),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                  color: Colors.white,
-                                ),
-                                color: Colors.white,
-                              ),
-                              elevation: 2,
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              iconSize: 14,
-                              iconEnabledColor: Colors.black,
-                              iconDisabledColor: Colors.grey,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 200,
-                              width: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.grey.shade100,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(5.0, 5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
-                                  ),
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(-5.0, -5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ],
                               ),
-                              scrollbarTheme: ScrollbarThemeData(
-                                radius: const Radius.circular(40),
-                                thickness: MaterialStateProperty.all<double>(6),
-                                thumbVisibility:
-                                    MaterialStateProperty.all<bool>(true),
+                              items: selectedProvinceDistricts
+                                  .map((Districts item) =>
+                                      DropdownMenuItem<Districts>(
+                                        value: item,
+                                        child: Text(
+                                          item.name ?? "",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: selectedDistricts,
+                              onChanged: (Districts? value) {
+                                setState(() {
+                                  selectedDistricts = value!;
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                width: ekrangenisligi / 1.1,
+                                padding:
+                                    const EdgeInsets.only(left: 6, right: 6),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                elevation: 2,
                               ),
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                              padding: EdgeInsets.only(left: 14, right: 14),
-                            ),
-                          );
-                        }),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                ),
+                                iconSize: 14,
+                                iconEnabledColor: Colors.black,
+                                iconDisabledColor: Colors.grey,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.grey.shade100,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      offset: const Offset(5.0, 5.0),
+                                      blurRadius: 20,
+                                      spreadRadius: 1.0,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      offset: const Offset(-5.0, -5.0),
+                                      blurRadius: 20,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
+                                ),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                      MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 14,
@@ -362,12 +499,11 @@ class _soniletisimbilgisialmaState
                       const SizedBox(
                         height: 13,
                       ),
-                                           DropdownButtonHideUnderline(
+                      DropdownButtonHideUnderline(
                         child: Consumer(builder: (context, ref, child) {
                           List<ProvinceModel> proviceItems =
                               ref.watch(userProvinceProvider);
-                          print("iller: $proviceItems");
-                          return DropdownButton2<String>(
+                          return DropdownButton2<ProvinceModel>(
                             isExpanded: true,
                             hint: const Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -387,8 +523,8 @@ class _soniletisimbilgisialmaState
                             ),
                             items: proviceItems
                                 .map((ProvinceModel item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item.name,
+                                    DropdownMenuItem<ProvinceModel>(
+                                      value: item,
                                       child: Text(
                                         item.name ?? "",
                                         style: const TextStyle(
@@ -400,10 +536,12 @@ class _soniletisimbilgisialmaState
                                       ),
                                     ))
                                 .toList(),
-                            value: bizinerdenduydunuz,
-                            onChanged: (String? value) {
+                            value: selectedDeliveryProvince,
+                            onChanged: (ProvinceModel? value) {
                               setState(() {
-                                bizinerdenduydunuz = value!;
+                                selectedDeliveryProvince = value!;
+                                selectedDeliveryProvinceId = value.id;
+                                selectedDeliveryDistricts = null;
                               });
                             },
                             buttonStyleData: ButtonStyleData(
@@ -466,104 +604,114 @@ class _soniletisimbilgisialmaState
                         height: 13,
                       ),
                       DropdownButtonHideUnderline(
-                        child: Consumer(builder: (context, ref, child) {
-                          List<ProvinceModel> proviceItems =
-                              ref.watch(userProvinceProvider);
-                          print("iller: $proviceItems");
-                          return DropdownButton2<String>(
-                            isExpanded: true,
-                            hint: const Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'İlçe',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            items: proviceItems
-                                .map((ProvinceModel item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item.name,
-                                      child: Text(
-                                        item.name ?? "",
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                        child: Consumer(
+                          builder: (context, ref, child) {
+                            List<ProvinceModel> proviceItems =
+                                ref.read(userProvinceProvider);
+                            ProvinceModel selectedProvince =
+                                proviceItems.firstWhere(
+                              (province) => province.id == selectedDeliveryProvinceId,
+                              orElse: () => ProvinceModel(),
+                            );
+                            List<Districts> selectedProvinceDistricts =
+                                selectedProvince.districts ?? [];
+                            return DropdownButton2<Districts>(
+                              isExpanded: true,
+                              hint: const Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'İlçe',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
                                       ),
-                                    ))
-                                .toList(),
-                            value: bizinerdenduydunuz,
-                            onChanged: (String? value) {
-                              setState(() {
-                                bizinerdenduydunuz = value!;
-                              });
-                            },
-                            buttonStyleData: ButtonStyleData(
-                              height: 50,
-                              width: ekrangenisligi / 1.1,
-                              padding: const EdgeInsets.only(left: 6, right: 6),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                  color: Colors.white,
-                                ),
-                                color: Colors.white,
-                              ),
-                              elevation: 2,
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              iconSize: 14,
-                              iconEnabledColor: Colors.black,
-                              iconDisabledColor: Colors.grey,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 200,
-                              width: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.grey.shade100,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(5.0, 5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
-                                  ),
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(-5.0, -5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ],
                               ),
-                              scrollbarTheme: ScrollbarThemeData(
-                                radius: const Radius.circular(40),
-                                thickness: MaterialStateProperty.all<double>(6),
-                                thumbVisibility:
-                                    MaterialStateProperty.all<bool>(true),
+                              items: selectedProvinceDistricts
+                                  .map((Districts item) =>
+                                      DropdownMenuItem<Districts>(
+                                        value: item,
+                                        child: Text(
+                                          item.name ?? "",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: selectedDeliveryDistricts,
+                              onChanged: (Districts? value) {
+                                setState(() {
+                                  selectedDeliveryDistricts = value!;
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                width: ekrangenisligi / 1.1,
+                                padding:
+                                    const EdgeInsets.only(left: 6, right: 6),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                elevation: 2,
                               ),
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                              padding: EdgeInsets.only(left: 14, right: 14),
-                            ),
-                          );
-                        }),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                ),
+                                iconSize: 14,
+                                iconEnabledColor: Colors.black,
+                                iconDisabledColor: Colors.grey,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.grey.shade100,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      offset: const Offset(5.0, 5.0),
+                                      blurRadius: 20,
+                                      spreadRadius: 1.0,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      offset: const Offset(-5.0, -5.0),
+                                      blurRadius: 20,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
+                                ),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                      MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 13,
@@ -575,12 +723,7 @@ class _soniletisimbilgisialmaState
                       const SizedBox(
                         height: 17,
                       ),
-
-
-                    BizinerdenduydunScren(),
-
-
-
+                      BizinerdenduydunScren(),
                       const SizedBox(
                         height: 13,
                       ),
@@ -676,7 +819,7 @@ class Adressssayfammm extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -740,7 +883,7 @@ class ilkontroletmesayfammm extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -804,7 +947,7 @@ class ilceekontroletmesayfammm extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -868,7 +1011,7 @@ class Telefonnumarasayfamm extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -906,8 +1049,6 @@ class Telefonnumarasayfamm extends StatelessWidget {
   }
 }
 
-
-
 // BİZİ NERDEN DUYDUN BUTONU
 
 class BizinerdenduydunScren extends StatefulWidget {
@@ -928,7 +1069,6 @@ class _BizinerdenduydunScrenState extends State<BizinerdenduydunScren> {
     'Gazete',
     'İnternet ve Sosyal Medya',
   ];
-
 
   String? valueuyruk;
 
@@ -965,17 +1105,17 @@ class _BizinerdenduydunScrenState extends State<BizinerdenduydunScren> {
         ),
         items: itemssnerdenduydun
             .map((String item) => DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ))
+                  value: item,
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ))
             .toList(),
         value: valueuyruk,
         onChanged: (String? valuee) {
@@ -1028,8 +1168,7 @@ class _BizinerdenduydunScrenState extends State<BizinerdenduydunScren> {
           scrollbarTheme: ScrollbarThemeData(
             radius: const Radius.circular(40),
             thickness: MaterialStateProperty.all<double>(6),
-            thumbVisibility:
-            MaterialStateProperty.all<bool>(true),
+            thumbVisibility: MaterialStateProperty.all<bool>(true),
           ),
         ),
         menuItemStyleData: const MenuItemStyleData(

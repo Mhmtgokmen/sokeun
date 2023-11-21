@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/indentity_model.dart';
 import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/model/provinces_model.dart';
-import 'package:sokeun/model/register_comp_model.dart';
 import 'package:sokeun/providers/login_user_provider.dart';
 import 'package:sokeun/providers/provinces_provider.dart';
 import 'package:sokeun/screen/register/register_contact_info.dart';
@@ -18,7 +16,8 @@ class ustasayfasiScreeeenD extends ConsumerStatefulWidget {
   const ustasayfasiScreeeenD({super.key, required this.role});
 
   @override
-  ConsumerState<ustasayfasiScreeeenD> createState() => _ustasayfasiScreeeenDState();
+  ConsumerState<ustasayfasiScreeeenD> createState() =>
+      _ustasayfasiScreeeenDState();
 }
 
 class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
@@ -38,12 +37,27 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     apiService = ApiService();
     AdminUserRole selectedRole = widget.role;
     print("Roleler $selectedRole");
+    
     String firstname = isimmkontrol.text.trim();
     String lastname = soyadikontrol.text.trim();
     String mail = mailadresikontrol.text.trim();
     String kimlik = kimlikkontrol.text.trim();
+    String documentNumber = meslekyeterlilikkontrol.text.trim();
+    String password = sifrekontrol.text.trim();
+    String passwordConfirm = tekrarSifrekontroletme.text.trim();
 
     LoginResponse? user = ref.read(loginUserProvider);
+    final userPassword = ref.read(userPasswordProvider);
+    user?.data.firstname = firstname;
+    user?.data.lastname = lastname;
+    user?.data.birthday = formattedDate;
+    user?.data.citizenNumber = kimlik;
+    user?.data.documentNumber = documentNumber;
+    user?.data.email = mail;
+    user?.data.bornCityId = selectedProvinceId;
+    user?.data.gender = selectedGenderId.toString();
+    userPassword.password = password;
+    userPassword.confirmPassword = passwordConfirm;
 
     Map<String, dynamic> data = {
       "identity": kimlik,
@@ -51,13 +65,13 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
       "lastname": lastname,
       "birthday": formattedDate //2023-10-29 18:01:54
     };
-    print("Date : $formattedDate");
+
     if (FormBayikontrol.currentState!.validate()) {
       try {
         var response = await apiService.post(
           "verify/identity",
           data,
-          token: user!.data.accessToken,
+          token: user?.data.accessToken,
         );
 
         if (response.statusCode == 200) {
@@ -104,6 +118,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
       } catch (e) {
         // Hata durumunda
         print("Hata Detayı: $e");
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Bir hata oluştu: $e"),
@@ -112,89 +127,6 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
         );
       }
     }
-    // LoginResponse? user = ref.read(loginUserProvider);
-
-    // Map<String, dynamic> data = {
-    //   "username": "",
-    //   "firstname": firstname,
-    //   "lastname": lastname,
-    //   "email": mail,
-    //   "nation": "Türkiye",
-    //   "address": null,
-    //   "province_id": "",
-    //   "district_id": "",
-    //   "contact_number": user!.data.phone,
-    //   "user_type": widget.role.id,
-    //   "identity": kimlik,
-    //   "gender": 1,
-    //   "team": null,
-    //   "pants_size": "",
-    //   "shirt_size": "",
-    //   "born_city_id": "",
-    //   "is_address_equal_to_delivery": "0", // 1 or 0
-    //   "delivery_address": null,
-    //   "company_name": "",
-    //   "tax": "",
-    //   "delivery_province_id": "",
-    //   "delivery_district_id": "",
-    //   "tax_number": "",
-    //   "document_name": "",
-    //   "document_number": "",
-    // };
-    // try {
-    //   var response = await apiService.post(
-    //     "https://development.coneexa.com/api/register-complete",
-    //     data,
-    //     token: user.data.accessToken,
-    //   );
-    //   if (response.statusCode == 200) {
-    //     Map<String, dynamic> responseDate = response.data;
-    //     RegisterComplateModel registerResponse =
-    //         RegisterComplateModel.fromJson(responseDate);
-    //     print("Model $responseDate");
-    //     if (registerResponse.status == true) {
-    //       // ignore: use_build_context_synchronously
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(
-    //           content: Text(registerResponse.message),
-    //           duration: const Duration(seconds: 1),
-    //         ),
-    //       );
-    //     } else {
-    //       // ignore: use_build_context_synchronously
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(
-    //           content: Text(registerResponse.message),
-    //           duration: const Duration(seconds: 2),
-    //         ),
-    //       );
-    //     }
-    //     // ignore: use_build_context_synchronously
-    //     Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //             builder: (context) => const soniletisimbilgisialma()));
-    //   } else {
-    //     // API'den beklenmeyen bir cevap geldi
-    //     // ignore: use_build_context_synchronously
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(
-    //         content: Text(
-    //             "Beklenmeyen bir hata oluştu. API'den beklenen format sağlanmadı."),
-    //         duration: Duration(seconds: 2),
-    //       ),
-    //     );
-    //   }
-    // } catch (e) {
-    //   // Hata durumunda
-    //   print("Hata Detayı: $e");
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text("Bir hata oluştu: $e"),
-    //       duration: const Duration(seconds: 2),
-    //     ),
-    //   );
-    // }
   }
 
   @override
@@ -205,24 +137,26 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
 
   final FormBayikontrol = GlobalKey<FormState>();
 
-  final List<String> itemss = [
-    'Kadın',
-    'Erkek',
-  ];
+  final Map<String, int> items = {
+    'Erkek': 1,
+    'Kadın': 2,
+  };
+  String? selectedGender;
+  int? selectedGenderId;
 
-  String? selectedProvince;
-  String? kadinerkeksecim;
+  ProvinceModel? selectedProvince;
+  int? selectedProvinceId;
 
   DateTime selectedDate = DateTime.now();
   String formattedDate = "";
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
-    );
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101),
+        locale: const Locale('tr', 'TR'));
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -409,7 +343,11 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                         builder: (context, ref, child) {
                           List<ProvinceModel> proviceItems =
                               ref.watch(userProvinceProvider);
-                          return DropdownButton2<String>(
+                          if (proviceItems.isEmpty) {
+                            // varsayılan bir değer, mesela bir metin veya boş bir ProvinceModel
+                            selectedProvince = ProvinceModel(name: "");
+                          }
+                          return DropdownButton2<ProvinceModel>(
                             isExpanded: true,
                             hint: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -432,8 +370,8 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                             ),
                             items: proviceItems
                                 .map((ProvinceModel item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item.name,
+                                    DropdownMenuItem<ProvinceModel>(
+                                      value: item,
                                       child: Text(
                                         item.name ?? "",
                                         style: const TextStyle(
@@ -446,10 +384,12 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                                     ))
                                 .toList(),
                             value: selectedProvince,
-                            onChanged: (String? value) {
+                            onChanged: (ProvinceModel? value) {
                               setState(() {
                                 selectedProvince = value!;
+                                selectedProvinceId = value.id;
                               });
+                              print("province id ${value!.id}");
                             },
                             buttonStyleData: ButtonStyleData(
                               height: 50,
@@ -536,7 +476,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                                   ),
                                 ],
                               ),
-                              items: itemss
+                              items: items.keys
                                   .map(
                                       (String item) => DropdownMenuItem<String>(
                                             value: item,
@@ -551,11 +491,13 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                                             ),
                                           ))
                                   .toList(),
-                              value: kadinerkeksecim,
-                              onChanged: (String? valuee) {
+                              value: selectedGender,
+                              onChanged: (String? value) {
                                 setState(() {
-                                  kadinerkeksecim = valuee!;
+                                  selectedGender = value!;
+                                  selectedGenderId = items[value];
                                 });
+                                print("Gender id:$selectedGenderId");
                               },
                               buttonStyleData: ButtonStyleData(
                                 height: 50,

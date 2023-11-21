@@ -20,16 +20,18 @@ class LoginaltButonGiris extends ConsumerStatefulWidget {
 
 class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
   void uyeliktipisonrakiekran() {
-    List<AdminUserRole> roleItems = ref.read(adminUserRoleProvider);
+    List<AdminUserRole> roleItems = ref.watch(adminUserRoleProvider);
 
     AdminUserRole selectedRole = roleItems
         .firstWhere((role) => role.adminUserType.name == selectedValueson);
-
+    ref.read(selectedAdminUserRoleProvider.notifier).state = selectedRole.id;
     if (selectedRole.adminUserType.name == "Tezgahtar") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>  tezgahtarsayfasiScrenD(role: selectedRole,)));
+              builder: (context) => tezgahtarsayfasiScrenD(
+                    role: selectedRole,
+                  )));
     } else if (selectedRole.adminUserType.name == 'Usta') {
       Navigator.push(
           context,
@@ -95,7 +97,8 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                             scrollDirection: Axis.horizontal,
                             child: Text(
                               "Telefon Numaranız: ${userLoginInformation?.data.phone}",
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           )
                         ],
@@ -117,7 +120,8 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                             scrollDirection: Axis.horizontal,
                             child: Text(
                               "SMS Şifresi: $password",
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           )
                         ],

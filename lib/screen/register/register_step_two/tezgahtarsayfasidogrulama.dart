@@ -2,29 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sokeun/model/admin_user_role_model.dart';
-import 'package:flutter/material.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/indentity_model.dart';
 import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/model/provinces_model.dart';
-import 'package:sokeun/model/register_comp_model.dart';
 import 'package:sokeun/providers/login_user_provider.dart';
 import 'package:sokeun/providers/provinces_provider.dart';
 import 'package:sokeun/screen/register/register_contact_info.dart';
 import 'package:sokeun/service/api.service.dart';
-import '../../../service/api.service.dart';
 import '../../../widgets/login_button.dart';
-import '../register_contact_info.dart';
 
 class tezgahtarsayfasiScrenD extends ConsumerStatefulWidget {
   final AdminUserRole role;
   const tezgahtarsayfasiScrenD({super.key, required this.role});
   @override
-  ConsumerState<tezgahtarsayfasiScrenD> createState() => _tezgahtarsayfasiScrenDState();
+  ConsumerState<tezgahtarsayfasiScrenD> createState() =>
+      _tezgahtarsayfasiScrenDState();
 }
 
-class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD> {
+class _tezgahtarsayfasiScrenDState
+    extends ConsumerState<tezgahtarsayfasiScrenD> {
   final isimkontrol = TextEditingController();
   final SOYadikontrol = TextEditingController();
   final tCkimliknokontrol = TextEditingController();
@@ -48,14 +44,13 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
     String mail = Mailadresikontroletme.text.trim();
     String kimlik = tCkimliknokontrol.text.trim();
 
-
     LoginResponse? user = ref.read(loginUserProvider);
-
+    
     Map<String, dynamic> data = {
       "identity": kimlik,
       "firstname": firstname,
       "lastname": lastname,
-      "birthday": selectedDate //2023-10-29 18:01:54
+      "birthday": formattedDate //2023-10-29 18:01:54
     };
     print("Date : $selectedDate");
     if (Formkeytezgahtar.currentState!.validate()) {
@@ -118,16 +113,13 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
         );
       }
     }
-
   }
-
 
   @override
   void initState() {
     print(widget.role.id);
     super.initState();
   }
-
 
   final Formkeytezgahtar = GlobalKey<FormState>();
 
@@ -143,7 +135,6 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
   DateTime selectedDate = DateTime.now();
   String formattedDate = "";
 
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -157,7 +148,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
       });
     }
     formattedDate =
-    "${selectedDate.year}-${selectedDate.month}-${selectedDate.day} ${selectedDate.hour}:${selectedDate.minute}:${selectedDate.second}";
+        "${selectedDate.year}-${selectedDate.month}-${selectedDate.day} ${selectedDate.hour}:${selectedDate.minute}:${selectedDate.second}";
 
     print("Doğum tarihi: $formattedDate");
   }
@@ -169,6 +160,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
       return "0$n";
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
@@ -317,7 +309,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                     DropdownButtonHideUnderline(child: Consumer(
                       builder: (context, ref, child) {
                         List<ProvinceModel> proviceItems =
-                        ref.watch(userProvinceProvider);
+                            ref.watch(userProvinceProvider);
                         return DropdownButton2<String>(
                           isExpanded: true,
                           hint: Row(
@@ -341,20 +333,20 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                           ),
                           items: proviceItems
                               .map((ProvinceModel item) =>
-                              DropdownMenuItem<String>(
-                                value: item.name,
-                                child: Text(
-                                  item.name ?? "",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ))
+                                  DropdownMenuItem<String>(
+                                    value: item.name,
+                                    child: Text(
+                                      item.name ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
                               .toList(),
-                          value:selectedProvince,
+                          value: selectedProvince,
                           onChanged: (String? value) {
                             setState(() {
                               selectedProvince = value!;
@@ -406,7 +398,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                               radius: const Radius.circular(20),
                               thickness: MaterialStateProperty.all<double>(6),
                               thumbVisibility:
-                              MaterialStateProperty.all<bool>(true),
+                                  MaterialStateProperty.all<bool>(true),
                             ),
                           ),
                           menuItemStyleData: const MenuItemStyleData(
@@ -543,7 +535,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                     DropdownButtonHideUnderline(child: Consumer(
                       builder: (context, ref, child) {
                         List<ProvinceModel> proviceItems =
-                        ref.watch(userProvinceProvider);
+                            ref.watch(userProvinceProvider);
                         return DropdownButton2<String>(
                           isExpanded: true,
                           hint: Row(
@@ -567,20 +559,20 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                           ),
                           items: proviceItems
                               .map((ProvinceModel item) =>
-                              DropdownMenuItem<String>(
-                                value: item.name,
-                                child: Text(
-                                  item.name ?? "",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ))
+                                  DropdownMenuItem<String>(
+                                    value: item.name,
+                                    child: Text(
+                                      item.name ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
                               .toList(),
-                          value:ilSecim,
+                          value: ilSecim,
                           onChanged: (String? value) {
                             setState(() {
                               ilSecim = value!;
@@ -632,7 +624,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                               radius: const Radius.circular(20),
                               thickness: MaterialStateProperty.all<double>(6),
                               thumbVisibility:
-                              MaterialStateProperty.all<bool>(true),
+                                  MaterialStateProperty.all<bool>(true),
                             ),
                           ),
                           menuItemStyleData: const MenuItemStyleData(
@@ -650,7 +642,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                     DropdownButtonHideUnderline(child: Consumer(
                       builder: (context, ref, child) {
                         List<ProvinceModel> proviceItems =
-                        ref.watch(userProvinceProvider);
+                            ref.watch(userProvinceProvider);
                         return DropdownButton2<String>(
                           isExpanded: true,
                           hint: Row(
@@ -674,20 +666,20 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                           ),
                           items: proviceItems
                               .map((ProvinceModel item) =>
-                              DropdownMenuItem<String>(
-                                value: item.name,
-                                child: Text(
-                                  item.name ?? "",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ))
+                                  DropdownMenuItem<String>(
+                                    value: item.name,
+                                    child: Text(
+                                      item.name ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
                               .toList(),
-                          value:ilceeSecim,
+                          value: ilceeSecim,
                           onChanged: (String? value) {
                             setState(() {
                               ilceeSecim = value!;
@@ -739,7 +731,7 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                               radius: const Radius.circular(20),
                               thickness: MaterialStateProperty.all<double>(6),
                               thumbVisibility:
-                              MaterialStateProperty.all<bool>(true),
+                                  MaterialStateProperty.all<bool>(true),
                             ),
                           ),
                           menuItemStyleData: const MenuItemStyleData(
@@ -749,7 +741,6 @@ class _tezgahtarsayfasiScrenDState extends ConsumerState<tezgahtarsayfasiScrenD>
                         );
                       },
                     )),
-
 
                     SizedBox(
                       height: 14,
