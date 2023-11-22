@@ -6,6 +6,7 @@ class ApiService {
       baseUrl: 'https://development.coneexa.com/api/',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 5),
+      validateStatus: (_) => true,
     ),
   );
 
