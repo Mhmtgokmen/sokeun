@@ -35,7 +35,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
 
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
 
@@ -53,7 +53,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
 
-                            SizedBox(
+                            const SizedBox(
                               height: 11,
                             ),
 
@@ -62,17 +62,17 @@ class _homePagesCreenState extends State<homePagesCreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(width: 5,),
+                                  const SizedBox(width: 5,),
 
                                   GestureDetector(
                                       onTap: (){
 
                                       },
-                                      child: Icon(Icons.help_outline_sharp,color: Colors.white,),
+                                      child: const Icon(Icons.help_outline_sharp,color: Colors.white,),
                                   ),
 
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 90),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 90),
                                     child: Text(
                                       "Ana Sayfa",
                                       style: TextStyle(
@@ -83,28 +83,28 @@ class _homePagesCreenState extends State<homePagesCreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 60),
                                     child: IconButton(
-                                      icon: Icon(Icons.email),
+                                      icon: const Icon(Icons.email),
                                       color: Colors.white,
                                       onPressed: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    Anasayfabildirimsayasi()));
+                                                    const Anasayfabildirimsayasi()));
                                       },
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
 
                             Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 13,
                                   ),
                                   SizedBox(
@@ -120,7 +120,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
                   ),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 14,
                 ),
 
@@ -134,7 +134,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                ChoosegiffScreen()));
+                                const ChoosegiffScreen()));
                              //     urunpuanlariiiiScreenPAGEEEEE()));
                     },
                     child: Container(
@@ -142,13 +142,13 @@ class _homePagesCreenState extends State<homePagesCreen> {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(3, 3),
+                              offset: const Offset(3, 3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(-3, -3),
+                              offset: const Offset(-3, -3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
@@ -163,13 +163,13 @@ class _homePagesCreenState extends State<homePagesCreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SizedBox(width: 10,),
+                                    const SizedBox(width: 10,),
 
                                     SizedBox(
                                         height: ekranyukseklikayari/14,
                                         child: Image.asset("assetss/homescreenassets/urunp.png",)),
 
-                                    SizedBox(width: 30,),
+                                    const SizedBox(width: 30,),
 
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -191,7 +191,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
                 ////////////////////////////////////
 
                 ///////// KAMPANYALAR
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
 
@@ -203,20 +203,20 @@ class _homePagesCreenState extends State<homePagesCreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => cekilisPageScreeen()));
+                              builder: (context) => const cekilisPageScreeen()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(3, 3),
+                              offset: const Offset(3, 3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(-3, -3),
+                              offset: const Offset(-3, -3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
@@ -231,13 +231,13 @@ class _homePagesCreenState extends State<homePagesCreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SizedBox(width: 10,),
+                                    const SizedBox(width: 10,),
 
                                     SizedBox(
                                         height: ekranyukseklikayari/13,
                                         child: Image.asset("assetss/homescreenassets/kampanyalar.png",)),
 
-                                    SizedBox(width: 20,),
+                                    const SizedBox(width: 20,),
 
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -260,7 +260,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
 
                 //////////////////////// 2023 YILI ADETLER
 
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
 
@@ -272,13 +272,13 @@ class _homePagesCreenState extends State<homePagesCreen> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.shade300,
-                          offset: Offset(3, 3),
+                          offset: const Offset(3, 3),
                           blurRadius: 13.0,
                           spreadRadius: 1.0,
                         ),
                         BoxShadow(
                           color: Colors.grey.shade300,
-                          offset: Offset(-3, -3),
+                          offset: const Offset(-3, -3),
                           blurRadius: 13.0,
                           spreadRadius: 1.0,
                         ),
@@ -291,55 +291,55 @@ class _homePagesCreenState extends State<homePagesCreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.6,
                                 child: Image.asset("assetss/foto/img_3.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 11,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.2,
                                 child: Image.asset("assetss/foto/img_5.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.1,
                                 child: Image.asset("assetss/foto/img_6.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.1,
                                 child: Image.asset("assetss/foto/img_7.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.1,
                                 child: Image.asset("assetss/foto/img_8.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.1,
                                 child: Image.asset("assetss/foto/img_9.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.1,
                                 child: Image.asset("assetss/foto/img_9.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
                                 width: ekrangenisligi / 1.1,
                                 child: Image.asset("assetss/foto/img_9.png")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             SizedBox(
@@ -354,7 +354,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
 //////////////////////////////////////////////////////////////////////////////////
 
 ///// İŞLEMLER
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
 
@@ -366,20 +366,20 @@ class _homePagesCreenState extends State<homePagesCreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => islemlersayfamPAgeeeeee()));
+                              builder: (context) => const islemlersayfamPAgeeeeee()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(3, 3),
+                              offset: const Offset(3, 3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(-3, -3),
+                              offset: const Offset(-3, -3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
@@ -412,7 +412,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
                 ),
 
 ///////////////////////////////////////////////////////////////
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
 
@@ -421,7 +421,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
                   height: ekranyukseklikayari / 11.7,
                   child: GestureDetector(
                     onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>TestmessageScreen()));
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=>const TestmessageScreen()));
                     },
 
                     child: Container(
@@ -429,13 +429,13 @@ class _homePagesCreenState extends State<homePagesCreen> {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(3, 3),
+                              offset: const Offset(3, 3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(-3, -3),
+                              offset: const Offset(-3, -3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
@@ -451,9 +451,9 @@ class _homePagesCreenState extends State<homePagesCreen> {
 
                                 Row(
                                   children: [
-                                    SizedBox(width: 15,),
+                                    const SizedBox(width: 15,),
                                     Icon(Icons.mail,color: Colors.red[600],size: ekrangenisligi/10,),
-                                    SizedBox(width: 20,),
+                                    const SizedBox(width: 20,),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: Text("Destek talebi",style: TextStyle(color:Colors.red[700],
@@ -475,7 +475,7 @@ class _homePagesCreenState extends State<homePagesCreen> {
 
                 ///// HEDİYE PUAN KAZAN
 
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
 
@@ -484,20 +484,20 @@ class _homePagesCreenState extends State<homePagesCreen> {
                   height: ekranyukseklikayari / 7,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => puankazanbildirimScreeen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const puankazanbildirimScreeen()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(3, 3),
+                              offset: const Offset(3, 3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              offset: Offset(-3, -3),
+                              offset: const Offset(-3, -3),
                               blurRadius: 13.0,
                               spreadRadius: 1.0,
                             ),

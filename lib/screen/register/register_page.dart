@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sokeun/service/api.service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sokeun/model/register_model.dart';
+import 'package:dio/dio.dart';
 import 'package:sokeun/widgets/giris_button.dart';
 
 class KayitScreenPageView extends ConsumerStatefulWidget {
@@ -27,20 +28,16 @@ class _KayitScreenPageViewState extends ConsumerState<KayitScreenPageView> {
         "is_debug": "true"
       };
       try {
-        var response = await apiService.post(
+        Response response = await apiService.post(
           "register",
           data,
         );
 
         if (response.statusCode == 200) {
-          // API'den gelen veriyi RegisterModel'e dönüştür
           Map<String, dynamic> responseData = response.data;
-
           RegisterModel registerModel = RegisterModel.fromJson(responseData);
-
-          if (registerModel.status == true) {
-            // Başarılı bir şekilde kayıt olduysa
-            // ignore: use_build_context_synchronously
+          // Başarılı bir şekilde kayıt olduysa
+          if (registerModel.status) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(registerModel.message),
@@ -48,13 +45,11 @@ class _KayitScreenPageViewState extends ConsumerState<KayitScreenPageView> {
               ),
             );
             Navigator.pop(context);
-          } else {
-            // Kayıt olma başarısız olduğunda
-            // ignore: use_build_context_synchronously
+          }else{
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(registerModel.message),
-                duration: const Duration(minutes: 2),
+                duration: const Duration(seconds: 1),
               ),
             );
           }
@@ -63,8 +58,7 @@ class _KayitScreenPageViewState extends ConsumerState<KayitScreenPageView> {
           // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text(
-                  "Beklenmeyen bir hata oluştu. API'den beklenen format sağlanmadı."),
+              content: Text("Beklenmeyen bir hata oluştu."),
               duration: Duration(seconds: 2),
             ),
           );

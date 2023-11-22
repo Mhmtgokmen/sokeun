@@ -10,6 +10,7 @@ import 'package:sokeun/screen/register/register_contact_info.dart';
 import 'package:sokeun/service/api.service.dart';
 import 'package:sokeun/widgets/login_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dio/dio.dart';
 
 class ustasayfasiScreeeenD extends ConsumerStatefulWidget {
   final AdminUserRole role;
@@ -37,7 +38,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     apiService = ApiService();
     AdminUserRole selectedRole = widget.role;
     print("Roleler $selectedRole");
-    
+
     String firstname = isimmkontrol.text.trim();
     String lastname = soyadikontrol.text.trim();
     String mail = mailadresikontrol.text.trim();
@@ -68,42 +69,42 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
 
     if (FormBayikontrol.currentState!.validate()) {
       try {
-        var response = await apiService.post(
+        Response response = await apiService.post(
           "verify/identity",
           data,
           token: user?.data.accessToken,
         );
+        IdentityModel identityResponse;
 
         if (response.statusCode == 200) {
           Map<String, dynamic> responseDate = response.data;
-          IdentityModel identityResponse = IdentityModel.fromJson(responseDate);
+          identityResponse = IdentityModel.fromJson(responseDate);
           print("Model $responseDate");
-          if (identityResponse.status == true) {
-            if (FormBayikontrol.currentState!.validate()) {
-              // ignore: use_build_context_synchronously
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(identityResponse.message),
-                  duration: const Duration(seconds: 1),
-                ),
-              );
-              // ignore: use_build_context_synchronously
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const soniletisimbilgisialma(),
-                ),
-              );
-            }
-          } else {
+          if (FormBayikontrol.currentState!.validate()) {
             // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(identityResponse.message),
-                duration: const Duration(seconds: 2),
+                duration: const Duration(seconds: 1),
+              ),
+            );
+            // ignore: use_build_context_synchronously
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const soniletisimbilgisialma(),
               ),
             );
           }
+        } else if (response.statusCode == 401) {
+          identityResponse = IdentityModel.fromJson(response.data);
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
+              content: Text(identityResponse.message),
+              duration: Duration(seconds: 2),
+            ),
+          );
         } else {
           // API'den beklenmeyen bir cevap geldi
           // ignore: use_build_context_synchronously
@@ -150,7 +151,6 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
   DateTime selectedDate = DateTime.now();
   String formattedDate = "";
   bool isTextFieldVisible = true;
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -465,7 +465,6 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                                   const SizedBox(
                                     width: 4,
                                   ),
-
                                   Expanded(
                                     child: Text(
                                       'Cinsiyet',
@@ -1148,8 +1147,8 @@ class Sifrekontrolsayfam extends StatelessWidget {
       return "Zorunlu alan!!!";
     }
 
-    if (value.length < 4) {
-      return "Şifrenizi en az 4 haneli olacak şekilde giriniz";
+    if (value.length < 6) {
+      return "Şifrenizi en az 6 haneli olacak şekilde giriniz";
     }
 
     return null;

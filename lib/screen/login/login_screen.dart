@@ -64,9 +64,9 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
           print("Token: ${loginResponse.data.accessToken}");
         } else if (response.statusCode == 401) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Hatalı kullanıcı adı ya da şifre"),
-              duration: const Duration(seconds: 2),
+            const SnackBar(
+              content: Text("Login failed"),
+              duration: Duration(seconds: 2),
             ),
           );
         } else {

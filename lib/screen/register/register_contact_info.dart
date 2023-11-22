@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/model/provinces_model.dart';
 import 'package:sokeun/model/register_comp_model.dart';
@@ -11,6 +10,7 @@ import 'package:sokeun/screen/register/kayitScreeen/OnaySayfasiScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sokeun/service/api.service.dart';
 import '../../widgets/login_button.dart';
+import 'package:dio/dio.dart';
 
 class soniletisimbilgisialma extends ConsumerStatefulWidget {
   const soniletisimbilgisialma({super.key});
@@ -23,7 +23,7 @@ class soniletisimbilgisialma extends ConsumerStatefulWidget {
 class _soniletisimbilgisialmaState
     extends ConsumerState<soniletisimbilgisialma> {
   // ÜST TARAF
-  final Adreskontroletme = TextEditingController();
+  final adreskontroletme = TextEditingController();
   final ilkontroletme = TextEditingController();
   final ilcekontroletme = TextEditingController();
   final telefonkontroletmekontrol = TextEditingController();
@@ -41,10 +41,11 @@ class _soniletisimbilgisialmaState
 
   bool iletisimBilgileriGonderiAdresineKopyala = false;
 
-  Future<void> OnayaGecmeMetodu() async {
+  Future<void> onayaGecmeMetodu() async {
     apiService = ApiService();
-    String address = gonderiadresikontrol.text.trim();
-    String contact_number = gonderitelefonkontrol.text.trim();
+    String address = adreskontroletme.text.trim();
+    String deliveryAddress = gonderiadresikontrol.text.trim();
+    String contactNumber = gonderitelefonkontrol.text.trim();
 
     LoginResponse? user = ref.read(loginUserProvider);
     final password = ref.read(userPasswordProvider);
@@ -59,7 +60,7 @@ class _soniletisimbilgisialmaState
       "address": address,
       "province_id": selectedProvinceId,
       "district_id": selectedDistricts!.id,
-      "contact_number": contact_number,
+      "contact_number": contactNumber,
       "user_type": roleId,
       "identity": user.data.citizenNumber,
       "gender": user.data.gender,
@@ -67,87 +68,99 @@ class _soniletisimbilgisialmaState
       "pants_size": "",
       "shirt_size": "",
       "born_city_id": user.data.bornCityId,
-      "is_address_equal_to_delivery": "0", // 1 or 0
-      "delivery_address": null,
+      "is_address_equal_to_delivery": isTextFieldVisible ? "1" : "0", // 1 or 0
+      "delivery_address": isTextFieldVisible ? address : deliveryAddress,
       "company_name": "",
       "tax": "",
-      "delivery_province_id": selectedDeliveryProvinceId,
-      "delivery_district_id": selectedDeliveryDistricts!.id,
+      "delivery_province_id":
+          isTextFieldVisible ? selectedProvinceId : selectedDeliveryProvinceId,
+      "delivery_district_id": isTextFieldVisible
+          ? selectedDistricts!.id
+          : selectedDeliveryDistricts!.id,
       "tax_number": "",
       "document_name": "",
       "document_number": user.data.documentNumber,
       "password": password.password,
       "password_confirm": password.confirmPassword
     };
-    try {
-      var response = await apiService.post(
-        "https://development.coneexa.com/api/register-complete",
-        data,
-        token: user.data.accessToken,
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> responseDate = response.data;
-        RegisterComplateModel registerResponse =
-            RegisterComplateModel.fromJson(responseDate);
-        print("Model $responseDate");
-        if (registerResponse.status == true) {
-          // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(registerResponse.message),
-              duration: const Duration(seconds: 1),
-            ),
-          );
-        } else {
-          // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(registerResponse.message),
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
-        // ignore: use_build_context_synchronously
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const soniletisimbilgisialma()));
-      } else {
-        // API'den beklenmeyen bir cevap geldi
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                "Beklenmeyen bir hata oluştu. API'den beklenen format sağlanmadı."),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
-    } catch (e) {
-      // Hata durumunda
-      print("Hata Detayı: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Bir hata oluştu: $e"),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
-
     if (Soniletisimkey.currentState!.validate()) {
       if (telnoizinvermeenalt == false) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Kutuları onaylayın")));
-      } else if (telnoizinvermeenalt == false) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Kutuları onaylayın")));
-      } else {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const OnaySonScccreeeeeeeen()));
+      }
+      try {
+        Response response = await apiService.post(
+          "https://development.coneexa.com/api/register-complete",
+          data,
+          token: user.data.accessToken,
+        );
+        RegisterComplateModel registerResponse;
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseDate = response.data;
+          registerResponse = RegisterComplateModel.fromJson(responseDate);
+          print("Model $responseDate");
+          if (Soniletisimkey.currentState!.validate()) {
+            if (registerResponse.status == true) {
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(registerResponse.message),
+                  duration: const Duration(seconds: 1),
+                ),
+              );
+              // ignore: use_build_context_synchronously
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const OnaySonScccreeeeeeeen()));
+            } else {
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(registerResponse.message),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            }
+          }
+          // ignore: use_build_context_synchronously
+        } else {
+          // API'den beklenmeyen bir cevap geldi
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Beklenmeyen bir hata oluştu. API'den beklenen format sağlanmadı."),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      } catch (e) {
+        // Hata durumunda
+        print("Hata Detayı: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Bir hata oluştu: $e"),
+            duration: const Duration(seconds: 2),
+          ),
+        );
       }
     }
+
+    // if (Soniletisimkey.currentState!.validate()) {
+    //   if (telnoizinvermeenalt == false) {
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(const SnackBar(content: Text("Kutuları onaylayın")));
+    //   } else if (telnoizinvermeenalt == false) {
+    //     ScaffoldMessenger.of(context)
+    //         .showSnackBar(const SnackBar(content: Text("Kutuları onaylayın")));
+    //   } else {
+    //     Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(
+    //             builder: (context) => const OnaySonScccreeeeeeeen()));
+    //   }
+    // }
   }
 
   late final List<String> itemssnerdenduydun = [
@@ -196,7 +209,6 @@ class _soniletisimbilgisialmaState
 
   bool isTextFieldVisible = false;
 
-
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
@@ -228,7 +240,6 @@ class _soniletisimbilgisialmaState
                       const SizedBox(
                         height: 8,
                       ),
-
                       Row(
                         children: [
                           Padding(
@@ -248,7 +259,7 @@ class _soniletisimbilgisialmaState
                         height: 12,
                       ),
                       Adressssayfammm(
-                          controller: Adreskontroletme,
+                          controller: adreskontroletme,
                           hintext: "Adres",
                           obscurttext: false),
                       const SizedBox(
@@ -477,165 +488,51 @@ class _soniletisimbilgisialmaState
                         obscurttext: false,
                       ),
                       if (!isTextFieldVisible)
-                      const SizedBox(
-                        height: 15,
-                      ),
+                        const SizedBox(
+                          height: 15,
+                        ),
                       if (!isTextFieldVisible)
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              "Gönderi Adresi",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: ekrangenisligi / 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (!isTextFieldVisible)
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      if (!isTextFieldVisible)
-                      Adressssayfammm(
-                          controller: gonderiadresikontrol,
-                          hintext: "Adres",
-                          obscurttext: false),
-                      if (!isTextFieldVisible)
-                      const SizedBox(
-                        height: 13,
-                      ),
-                      if (!isTextFieldVisible)
-                      DropdownButtonHideUnderline(
-                        child: Consumer(builder: (context, ref, child) {
-                          List<ProvinceModel> proviceItems =
-                              ref.watch(userProvinceProvider);
-                          return DropdownButton2<ProvinceModel>(
-                            isExpanded: true,
-                            hint: const Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'İl',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                "Gönderi Adresi",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: ekrangenisligi / 16,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                              ],
-                            ),
-                            items: proviceItems
-                                .map((ProvinceModel item) =>
-                                    DropdownMenuItem<ProvinceModel>(
-                                      value: item,
-                                      child: Text(
-                                        item.name ?? "",
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: selectedDeliveryProvince,
-                            onChanged: (ProvinceModel? value) {
-                              setState(() {
-                                selectedDeliveryProvince = value!;
-                                selectedDeliveryProvinceId = value.id;
-                                selectedDeliveryDistricts = null;
-                              });
-                            },
-                            buttonStyleData: ButtonStyleData(
-                              height: 50,
-                              width: ekrangenisligi / 1.1,
-                              padding: const EdgeInsets.only(left: 6, right: 6),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                  color: Colors.white,
-                                ),
-                                color: Colors.white,
-                              ),
-                              elevation: 2,
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              iconSize: 14,
-                              iconEnabledColor: Colors.black,
-                              iconDisabledColor: Colors.grey,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 200,
-                              width: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.grey.shade100,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(5.0, 5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
-                                  ),
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(-5.0, -5.0),
-                                    blurRadius: 20,
-                                    spreadRadius: 1.0,
-                                  ),
-                                ],
-                              ),
-                              scrollbarTheme: ScrollbarThemeData(
-                                radius: const Radius.circular(40),
-                                thickness: MaterialStateProperty.all<double>(6),
-                                thumbVisibility:
-                                    MaterialStateProperty.all<bool>(true),
                               ),
                             ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                              padding: EdgeInsets.only(left: 14, right: 14),
-                            ),
-                          );
-                        }),
-                      ),
+                          ],
+                        ),
                       if (!isTextFieldVisible)
-                      const SizedBox(
-                        height: 13,
-                      ),
+                        const SizedBox(
+                          height: 12,
+                        ),
                       if (!isTextFieldVisible)
-                      DropdownButtonHideUnderline(
-                        child: Consumer(
-                          builder: (context, ref, child) {
+                        Adressssayfammm(
+                            controller: gonderiadresikontrol,
+                            hintext: "Adres",
+                            obscurttext: false),
+                      if (!isTextFieldVisible)
+                        const SizedBox(
+                          height: 13,
+                        ),
+                      if (!isTextFieldVisible)
+                        DropdownButtonHideUnderline(
+                          child: Consumer(builder: (context, ref, child) {
                             List<ProvinceModel> proviceItems =
-                                ref.read(userProvinceProvider);
-                            ProvinceModel selectedProvince =
-                                proviceItems.firstWhere(
-                              (province) => province.id == selectedDeliveryProvinceId,
-                              orElse: () => ProvinceModel(),
-                            );
-                            List<Districts> selectedProvinceDistricts =
-                                selectedProvince.districts ?? [];
-                            return DropdownButton2<Districts>(
+                                ref.watch(userProvinceProvider);
+                            return DropdownButton2<ProvinceModel>(
                               isExpanded: true,
                               hint: const Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'İlçe',
+                                      'İl',
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
@@ -646,9 +543,9 @@ class _soniletisimbilgisialmaState
                                   ),
                                 ],
                               ),
-                              items: selectedProvinceDistricts
-                                  .map((Districts item) =>
-                                      DropdownMenuItem<Districts>(
+                              items: proviceItems
+                                  .map((ProvinceModel item) =>
+                                      DropdownMenuItem<ProvinceModel>(
                                         value: item,
                                         child: Text(
                                           item.name ?? "",
@@ -661,10 +558,12 @@ class _soniletisimbilgisialmaState
                                         ),
                                       ))
                                   .toList(),
-                              value: selectedDeliveryDistricts,
-                              onChanged: (Districts? value) {
+                              value: selectedDeliveryProvince,
+                              onChanged: (ProvinceModel? value) {
                                 setState(() {
-                                  selectedDeliveryDistricts = value!;
+                                  selectedDeliveryProvince = value!;
+                                  selectedDeliveryProvinceId = value.id;
+                                  selectedDeliveryDistricts = null;
                                 });
                               },
                               buttonStyleData: ButtonStyleData(
@@ -723,28 +622,141 @@ class _soniletisimbilgisialmaState
                                 padding: EdgeInsets.only(left: 14, right: 14),
                               ),
                             );
-                          },
+                          }),
                         ),
-                      ),
                       if (!isTextFieldVisible)
-                      const SizedBox(
-                        height: 13,
-                      ),
+                        const SizedBox(
+                          height: 13,
+                        ),
                       if (!isTextFieldVisible)
-                      Telefonnumarasayfamm(
-                          controller: gonderitelefonkontrol,
-                          hintext: "İletişim telefon numarası",
-                          obscurttext: false),
+                        DropdownButtonHideUnderline(
+                          child: Consumer(
+                            builder: (context, ref, child) {
+                              List<ProvinceModel> proviceItems =
+                                  ref.read(userProvinceProvider);
+                              ProvinceModel selectedProvince =
+                                  proviceItems.firstWhere(
+                                (province) =>
+                                    province.id == selectedDeliveryProvinceId,
+                                orElse: () => ProvinceModel(),
+                              );
+                              List<Districts> selectedProvinceDistricts =
+                                  selectedProvince.districts ?? [];
+                              return DropdownButton2<Districts>(
+                                isExpanded: true,
+                                hint: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'İlçe',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                items: selectedProvinceDistricts
+                                    .map((Districts item) =>
+                                        DropdownMenuItem<Districts>(
+                                          value: item,
+                                          child: Text(
+                                            item.name ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: selectedDeliveryDistricts,
+                                onChanged: (Districts? value) {
+                                  setState(() {
+                                    selectedDeliveryDistricts = value!;
+                                  });
+                                },
+                                buttonStyleData: ButtonStyleData(
+                                  height: 50,
+                                  width: ekrangenisligi / 1.1,
+                                  padding:
+                                      const EdgeInsets.only(left: 6, right: 6),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  elevation: 2,
+                                ),
+                                iconStyleData: const IconStyleData(
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                  ),
+                                  iconSize: 14,
+                                  iconEnabledColor: Colors.black,
+                                  iconDisabledColor: Colors.grey,
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 200,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                    color: Colors.grey.shade100,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade200,
+                                        offset: const Offset(5.0, 5.0),
+                                        blurRadius: 20,
+                                        spreadRadius: 1.0,
+                                      ),
+                                      BoxShadow(
+                                        color: Colors.grey.shade200,
+                                        offset: const Offset(-5.0, -5.0),
+                                        blurRadius: 20,
+                                        spreadRadius: 1.0,
+                                      ),
+                                    ],
+                                  ),
+                                  scrollbarTheme: ScrollbarThemeData(
+                                    radius: const Radius.circular(40),
+                                    thickness:
+                                        MaterialStateProperty.all<double>(6),
+                                    thumbVisibility:
+                                        MaterialStateProperty.all<bool>(true),
+                                  ),
+                                ),
+                                menuItemStyleData: const MenuItemStyleData(
+                                  height: 40,
+                                  padding: EdgeInsets.only(left: 14, right: 14),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      if (!isTextFieldVisible)
+                        const SizedBox(
+                          height: 13,
+                        ),
+                      if (!isTextFieldVisible)
+                        Telefonnumarasayfamm(
+                            controller: gonderitelefonkontrol,
+                            hintext: "İletişim telefon numarası",
+                            obscurttext: false),
                       const SizedBox(
                         height: 17,
                       ),
+                      if (!isTextFieldVisible) BizinerdenduydunScren(),
                       if (!isTextFieldVisible)
-                      BizinerdenduydunScren(),
-                      if (!isTextFieldVisible)
-                      const SizedBox(
-                        height: 13,
-                      ),
-
+                        const SizedBox(
+                          height: 13,
+                        ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -775,8 +787,7 @@ class _soniletisimbilgisialmaState
                                 activeColor: Colors.red,
                                 onChanged: (value) {
                                   setState(() {
-                                    isTextFieldVisible =
-                                        value!;
+                                    isTextFieldVisible = value!;
                                     print(value);
                                   });
                                 }),
@@ -795,7 +806,7 @@ class _soniletisimbilgisialmaState
                         width: ekrangenisligi / 1.4,
                         child: LoginButton(
                           onTap: () {
-                            OnayaGecmeMetodu();
+                            onayaGecmeMetodu();
                           },
                           text: "Devam",
                         ),
