@@ -12,6 +12,7 @@ import 'package:sokeun/screen/register/register_step_one.dart';
 import 'package:sokeun/service/api.service.dart';
 import 'package:sokeun/widgets/login_button.dart';
 import '../../model/admin_user_level.dart';
+import 'package:dio/dio.dart';
 
 // DOĞRULAMA 1. SAYFA
 
@@ -38,7 +39,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
         "password": password,
       };
       try {
-        var response = await apiService.post(
+        Response response = await apiService.post(
           "https://development.coneexa.com/api/login",
           data,
         );
@@ -47,35 +48,40 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
           LoginResponse loginResponse = LoginResponse.fromJson(responseData);
           ref.read(loginUserProvider.notifier).state = loginResponse;
           ref.read(loginPasswordProvider.notifier).state = password;
-          if (loginResponse.status) {
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(loginResponse.message),
-                duration: const Duration(seconds: 2),
-              ),
-            );
-            // ignore: use_build_context_synchronously
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const LoginaltButonGiris()));
-            print("Token: ${loginResponse.data.accessToken}");
-          } else {
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(loginResponse.message),
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          }
+
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(loginResponse.message),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const LoginaltButonGiris()));
+          print("Token: ${loginResponse.data.accessToken}");
+        } else if (response.statusCode == 401) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Hatalı kullanıcı adı ya da şifre"),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        } else {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Bilinmeyen bir hata oluştu 1"),
+              duration: const Duration(seconds: 2),
+            ),
+          );
         }
       } catch (e) {
-        print("Hata Detayı: $e");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Bir hata oluştu: $e"),
+            content: Text("Bilinmeyen bir hata oluştu : " + e.toString()),
             duration: const Duration(seconds: 2),
           ),
         );

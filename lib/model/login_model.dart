@@ -187,7 +187,6 @@ class UserData {
       accessToken: json['access_token'] ?? "",
     );
   }
-
 }
 
 class LoginResponse {
