@@ -142,6 +142,8 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     'Erkek': 1,
     'Kadın': 2,
   };
+
+
   String? selectedGender;
   int? selectedGenderId;
 
@@ -453,6 +455,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                       const SizedBox(
                         height: 14,
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

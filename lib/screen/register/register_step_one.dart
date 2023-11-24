@@ -4,6 +4,7 @@ import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/providers/admin_user_model_provider.dart';
 import 'package:sokeun/providers/login_user_provider.dart';
+import 'package:sokeun/providers/nationality.provider.dart';
 import 'package:sokeun/screen/register/register_step_two/bayisayfasiscreeen.dart';
 import 'package:sokeun/screen/register/register_step_two/sonkullanicisayfasi.dart';
 import '../../widgets/login_button.dart';
@@ -50,7 +51,16 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
 
   final _formkey = GlobalKey<FormState>();
 
+  final Map<String, int> UyrukSecimi = {
+    'T.C': 1,
+    'K.K.T.C': 2,
+  };
+
+  String? selectedGender;
+  int? selectedGenderId;
+
   String? selectedValueson;
+  String? UyrukSecim;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +145,95 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const controletmeUyruk(),
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton2<String>(
+                                isExpanded: true,
+                                hint: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Uyruk',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                items: UyrukSecimi.keys
+                                    .map((String item) =>
+                                        DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: selectedGender,
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    selectedGender = value!;
+                                    selectedGenderId = UyrukSecimi[value];
+                                  });
+                                  print("Gender id:$selectedGenderId");
+                                },
+                                buttonStyleData: ButtonStyleData(
+                                  height: 50,
+                                  width: ekrangenisligi / 2.2,
+                                  padding: const EdgeInsets.only(
+                                      left: 14, right: 14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                    ),
+                                    color: Colors.red,
+                                  ),
+                                  elevation: 2,
+                                ),
+                                iconStyleData: const IconStyleData(
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                  ),
+                                  iconSize: 14,
+                                  iconEnabledColor: Colors.white,
+                                  iconDisabledColor: Colors.grey,
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 200,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                    color: Colors.red.shade200,
+                                  ),
+                                  offset: const Offset(-20, 0),
+                                  scrollbarTheme: ScrollbarThemeData(
+                                    radius: const Radius.circular(40),
+                                    thickness:
+                                        MaterialStateProperty.all<double>(6),
+                                    thumbVisibility:
+                                        MaterialStateProperty.all<bool>(true),
+                                  ),
+                                ),
+                                menuItemStyleData: const MenuItemStyleData(
+                                  height: 40,
+                                  padding: EdgeInsets.only(left: 14, right: 14),
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               width: 12,
                             ),
@@ -149,7 +247,7 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                                   hint: const Row(
                                     children: [
                                       Icon(
-                                        Icons.language,
+                                        Icons.person,
                                         size: 16,
                                         color: Colors.white,
                                       ),
@@ -282,6 +380,7 @@ class _controletmeUyrukState extends State<controletmeUyruk> {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
     // var ekranyukseklikayari = ekranAyari.size.height;
+
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,

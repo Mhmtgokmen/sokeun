@@ -82,9 +82,9 @@ class MyApp extends ConsumerWidget {
             return Stack(
               children: [
                 Container(
-                  color: Colors.transparent,
+                 color: Colors.white,
                   child: const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(color: Colors.red,),
                   ),
                 ),
               ],
