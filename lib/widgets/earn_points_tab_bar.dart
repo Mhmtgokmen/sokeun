@@ -22,8 +22,9 @@ class _puankazanbildirimScreeenState extends State<puankazanbildirimScreeen> {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-
             bottom: TabBar(
+            //  indicatorWeight: 2,
+            //  enableFeedback: true,
               isScrollable: true,
               indicatorColor: Colors.red,
               unselectedLabelColor: Colors.red[600],

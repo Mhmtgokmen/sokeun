@@ -4,7 +4,6 @@ import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/providers/admin_user_model_provider.dart';
 import 'package:sokeun/providers/login_user_provider.dart';
-import 'package:sokeun/providers/nationality.provider.dart';
 import 'package:sokeun/screen/register/register_step_two/bayisayfasiscreeen.dart';
 import 'package:sokeun/screen/register/register_step_two/sonkullanicisayfasi.dart';
 import '../../widgets/login_button.dart';

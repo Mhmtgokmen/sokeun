@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:sokeun/screen/home/qr_screen.dart';
 // TABS KOD
 
 class kodilepuankazanScreeenPAGEE extends StatefulWidget {
@@ -113,8 +113,13 @@ class _kodilepuankazanScreeenPAGEEState
                                               SizedBox(
                                                 width: ekrangenisligi / 1.8,
                                                 height: ekranyuksekligi / 16,
-                                                child: Image.asset(
-                                                    "assetss/foto/img_44.png"),
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> QrKodScreen()));
+                                                  },
+                                                  child: Image.asset(
+                                                      "assetss/foto/img_44.png"),
+                                                ),
                                               ),
                                               SizedBox(
                                                 height: 5,
