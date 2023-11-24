@@ -42,7 +42,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     String firstname = isimmkontrol.text.trim();
     String lastname = soyadikontrol.text.trim();
     String mail = mailadresikontrol.text.trim();
-    String kimlik = kimlikkontrol.text.trim();
+    String identity = kimlikkontrol.text.trim();
     String documentNumber = meslekyeterlilikkontrol.text.trim();
     String password = sifrekontrol.text.trim();
     String passwordConfirm = tekrarSifrekontroletme.text.trim();
@@ -52,7 +52,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     user?.data.firstname = firstname;
     user?.data.lastname = lastname;
     user?.data.birthday = formattedDate;
-    user?.data.citizenNumber = kimlik;
+    user?.data.citizenNumber = identity;
     user?.data.documentNumber = documentNumber;
     user?.data.email = mail;
     user?.data.bornCityId = selectedProvinceId;
@@ -61,7 +61,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     userPassword.confirmPassword = passwordConfirm;
 
     Map<String, dynamic> data = {
-      "identity": kimlik,
+      "identity": identity,
       "firstname": firstname,
       "lastname": lastname,
       "birthday": formattedDate //2023-10-29 18:01:54

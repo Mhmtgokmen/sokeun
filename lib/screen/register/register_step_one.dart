@@ -29,7 +29,7 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => tezgahtarsayfasiScrenD(
+              builder: (context) => TezgahtarsayfasiScrenD(
                     role: selectedRole,
                   )));
     } else if (selectedRole.adminUserType.name == 'Usta') {

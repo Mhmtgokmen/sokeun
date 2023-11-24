@@ -45,7 +45,7 @@ class _soniletisimbilgisialmaState
     apiService = ApiService();
     String address = adreskontroletme.text.trim();
     String deliveryAddress = gonderiadresikontrol.text.trim();
-    String contactNumber = gonderitelefonkontrol.text.trim();
+    String contactNumber = telefonkontroletmekontrol.text.trim();
 
     LoginResponse? user = ref.read(loginUserProvider);
     final password = ref.read(userPasswordProvider);
@@ -58,25 +58,25 @@ class _soniletisimbilgisialmaState
       "email": user.data.email,
       "nation": "Türkiye",
       "address": address,
-      "province_id": selectedProvinceId,
-      "district_id": selectedDistricts!.id,
+      "province_id": selectedProvinceId.toString(),
+      "district_id": selectedDistricts!.id.toString(),
       "contact_number": contactNumber,
-      "user_type": roleId,
+      "user_type": roleId.toString(),
       "identity": user.data.citizenNumber,
       "gender": user.data.gender,
       "team": null,
       "pants_size": "",
       "shirt_size": "",
-      "born_city_id": user.data.bornCityId,
+      "born_city_id": user.data.bornCityId.toString(),
       "is_address_equal_to_delivery": isTextFieldVisible ? "1" : "0", // 1 or 0
       "delivery_address": isTextFieldVisible ? address : deliveryAddress,
       "company_name": "",
       "tax": "",
       "delivery_province_id":
-          isTextFieldVisible ? selectedProvinceId : selectedDeliveryProvinceId,
+          isTextFieldVisible ? selectedProvinceId.toString() : selectedDeliveryProvinceId.toString(),
       "delivery_district_id": isTextFieldVisible
-          ? selectedDistricts!.id
-          : selectedDeliveryDistricts!.id,
+          ? selectedDistricts!.id.toString()
+          : selectedDeliveryDistricts!.id.toString(),
       "tax_number": "",
       "document_name": "",
       "document_number": user.data.documentNumber,
@@ -88,6 +88,7 @@ class _soniletisimbilgisialmaState
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Kutuları onaylayın")));
       }
+      print(user.data.accessToken);
       try {
         Response response = await apiService.post(
           "https://development.coneexa.com/api/register-complete",

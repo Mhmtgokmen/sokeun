@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/model/provinces_model.dart';
@@ -26,14 +28,16 @@ class telnoilksayfa extends ConsumerStatefulWidget {
 class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
   // Text Editing Controller
   final numarakontrol = TextEditingController();
-  final Sifrekontroletmegiris = TextEditingController();
+  final sifrekontroletmegiris = TextEditingController();
   late ApiService apiService;
-
+  // final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+  //     GlobalKey<ScaffoldMessengerState>();
   void ilkdefagiris() async {
     if (_formkey.currentState!.validate()) {
       apiService = ApiService();
-      String phoneNumber = numarakontrol.text.trim();
-      String password = Sifrekontroletmegiris.text.trim();
+      final phoneNumber = numarakontrol.text.trim();
+      final password = sifrekontroletmegiris.text.trim();
+      
       Map<String, dynamic> data = {
         "phone": phoneNumber,
         "password": password,
@@ -48,8 +52,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
           LoginResponse loginResponse = LoginResponse.fromJson(responseData);
           ref.read(loginUserProvider.notifier).state = loginResponse;
           ref.read(loginPasswordProvider.notifier).state = password;
-
-          // ignore: use_build_context_synchronously
+          saveToken(loginResponse.data.accessToken);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(loginResponse.message),
@@ -70,22 +73,38 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
             ),
           );
         } else {
-          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text("Bilinmeyen bir hata oluştu 1"),
-              duration: const Duration(seconds: 2),
+              duration: Duration(seconds: 2),
             ),
           );
         }
       } catch (e) {
+        print(e);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Bilinmeyen bir hata oluştu : " + e.toString()),
+            content: Text("Bilinmeyen bir hata oluştu : $e"),
             duration: const Duration(seconds: 2),
           ),
         );
       }
+    }
+  }
+
+  void saveToken(String token) async {
+    await Hive.initFlutter();
+
+    try {
+      if (!Hive.isBoxOpen('tokenBox')) {
+        await Hive.openBox<String>('tokenBox');
+      }
+      final box = await Hive.openBox<String>('tokenBox');
+      await box.put('token', token);
+      await box.close();
+      print("Hive token:$token");
+    } catch (e) {
+      print("Hata oluştu: $e");
     }
   }
 
@@ -198,7 +217,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
 
     // Telefon numarası ilk login sayfa
 
@@ -281,7 +300,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
                       height: 7,
                     ),
                     PasswordKontrolSayfasi(
-                        controller: Sifrekontroletmegiris,
+                        controller: sifrekontroletmegiris,
                         hintext: "Şifre",
                         obscurttext: true),
                     const SizedBox(
@@ -314,7 +333,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                KayitScreenPageView()));
+                                                const KayitScreenPageView()));
                                   },
                                   text: "Kayıt ol"),
                             ),
@@ -340,7 +359,7 @@ class MyTextField extends StatelessWidget {
   final String hintext;
   final bool obscurttext;
 
-  MyTextField(
+  const MyTextField(
       {super.key,
       required this.controller,
       required this.hintext,
@@ -365,7 +384,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -418,14 +437,14 @@ class PasswordKontrolSayfasi extends StatelessWidget {
   final String hintext;
   final bool obscurttext;
 
-  PasswordKontrolSayfasi(
+  const PasswordKontrolSayfasi(
       {super.key,
       required this.controller,
       required this.hintext,
       required this.obscurttext});
 // Validator
 
-  String? Sifrevalidate(String? value) {
+  String? sifrevalidate(String? value) {
     if (value == null || value.isEmpty) {
       return "Şifrenizi giriniz!!!";
     }
@@ -443,7 +462,7 @@ class PasswordKontrolSayfasi extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -468,7 +487,7 @@ class PasswordKontrolSayfasi extends StatelessWidget {
           keyboardType: TextInputType.text,
           controller: controller,
           obscureText: true,
-          validator: Sifrevalidate,
+          validator: sifrevalidate,
           decoration: InputDecoration(
               border: InputBorder.none,
               filled: true,

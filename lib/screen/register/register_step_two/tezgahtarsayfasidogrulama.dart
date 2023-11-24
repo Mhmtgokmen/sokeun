@@ -11,28 +11,28 @@ import 'package:sokeun/screen/register/register_contact_info.dart';
 import 'package:sokeun/service/api.service.dart';
 import '../../../widgets/login_button.dart';
 
-class tezgahtarsayfasiScrenD extends ConsumerStatefulWidget {
+class TezgahtarsayfasiScrenD extends ConsumerStatefulWidget {
   final AdminUserRole role;
-  const tezgahtarsayfasiScrenD({super.key, required this.role});
+  const TezgahtarsayfasiScrenD({super.key, required this.role});
   @override
-  ConsumerState<tezgahtarsayfasiScrenD> createState() =>
-      _tezgahtarsayfasiScrenDState();
+  ConsumerState<TezgahtarsayfasiScrenD> createState() =>
+      _TezgahtarsayfasiScrenDState();
 }
 
-class _tezgahtarsayfasiScrenDState
-    extends ConsumerState<tezgahtarsayfasiScrenD> {
+class _TezgahtarsayfasiScrenDState
+    extends ConsumerState<TezgahtarsayfasiScrenD> {
   final isimkontrol = TextEditingController();
-  final SOYadikontrol = TextEditingController();
-  final tCkimliknokontrol = TextEditingController();
-  final Dogumtarihikontrol = TextEditingController();
-  final DogumYeriiii = TextEditingController();
-  final Mailadresikontroletme = TextEditingController();
+  final soyadikontrol = TextEditingController();
+  final tckimliknokontrol = TextEditingController();
+  final dogumtarihikontrol = TextEditingController();
+  final dogumYeri = TextEditingController();
+  final mailadresikontroletme = TextEditingController();
   final cinsiyetkontroletme = TextEditingController();
   final ilkontroletme = TextEditingController();
   final ilcekontroletme = TextEditingController();
   final bayikontrol = TextEditingController();
-  final Sifreeekkontrol = TextEditingController();
-  final SifreTekrarKontroletme = TextEditingController();
+  final sifrekkontrol = TextEditingController();
+  final sifreTekrarKontroletme = TextEditingController();
   late ApiService apiService;
 
   Future<void> iletisimbilgilerinegecismetodu() async {
@@ -40,14 +40,30 @@ class _tezgahtarsayfasiScrenDState
     AdminUserRole selectedRole = widget.role;
     print("Roleler $selectedRole");
     String firstname = isimkontrol.text.trim();
-    String lastname = SOYadikontrol.text.trim();
-    String mail = Mailadresikontroletme.text.trim();
-    String kimlik = tCkimliknokontrol.text.trim();
-
+    String lastname = soyadikontrol.text.trim();
+    String mail = mailadresikontroletme.text.trim();
+    String identity = tckimliknokontrol.text.trim();
+    String bayi = bayikontrol.text.trim();
+    String password = sifrekkontrol.text.trim();
+    String passwordConfirm = sifreTekrarKontroletme.text.trim();
     LoginResponse? user = ref.read(loginUserProvider);
-    
+    final userPassword = ref.read(userPasswordProvider);
+
+    user!.data.firstname = firstname;
+    user.data.lastname = lastname;
+    user.data.citizenNumber = identity;
+    user.data.birthday = formattedDate;
+    user.data.bornCityId = selectedBornCityId;
+    user.data.email = mail;
+    user.data.gender = selectedGenderId.toString();
+    user.data.provinceId = selectedProvinceId;
+    user.data.districtId = selectedDistricts!.id;
+    user.data.companyName = bayi;
+    userPassword.password = password;
+    userPassword.confirmPassword = passwordConfirm;
+
     Map<String, dynamic> data = {
-      "identity": kimlik,
+      "identity": identity,
       "firstname": firstname,
       "lastname": lastname,
       "birthday": formattedDate //2023-10-29 18:01:54
@@ -58,7 +74,7 @@ class _tezgahtarsayfasiScrenDState
         var response = await apiService.post(
           "verify/identity",
           data,
-          token: user!.data.accessToken,
+          token: user.data.accessToken,
         );
 
         if (response.statusCode == 200) {
@@ -123,17 +139,20 @@ class _tezgahtarsayfasiScrenDState
 
   final Formkeytezgahtar = GlobalKey<FormState>();
 
-  final List<String> itemss = [
-    'Kadın',
-    'Erkek',
-  ];
+  final Map<String, int> items = {
+    'Erkek': 1,
+    'Kadın': 2,
+  };
 
-  String? kadinerkeksecim;
-  String? selectedProvince;
-  String? ilSecim;
-  String? ilceeSecim;
+  String? selectedGender;
+  int? selectedGenderId;
+  ProvinceModel? selectedProvince;
+  int? selectedProvinceId;
+  Districts? selectedDistricts;
   DateTime selectedDate = DateTime.now();
   String formattedDate = "";
+  ProvinceModel? selectedBornCity;
+  int? selectedBornCityId;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -165,7 +184,7 @@ class _tezgahtarsayfasiScrenDState
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
 
     return Form(
       key: Formkeytezgahtar,
@@ -188,7 +207,7 @@ class _tezgahtarsayfasiScrenDState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
@@ -197,27 +216,27 @@ class _tezgahtarsayfasiScrenDState
                         hintext: "Ad",
                         obscurttext: false),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
                     soyADBilgiisiisteme(
-                      controller: SOYadikontrol,
+                      controller: soyadikontrol,
                       hintext: "Soyad",
                       obscurttext: false,
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
                     TCkimliknoistemesayfasi(
-                      controller: tCkimliknokontrol,
+                      controller: tckimliknokontrol,
                       hintext: "Kimlik No",
                       obscurttext: false,
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
                     Container(
@@ -229,13 +248,13 @@ class _tezgahtarsayfasiScrenDState
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.shade200,
-                            offset: Offset(5.0, 5.0),
+                            offset: const Offset(5.0, 5.0),
                             blurRadius: 20,
                             spreadRadius: 1.0,
                           ),
                           BoxShadow(
                             color: Colors.grey.shade200,
-                            offset: Offset(-5.0, -5.0),
+                            offset: const Offset(-5.0, -5.0),
                             blurRadius: 20,
                             spreadRadius: 1.0,
                           ),
@@ -249,7 +268,7 @@ class _tezgahtarsayfasiScrenDState
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
@@ -260,7 +279,7 @@ class _tezgahtarsayfasiScrenDState
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
@@ -270,10 +289,10 @@ class _tezgahtarsayfasiScrenDState
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey.shade400),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   TextButton(
                                     onPressed: () => _selectDate(context),
-                                    child: Text(
+                                    child: const Text(
                                       "Tarih Seç",
                                       style: TextStyle(
                                           color: Colors.red,
@@ -302,7 +321,7 @@ class _tezgahtarsayfasiScrenDState
                     ),
                     //     Dogumtarihi(controller: Dogumtarihikontrol,hintext: "Doğum Tarihi",obscurttext: false,),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
@@ -310,7 +329,10 @@ class _tezgahtarsayfasiScrenDState
                       builder: (context, ref, child) {
                         List<ProvinceModel> proviceItems =
                             ref.watch(userProvinceProvider);
-                        return DropdownButton2<String>(
+                        if (proviceItems.isEmpty) {
+                          selectedBornCity = ProvinceModel(name: "");
+                        }
+                        return DropdownButton2<ProvinceModel>(
                           isExpanded: true,
                           hint: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -333,8 +355,8 @@ class _tezgahtarsayfasiScrenDState
                           ),
                           items: proviceItems
                               .map((ProvinceModel item) =>
-                                  DropdownMenuItem<String>(
-                                    value: item.name,
+                                  DropdownMenuItem<ProvinceModel>(
+                                    value: item,
                                     child: Text(
                                       item.name ?? "",
                                       style: const TextStyle(
@@ -346,10 +368,11 @@ class _tezgahtarsayfasiScrenDState
                                     ),
                                   ))
                               .toList(),
-                          value: selectedProvince,
-                          onChanged: (String? value) {
+                          value: selectedBornCity,
+                          onChanged: (ProvinceModel? value) {
                             setState(() {
-                              selectedProvince = value!;
+                              selectedBornCity = value!;
+                              selectedBornCityId = value.id;
                             });
                           },
                           buttonStyleData: ButtonStyleData(
@@ -409,17 +432,17 @@ class _tezgahtarsayfasiScrenDState
                       },
                     )),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
                     MAiLADRESisayfam(
-                      controller: Mailadresikontroletme,
+                      controller: mailadresikontroletme,
                       hintext: "Mail Adresi",
                       obscurttext: false,
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
@@ -434,7 +457,7 @@ class _tezgahtarsayfasiScrenDState
                             hint: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   width: 4,
                                 ),
                                 Expanded(
@@ -450,7 +473,7 @@ class _tezgahtarsayfasiScrenDState
                                 ),
                               ],
                             ),
-                            items: itemss
+                            items: items.keys
                                 .map((String item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
@@ -464,10 +487,11 @@ class _tezgahtarsayfasiScrenDState
                                       ),
                                     ))
                                 .toList(),
-                            value: kadinerkeksecim,
-                            onChanged: (String? valuee) {
+                            value: selectedGender,
+                            onChanged: (String? value) {
                               setState(() {
-                                kadinerkeksecim = valuee!;
+                                selectedGender = value!;
+                                selectedGenderId = items[value];
                               });
                             },
                             buttonStyleData: ButtonStyleData(
@@ -500,13 +524,13 @@ class _tezgahtarsayfasiScrenDState
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.shade200,
-                                    offset: Offset(5.0, 5.0),
+                                    offset: const Offset(5.0, 5.0),
                                     blurRadius: 20,
                                     spreadRadius: 1.0,
                                   ),
                                   BoxShadow(
                                     color: Colors.grey.shade200,
-                                    offset: Offset(-5.0, -5.0),
+                                    offset: const Offset(-5.0, -5.0),
                                     blurRadius: 20,
                                     spreadRadius: 1.0,
                                   ),
@@ -528,7 +552,7 @@ class _tezgahtarsayfasiScrenDState
                       ],
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
@@ -536,7 +560,7 @@ class _tezgahtarsayfasiScrenDState
                       builder: (context, ref, child) {
                         List<ProvinceModel> proviceItems =
                             ref.watch(userProvinceProvider);
-                        return DropdownButton2<String>(
+                        return DropdownButton2<ProvinceModel>(
                           isExpanded: true,
                           hint: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -559,8 +583,8 @@ class _tezgahtarsayfasiScrenDState
                           ),
                           items: proviceItems
                               .map((ProvinceModel item) =>
-                                  DropdownMenuItem<String>(
-                                    value: item.name,
+                                  DropdownMenuItem<ProvinceModel>(
+                                    value: item,
                                     child: Text(
                                       item.name ?? "",
                                       style: const TextStyle(
@@ -572,10 +596,12 @@ class _tezgahtarsayfasiScrenDState
                                     ),
                                   ))
                               .toList(),
-                          value: ilSecim,
-                          onChanged: (String? value) {
+                          value: selectedProvince,
+                          onChanged: (ProvinceModel? value) {
                             setState(() {
-                              ilSecim = value!;
+                              selectedProvince = value!;
+                              selectedProvinceId = value.id;
+                              selectedDistricts = null;
                             });
                           },
                           buttonStyleData: ButtonStyleData(
@@ -635,7 +661,7 @@ class _tezgahtarsayfasiScrenDState
                       },
                     )),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
@@ -643,7 +669,14 @@ class _tezgahtarsayfasiScrenDState
                       builder: (context, ref, child) {
                         List<ProvinceModel> proviceItems =
                             ref.watch(userProvinceProvider);
-                        return DropdownButton2<String>(
+                        ProvinceModel selectedProvince =
+                            proviceItems.firstWhere(
+                          (province) => province.id == selectedProvinceId,
+                          orElse: () => ProvinceModel(),
+                        );
+                        List<Districts> selectedProvinceDistricts =
+                            selectedProvince.districts ?? [];
+                        return DropdownButton2<Districts>(
                           isExpanded: true,
                           hint: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -664,10 +697,10 @@ class _tezgahtarsayfasiScrenDState
                               ),
                             ],
                           ),
-                          items: proviceItems
-                              .map((ProvinceModel item) =>
-                                  DropdownMenuItem<String>(
-                                    value: item.name,
+                          items: selectedProvinceDistricts
+                              .map((Districts item) =>
+                                  DropdownMenuItem<Districts>(
+                                    value: item,
                                     child: Text(
                                       item.name ?? "",
                                       style: const TextStyle(
@@ -679,10 +712,10 @@ class _tezgahtarsayfasiScrenDState
                                     ),
                                   ))
                               .toList(),
-                          value: ilceeSecim,
-                          onChanged: (String? value) {
+                          value: selectedDistricts,
+                          onChanged: (Districts? value) {
                             setState(() {
-                              ilceeSecim = value!;
+                              selectedDistricts = value!;
                             });
                           },
                           buttonStyleData: ButtonStyleData(
@@ -742,7 +775,7 @@ class _tezgahtarsayfasiScrenDState
                       },
                     )),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
@@ -752,27 +785,27 @@ class _tezgahtarsayfasiScrenDState
                       obscurttext: false,
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
                     Sifrekontrolsayfam(
-                      controller: Sifreeekkontrol,
+                      controller: sifrekkontrol,
                       hintext: "Şifre",
                       obscurttext: false,
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
 
                     SifreTekrarkontroledildisayfam(
-                      controller: SifreTekrarKontroletme,
+                      controller: sifreTekrarKontroletme,
                       hintext: "Şifre(Tekrar)",
                       obscurttext: false,
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
 
@@ -827,7 +860,7 @@ class isimsayfasiadisteme extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -836,13 +869,13 @@ class isimsayfasiadisteme extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -900,13 +933,13 @@ class soyADBilgiisiisteme extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -969,13 +1002,13 @@ class TCkimliknoistemesayfasi extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1033,13 +1066,13 @@ class Dogumtarihi extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1097,13 +1130,13 @@ class Dogumyeriisayfam extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1161,13 +1194,13 @@ class MAiLADRESisayfam extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1225,13 +1258,13 @@ class Cinsiyetkontrolsayfam extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1289,13 +1322,13 @@ class ilkontroletmesayfammm extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1353,13 +1386,13 @@ class ilceekontroletmesayfammm extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1417,13 +1450,13 @@ class Bayisayfammm extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1485,13 +1518,13 @@ class Sifrekontrolsayfam extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
@@ -1553,13 +1586,13 @@ class SifreTekrarkontroledildisayfam extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),

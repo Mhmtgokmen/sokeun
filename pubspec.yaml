@@ -2,7 +2,7 @@ name: sokeun
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ">=3.1.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,6 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   intl: ^0.18.1
   flutter_localization: ^0.1.14
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  native_barcode_scanner: ^1.0.6
+  permission_handler: ^11.0.1
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +64,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -66,85 +71,83 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-      - assetss/ilkLoginresimler/hediyeiki.png
-      - assetss/foto/img.png
-      - assetss/foto/img_1.png
-      - assetss/foto/img_3.png
-      - assetss/logo.png
-      - assetss/foto/img_14.png
-      - assetss/foto/img_2.png
-      - assetss/foto/img_4.png
-      - assetss/foto/img_5.png
-      - assetss/foto/img_6.png
-      - assetss/foto/img_7.png
-      - assetss/foto/img_8.png
-      - assetss/foto/img_9.png
-      - assetss/foto/img_11.png
-      - assetss/foto/img_13.png
-      - assetss/foto/img_12.png
-      - assetss/bottomnavbarResim/img.png
-      - assetss/bottomnavbarResim/img_1.png
-      - assetss/bottomnavbarResim/img_2.png
-      - assetss/ortatus/img.png
-      - assetss/ortatus/img_1.png
-      - assetss/islemresim/img.png
-      - assetss/islemresim/img_1.png
-      - assetss/islemresim/img_2.png
-      - assetss/foto/img_15.png
-      - assetss/foto/img_16.png
-      - assetss/foto/img_17.png
-      - assetss/foto/img_18.png
-      - assetss/foto/img_19.png
-      - assetss/foto/img_20.png
-      - assetss/foto/img_22.png
-      - assetss/foto/img_23.png
-      - assetss/foto/img_25.png
-      - assetss/foto/img_27.png
-      - assetss/foto/img_28.png
-      - assetss/foto/img_29.png
-      - assetss/foto/img_30.png
-      - assetss/foto/img_31.png
-      - assetss/foto/img_32.png
-      - assetss/foto/img_33.png
-      - assetss/foto/img_34.png
-      - assetss/foto/img_35.png
-      - assetss/foto/img_36.png
-      - assetss/foto/img_37.png
-      - assetss/foto/img_38.png
-      - assetss/foto/img_39.png
-      - assetss/foto/img_40.png
-      - assetss/foto/img_41.png
-      - assetss/foto/img_42.png
-      - assetss/foto/img_43.png
-      - assetss/foto/img_44.png
-      - assetss/profilassets/img_1.png
-      - assetss/profilassets/img_4.png
-      - assetss/anasayfabildirimres/img.png
-      - assetss/anasayfabildirimres/img_1.png
-      - assetss/anasayfabildirimres/img_2.png
-      - assetss/anasayfabildirimres/img_3.png
-      - assetss/anasayfabildirimres/img_5.png
-      - assetss/anasayfabildirimres/img_6.png
-      - assetss/anasayfabildirimres/img_7.png
-      - assetss/homescreenassets/img_4.png
-      - assetss/homescreenassets/img_5.png
-      - assetss/hediyesec_assets/img.png
-      - assetss/hediyesec_assets/img_1.png
-      - assetss/hediyesec_assets/img_2.png
-      - assetss/hediyesec_assets/img_3.png
-      - assetss/homescreenassets/img_3.png
-      - assetss/homescreenassets/img_6.png
-      - assetss/homescreenassets/img_2.png
-      - assetss/earn_points_qr_assets/img.png
-      - assetss/earn_points_qr_assets/img_1.png
-      - assetss/homescreenassets/img_7.png
-      - assetss/homescreenassets/urunp.png
-      - assetss/homescreenassets/kampanyalar.png
-      - assetss/islemler_asset/img.png
-      - assetss/islemler_asset/img_1.png
+    - assetss/ilkLoginresimler/hediyeiki.png
+    - assetss/foto/img.png
+    - assetss/foto/img_1.png
+    - assetss/foto/img_3.png
+    - assetss/logo.png
+    - assetss/foto/img_14.png
+    - assetss/foto/img_2.png
+    - assetss/foto/img_4.png
+    - assetss/foto/img_5.png
+    - assetss/foto/img_6.png
+    - assetss/foto/img_7.png
+    - assetss/foto/img_8.png
+    - assetss/foto/img_9.png
+    - assetss/foto/img_11.png
+    - assetss/foto/img_13.png
+    - assetss/foto/img_12.png
+    - assetss/bottomnavbarResim/img.png
+    - assetss/bottomnavbarResim/img_1.png
+    - assetss/bottomnavbarResim/img_2.png
+    - assetss/ortatus/img.png
+    - assetss/ortatus/img_1.png
+    - assetss/islemresim/img.png
+    - assetss/islemresim/img_1.png
+    - assetss/islemresim/img_2.png
+    - assetss/foto/img_15.png
+    - assetss/foto/img_16.png
+    - assetss/foto/img_17.png
+    - assetss/foto/img_18.png
+    - assetss/foto/img_19.png
+    - assetss/foto/img_20.png
+    - assetss/foto/img_22.png
+    - assetss/foto/img_23.png
+    - assetss/foto/img_25.png
+    - assetss/foto/img_27.png
+    - assetss/foto/img_28.png
+    - assetss/foto/img_29.png
+    - assetss/foto/img_30.png
+    - assetss/foto/img_31.png
+    - assetss/foto/img_32.png
+    - assetss/foto/img_33.png
+    - assetss/foto/img_34.png
+    - assetss/foto/img_35.png
+    - assetss/foto/img_36.png
+    - assetss/foto/img_37.png
+    - assetss/foto/img_38.png
+    - assetss/foto/img_39.png
+    - assetss/foto/img_40.png
+    - assetss/foto/img_41.png
+    - assetss/foto/img_42.png
+    - assetss/foto/img_43.png
+    - assetss/foto/img_44.png
+    - assetss/profilassets/img_1.png
+    - assetss/profilassets/img_4.png
+    - assetss/anasayfabildirimres/img.png
+    - assetss/anasayfabildirimres/img_1.png
+    - assetss/anasayfabildirimres/img_2.png
+    - assetss/anasayfabildirimres/img_3.png
+    - assetss/anasayfabildirimres/img_5.png
+    - assetss/anasayfabildirimres/img_6.png
+    - assetss/anasayfabildirimres/img_7.png
+    - assetss/homescreenassets/img_4.png
+    - assetss/homescreenassets/img_5.png
+    - assetss/hediyesec_assets/img.png
+    - assetss/hediyesec_assets/img_1.png
+    - assetss/hediyesec_assets/img_2.png
+    - assetss/hediyesec_assets/img_3.png
+    - assetss/homescreenassets/img_3.png
+    - assetss/homescreenassets/img_6.png
+    - assetss/homescreenassets/img_2.png
+    - assetss/earn_points_qr_assets/img.png
+    - assetss/earn_points_qr_assets/img_1.png
+    - assetss/homescreenassets/img_7.png
+    - assetss/homescreenassets/urunp.png
+    - assetss/homescreenassets/kampanyalar.png
+    - assetss/islemler_asset/img.png
+    - assetss/islemler_asset/img_1.png
   #   - images/a_dot_ham.jpeg
-
-
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sokeun/screen/home/home_page.dart';
+import 'package:sokeun/screen/home/qr_screen.dart';
 import 'package:sokeun/widgets/earn_points_tab_bar.dart';
 import 'package:sokeun/screen/home/campaign.dart';
 import 'package:sokeun/screen/home/user_profile.dart';
@@ -16,10 +17,10 @@ class bottomnavbarscreen extends StatefulWidget {
 
 class _bottomnavbarscreenState extends State<bottomnavbarscreen> {
   var sayfalar = [
-    homePagesCreen(),
-    puankazanbildirimScreeen(),
-    cekilisPageScreeen(),
-    profileScreen()
+    const homePagesCreen(),
+    const puankazanbildirimScreeen(),
+    const cekilisPageScreeen(),
+    const profileScreen()
   ];
   int sayfatakip = 0;
 
@@ -88,29 +89,41 @@ class _bottomnavbarscreenState extends State<bottomnavbarscreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
+                        // KAMERA AÇMA
                         SizedBox(
                             width: ekrangenisligi / 1.3,
                             child: Image.asset("assetss/foto/img_30.png")),
-                        SizedBox(
+                        const SizedBox(
                           height: 19,
                         ),
-                        SizedBox(
-                          width: ekrangenisligi / 1.8,
-                          height: ekranyuksekligi / 16,
-                          child: Image.asset("assetss/foto/img_44.png"),
+
+                        // KAMERA AÇMA
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const QrKodScreen()));
+                          },
+                          child: SizedBox(
+                            width: ekrangenisligi / 1.8,
+                            height: ekranyuksekligi / 16,
+                            child: Image.asset("assetss/foto/img_44.png"),
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
+                        // KODU MANUEL GİRME
                         SizedBox(
                           width: ekrangenisligi / 1.8,
                           height: ekranyuksekligi / 16,
                           child: Image.asset("assetss/foto/img_43.png"),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         SizedBox(
