@@ -20,6 +20,8 @@ class LoginaltButonGiris extends ConsumerStatefulWidget {
 
 class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
   void uyeliktipisonrakiekran() {
+    LoginResponse? user = ref.read(loginUserProvider);
+    user!.data.nation = selectedNation;
     List<AdminUserRole> roleItems = ref.watch(adminUserRoleProvider);
 
     AdminUserRole selectedRole = roleItems
@@ -40,7 +42,7 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
     } else if (selectedRole.adminUserType.name == "Bayi") {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const BayiSayfamScreeen()));
-    } else if (selectedRole.adminUserType.name == 'Son Kullanıcı') {
+    } else if (selectedRole.adminUserType.name == 'Müşteri') {
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -50,16 +52,15 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
 
   final _formkey = GlobalKey<FormState>();
 
-  final Map<String, int> UyrukSecimi = {
+  final Map<String, int> nation = {
     'T.C': 1,
     'K.K.T.C': 2,
   };
 
-  String? selectedGender;
-  int? selectedGenderId;
+  String? selectedNation;
+  int? selectedNationId;
 
   String? selectedValueson;
-  String? UyrukSecim;
 
   @override
   Widget build(BuildContext context) {
@@ -147,10 +148,10 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                             DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,
-                                hint: Row(
+                                hint: const Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    const SizedBox(
+                                    SizedBox(
                                       width: 4,
                                     ),
                                     Expanded(
@@ -166,7 +167,7 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                                     ),
                                   ],
                                 ),
-                                items: UyrukSecimi.keys
+                                items: nation.keys
                                     .map((String item) =>
                                         DropdownMenuItem<String>(
                                           value: item,
@@ -181,13 +182,13 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                                           ),
                                         ))
                                     .toList(),
-                                value: selectedGender,
+                                value: selectedNation,
                                 onChanged: (String? value) {
                                   setState(() {
-                                    selectedGender = value!;
-                                    selectedGenderId = UyrukSecimi[value];
+                                    selectedNation = value!;
+                                    selectedNationId = nation[value];
                                   });
-                                  print("Gender id:$selectedGenderId");
+                                  print("Gender id:$selectedNationId");
                                 },
                                 buttonStyleData: ButtonStyleData(
                                   height: 50,

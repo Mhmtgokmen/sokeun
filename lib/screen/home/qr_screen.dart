@@ -55,7 +55,6 @@ class QrKodScreenState extends State<QrKodScreen> {
   Widget build(BuildContext context) {
     var ekranayari = MediaQuery.of(context);
     var ekrangenisligi = ekranayari.size.width;
-    var ekranyuksekligi = ekranayari.size.height;
     return Scaffold(
       appBar: AppBar(
         title: const Text(''),

@@ -37,7 +37,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
       apiService = ApiService();
       final phoneNumber = numarakontrol.text.trim();
       final password = sifrekontroletmegiris.text.trim();
-      
+
       Map<String, dynamic> data = {
         "phone": phoneNumber,
         "password": password,
@@ -52,7 +52,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
           LoginResponse loginResponse = LoginResponse.fromJson(responseData);
           ref.read(loginUserProvider.notifier).state = loginResponse;
           ref.read(loginPasswordProvider.notifier).state = password;
-          saveToken(loginResponse.data.accessToken);
+          saveToken(loginResponse.data.accessToken,loginResponse.data.registerState.toString(),loginResponse.data.isConfirmed.toString());
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(loginResponse.message),
@@ -92,15 +92,17 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
     }
   }
 
-  void saveToken(String token) async {
+  void saveToken(String token, String registerState, String isConfirmed) async {
     await Hive.initFlutter();
 
     try {
-      if (!Hive.isBoxOpen('tokenBox')) {
-        await Hive.openBox<String>('tokenBox');
+      if (!Hive.isBoxOpen('token')) {
+        await Hive.openBox<String>('token');
       }
-      final box = await Hive.openBox<String>('tokenBox');
+      final box = await Hive.openBox<String>('token'); 
       await box.put('token', token);
+      await box.put('registerState', registerState);
+      await box.put('isConfirmed', isConfirmed);
       await box.close();
       print("Hive token:$token");
     } catch (e) {

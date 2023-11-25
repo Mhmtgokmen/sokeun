@@ -56,7 +56,7 @@ class _soniletisimbilgisialmaState
       "firstname": user!.data.firstname,
       "lastname": user.data.lastname,
       "email": user.data.email,
-      "nation": "Türkiye",
+      "nation": user.data.nation,
       "address": address,
       "province_id": selectedProvinceId.toString(),
       "district_id": selectedDistricts!.id.toString(),
@@ -193,7 +193,7 @@ class _soniletisimbilgisialmaState
     print("tel :${user.data.phone}");
     print("şifre :${password.password}");
     print("şifret :${password.confirmPassword}");
-    // print("şifreTekrar :${user.data.phone}");
+    print("nation :${user.data.nation}");
     super.initState();
   }
 

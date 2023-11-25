@@ -10,34 +10,43 @@ import 'package:dio/dio.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox<String>('tokenBox');
+  await Hive.openBox<String>('token');
   runApp(const ProviderScope(child: MyApp()));
 }
 
 late ApiService apiService;
 
-
-
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  Future<String?> getToken() async {
+  Future<Map<String, dynamic>?> getAllDate() async {
     await Hive.initFlutter();
-    final box = await Hive.openBox<String>('tokenBox');
+    if (!Hive.isBoxOpen('token')) {
+      await Hive.openBox<String>('token');
+    }
+    final box = await Hive.openBox<String>('token');
     final token = box.get('token');
+    final register = box.get('registerState');
+    final confirmed = box.get('isConfirmed');
     await box.close();
-    return token;
+
+    return {
+      'token': token,
+      'register': register,
+      'isConfirmed': confirmed,
+    };
   }
 
   Future<String?> initialWelcome() async {
     apiService = ApiService();
-    final token = await getToken();
-    // print("main token: $token");
+    Map<String, dynamic>? allData = await getAllDate();
+    print("main token: ${allData?['token']}");
+    print("main register: ${allData?['register']}");
     try {
       Response response = await apiService.post(
         "https://development.coneexa.com/api/welcome",
         {},
-        token: token,
+        token: allData?['token'],
       );
       if (response.statusCode == 200) {
         // tokeni hive kaydet
@@ -83,9 +92,11 @@ class MyApp extends ConsumerWidget {
             return Stack(
               children: [
                 Container(
-                 color: Colors.white,
+                  color: Colors.white,
                   child: const Center(
-                    child: CircularProgressIndicator(color: Colors.red,),
+                    child: CircularProgressIndicator(
+                      color: Colors.red,
+                    ),
                   ),
                 ),
               ],
