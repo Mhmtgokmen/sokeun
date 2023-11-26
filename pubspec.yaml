@@ -42,6 +42,7 @@ dependencies:
   permission_handler: ^11.0.1
   flutter_localizations:
     sdk: flutter
+  badges: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -147,6 +148,8 @@ flutter:
     - assetss/homescreenassets/kampanyalar.png
     - assetss/islemler_asset/img.png
     - assetss/islemler_asset/img_1.png
+    - assetss/hediyesec_assets/
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
