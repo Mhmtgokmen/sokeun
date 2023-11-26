@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sokeun/providers/gift_card_provider.dart';
 import 'package:sokeun/service/api.service.dart';
 import 'package:sokeun/widgets/start_bottom_nav_bar.dart';
 import 'screen/login/login_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    hide ChangeNotifierProvider;
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,49 +71,51 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      title: 'Sokeun',
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('tr', 'tr_TR'),
-      ],
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
-      ),
-      home: FutureBuilder(
-        future: initialWelcome(),
-        builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-          print("Data: ${snapshot.data}");
-          print("Data: ${snapshot.connectionState}");
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Stack(
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.red,
+    return ChangeNotifierProvider(
+      create: (context) => GiftCardProvider(),
+      child: MaterialApp(
+        title: 'Sokeun',
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('tr', 'tr_TR'),
+        ],
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          useMaterial3: true,
+        ),
+        home: FutureBuilder(
+          future: initialWelcome(),
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+            print("Data: ${snapshot.connectionState}");
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Stack(
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.red,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Text("hata.${snapshot.error}");
-          } else {
-            if (snapshot.data == "success") {
-              return const bottomnavbarscreen();
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text("hata.${snapshot.error}");
             } else {
-              return const telnoilksayfa();
+              if (snapshot.data == "success") {
+                return const bottomnavbarscreen();
+              } else {
+                return const telnoilksayfa();
+              }
             }
-          }
-        },
+          },
+        ),
       ),
     );
   }

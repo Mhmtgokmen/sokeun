@@ -43,6 +43,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   badges: ^3.1.2
+  path_provider: ^2.1.1
+  sqflite: ^2.3.0
+  shared_preferences: ^2.2.2
+  provider: ^6.1.1
+  uuid: ^4.2.1
 
 dev_dependencies:
   flutter_test:
