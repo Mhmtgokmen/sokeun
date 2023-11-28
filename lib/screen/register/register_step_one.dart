@@ -46,7 +46,7 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => const sonkullaniciSayfamEren()));
+              builder: (context) => const SonKullaniciSayfa()));
     }
   }
 

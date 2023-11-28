@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sokeun/screen/home/home_page.dart';
+import 'package:sokeun/screen/home/manuel_qr_code_screen.dart';
 import 'package:sokeun/screen/home/qr_screen.dart';
 import 'package:sokeun/widgets/earn_points_tab_bar.dart';
 import 'package:sokeun/screen/home/campaign.dart';
@@ -77,7 +78,8 @@ class _bottomnavbarscreenState extends State<bottomnavbarscreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const ORtatusyuvarlakScreeenKodokutma()));
+                  builder: (context) =>
+                      const ORtatusyuvarlakScreeenKodokutma()));
 
           showModalBottomSheet(
               context: context,
@@ -102,7 +104,7 @@ class _bottomnavbarscreenState extends State<bottomnavbarscreen> {
 
                         // KAMERA AÇMA
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -118,10 +120,18 @@ class _bottomnavbarscreenState extends State<bottomnavbarscreen> {
                           height: 10,
                         ),
                         // KODU MANUEL GİRME
-                        SizedBox(
-                          width: ekrangenisligi / 1.8,
-                          height: ekranyuksekligi / 16,
-                          child: Image.asset("assetss/foto/img_43.png"),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ManuelQrCode()));
+                          },
+                          child: SizedBox(
+                            width: ekrangenisligi / 1.8,
+                            height: ekranyuksekligi / 16,
+                            child: Image.asset("assetss/foto/img_43.png"),
+                          ),
                         ),
                         const SizedBox(
                           height: 10,

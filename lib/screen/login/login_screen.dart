@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/login_model.dart';
 import 'package:sokeun/model/provinces_model.dart';
@@ -12,6 +10,7 @@ import 'package:sokeun/providers/provinces_provider.dart';
 import 'package:sokeun/screen/register/register_page.dart';
 import 'package:sokeun/screen/register/register_step_one.dart';
 import 'package:sokeun/service/api.service.dart';
+import 'package:sokeun/utility/auth_utility.dart';
 import 'package:sokeun/widgets/login_button.dart';
 import '../../model/admin_user_level.dart';
 import 'package:dio/dio.dart';
@@ -52,7 +51,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
           LoginResponse loginResponse = LoginResponse.fromJson(responseData);
           ref.read(loginUserProvider.notifier).state = loginResponse;
           ref.read(loginPasswordProvider.notifier).state = password;
-          saveToken(loginResponse.data.accessToken,loginResponse.data.registerState.toString(),loginResponse.data.isConfirmed.toString());
+          AuthUtility.saveToken(loginResponse.data.accessToken,loginResponse.data.registerState.toString(),loginResponse.data.isConfirmed.toString());
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(loginResponse.message),
@@ -92,24 +91,6 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
     }
   }
 
-  void saveToken(String token, String registerState, String isConfirmed) async {
-    await Hive.initFlutter();
-
-    try {
-      if (!Hive.isBoxOpen('token')) {
-        await Hive.openBox<String>('token');
-      }
-      final box = await Hive.openBox<String>('token'); 
-      await box.put('token', token);
-      await box.put('registerState', registerState);
-      await box.put('isConfirmed', isConfirmed);
-      await box.close();
-      print("Hive token:$token");
-    } catch (e) {
-      print("Hata oluştu: $e");
-    }
-  }
-
   void PasswordForm() {
     if (_formkey.currentState!.validate()) {
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>bottomnavbarscreen()));
@@ -120,7 +101,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
     apiService = ApiService();
 
     Map<String, dynamic> data = {
-      "admin_user_id": "3",
+      "admin_user_id": "6",
     };
 
     try {

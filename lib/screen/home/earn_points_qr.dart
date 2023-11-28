@@ -21,19 +21,15 @@ class _ORtatusyuvarlakScreeenKodokutmaState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[800],
-
         actions: [
           SizedBox(
-              width: ekrangenisligi/1.5,
+              width: ekrangenisligi / 1.5,
               child: GestureDetector(
-                  onTap: (){
-
-                  },
+                  onTap: () {},
                   child: Image.asset("assetss/earn_points_qr_assets/img.png")))
         ],
-
-        leading:  IconButton(
-          icon: Icon(
+        leading: IconButton(
+          icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
             color: Colors.white,
           ),
@@ -49,14 +45,13 @@ class _ORtatusyuvarlakScreeenKodokutmaState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 SizedBox(
                   width: ekrangenisligi / 1,
-                 height: ekranyukseklikayari/1.2,
+                  height: ekranyukseklikayari / 1.2,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.red[800],
-                      image: DecorationImage(
+                      image: const DecorationImage(
                           image: AssetImage(
                         "assetss/foto/img_25.png",
                       )),
@@ -76,8 +71,6 @@ class _ORtatusyuvarlakScreeenKodokutmaState
                   ),
                 ),
               ],
-
-
             ),
           ),
         ),

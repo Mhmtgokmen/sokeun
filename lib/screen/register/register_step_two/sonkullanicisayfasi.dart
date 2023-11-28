@@ -4,19 +4,14 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../../widgets/login_button.dart';
 import '../register_contact_info.dart';
 
-
-
-
-class sonkullaniciSayfamEren extends StatefulWidget {
-  const sonkullaniciSayfamEren({super.key});
+class SonKullaniciSayfa extends StatefulWidget {
+  const SonKullaniciSayfa({super.key});
 
   @override
-  State<sonkullaniciSayfamEren> createState() => _sonkullaniciSayfamErenState();
+  State<SonKullaniciSayfa> createState() => _SonKullaniciSayfaState();
 }
 
-class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
-
-
+class _SonKullaniciSayfaState extends State<SonKullaniciSayfa> {
   final isimmm = TextEditingController();
   final soyisimmm = TextEditingController();
   final kimlikkartii = TextEditingController();
@@ -30,29 +25,23 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
   final sifreee = TextEditingController();
   final tekrarsifreee = TextEditingController();
 
-
-
-
   final Formsonkullanici = GlobalKey<FormState>();
 
-
-
-  void iletisimbilgilerinegecismetodu(){
-    if(Formsonkullanici.currentState!.validate()){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>soniletisimbilgisialma()));
-
+  void iletisimbilgilerinegecismetodu() {
+    if (Formsonkullanici.currentState!.validate()) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const soniletisimbilgisialma()));
     }
   }
-
 
   final List<String> itemss = [
     'Kadın',
     'Erkek',
-
   ];
 
   String? kadinerkeksecim;
-
 
   DateTime selectedDate = DateTime.now();
 
@@ -73,16 +62,20 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    //
 
     return Form(
       key: Formsonkullanici,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: Text("Son Kullanıcı",style: TextStyle(color: Colors.red[800],fontWeight: FontWeight.bold),),
+        appBar: AppBar(
+          title: Text(
+            "Son Kullanıcı",
+            style:
+                TextStyle(color: Colors.red[800], fontWeight: FontWeight.bold),
+          ),
           backgroundColor: Colors.white,
           centerTitle: true,
-
         ),
         body: Center(
           child: Padding(
@@ -92,36 +85,47 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
 
-                    SizedBox(height: 10,),
+                    Sonkullanici(
+                        controller: isimmm,
+                        hintext: "İsim",
+                        obscurttext: false),
 
-                    Sonkullanici(controller: isimmm, hintext: "İsim", obscurttext: false),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    SizedBox(height: 15,),
+                    Sonkullanici(
+                        controller: soyisimmm,
+                        hintext: "Soyisim",
+                        obscurttext: false),
 
-                    Sonkullanici(controller: soyisimmm, hintext: "Soyisim", obscurttext: false),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    SizedBox(height: 15,),
+                    TCkimliknoistemesayfasi(
+                        controller: kimlikkartii,
+                        hintext: "Kimlik No",
+                        obscurttext: false),
 
-                    TCkimliknoistemesayfasi(controller: kimlikkartii, hintext: "Kimlik No", obscurttext: false),
-
-                    SizedBox(height: 15,),
-
-
+                    const SizedBox(
+                      height: 15,
+                    ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
-
                         DropdownButtonHideUnderline(
                           child: DropdownButton2<String>(
                             isExpanded: true,
-                            hint:  Row(
+                            hint: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-
-                                SizedBox(
+                                const SizedBox(
                                   width: 4,
                                 ),
                                 Expanded(
@@ -139,17 +143,17 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
                             ),
                             items: itemss
                                 .map((String item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ))
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
                                 .toList(),
                             value: kadinerkeksecim,
                             onChanged: (String? valuee) {
@@ -159,7 +163,7 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
                             },
                             buttonStyleData: ButtonStyleData(
                               height: 50,
-                              width: ekrangenisligi/1.1,
+                              width: ekrangenisligi / 1.1,
                               padding: const EdgeInsets.only(left: 6, right: 6),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
@@ -183,30 +187,27 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
                               width: 200,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-
                                 color: Colors.white,
-
                                 boxShadow: [
                                   BoxShadow(
-                                    color:  Colors.grey.shade200,
-                                    offset: Offset(5.0, 5.0),
+                                    color: Colors.grey.shade200,
+                                    offset: const Offset(5.0, 5.0),
                                     blurRadius: 20,
                                     spreadRadius: 1.0,
                                   ),
                                   BoxShadow(
-                                    color:  Colors.grey.shade200,
-                                    offset: Offset(-5.0, -5.0),
+                                    color: Colors.grey.shade200,
+                                    offset: const Offset(-5.0, -5.0),
                                     blurRadius: 20,
                                     spreadRadius: 1.0,
                                   ),
                                 ],
-
                               ),
-
                               scrollbarTheme: ScrollbarThemeData(
                                 radius: const Radius.circular(20),
                                 thickness: MaterialStateProperty.all<double>(6),
-                                thumbVisibility: MaterialStateProperty.all<bool>(true),
+                                thumbVisibility:
+                                    MaterialStateProperty.all<bool>(true),
                               ),
                             ),
                             menuItemStyleData: const MenuItemStyleData(
@@ -215,56 +216,73 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
                     Container(
-                      width: ekrangenisligi/1.1,
+                      width: ekrangenisligi / 1.1,
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
                         color: Colors.white,
-
                         boxShadow: [
                           BoxShadow(
-                            color:  Colors.grey.shade200,
-                            offset: Offset(5.0, 5.0),
+                            color: Colors.grey.shade200,
+                            offset: const Offset(5.0, 5.0),
                             blurRadius: 20,
                             spreadRadius: 1.0,
                           ),
                           BoxShadow(
-                            color:  Colors.grey.shade200,
-                            offset: Offset(-5.0, -5.0),
+                            color: Colors.grey.shade200,
+                            offset: const Offset(-5.0, -5.0),
                             blurRadius: 20,
                             spreadRadius: 1.0,
                           ),
                         ],
-
                       ),
                       child: Center(
                         child: SafeArea(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  SizedBox(width: 10,),
-                                  Text("Doğum Tarihi:",style:TextStyle(color: Colors.grey.shade400,fontSize: 16,fontWeight: FontWeight.bold,),),
-                                  SizedBox(width: 8,),
-                                  Text("${ selectedDate.toLocal()}".split(' ')[0],
-                                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,color: Colors.grey.shade400),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
-                                  Spacer(),
-                                  TextButton(onPressed: ()=>_selectDate(context),
-                                    child: Text("Tarih Seç",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),),
+                                  Text(
+                                    "Doğum Tarihi:",
+                                    style: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-
-
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    "${selectedDate.toLocal()}".split(' ')[0],
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade400),
+                                  ),
+                                  const Spacer(),
+                                  TextButton(
+                                    onPressed: () => _selectDate(context),
+                                    child: const Text(
+                                      "Tarih Seç",
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                                   // SizedBox(
                                   //  width: ekrangenisligi/3,
                                   //  child: ElevatedButton(
@@ -279,70 +297,95 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
                                   //   ),
                                 ],
                               ),
-
-
                             ],
                           ),
                         ),
                       ),
                     ),
-                  //  Tarihhh(controller: dogumtarihi, hintext: "Doğum Tarihi", obscurttext: false),
+                    //  Tarihhh(controller: dogumtarihi, hintext: "Doğum Tarihi", obscurttext: false),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    Sonkullanici(controller: dogumyeriii, hintext: "Doğum Yeri", obscurttext: false),
+                    Sonkullanici(
+                        controller: dogumyeriii,
+                        hintext: "Doğum Yeri",
+                        obscurttext: false),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    Sonkullanici(controller: mailadresii, hintext: "Mail Adresi", obscurttext: false),
+                    Sonkullanici(
+                        controller: mailadresii,
+                        hintext: "Mail Adresi",
+                        obscurttext: false),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                   // Sonkullanici(controller: cinsiyet, hintext: "Cinsiyet", obscurttext: false),
+                    // Sonkullanici(controller: cinsiyet, hintext: "Cinsiyet", obscurttext: false),
 
+                    Sonkullanici(
+                        controller: tuttugutakimmm,
+                        hintext: "Tuttuğu Takım",
+                        obscurttext: false),
 
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    Sonkullanici(controller: tuttugutakimmm, hintext: "Tuttuğu Takım", obscurttext: false),
+                    Sonkullanici(
+                        controller: pantolonbeden,
+                        hintext: "Pantolon Beden",
+                        obscurttext: false),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    Sonkullanici(controller: pantolonbeden, hintext: "Pantolon Beden", obscurttext: false),
+                    Sonkullanici(
+                        controller: gomlekbeden,
+                        hintext: "Gömlek Beden",
+                        obscurttext: false),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    Sonkullanici(controller: gomlekbeden, hintext: "Gömlek Beden", obscurttext: false),
+                    Sifreeeeekontrol(
+                        controller: sifreee,
+                        hintext: "Şifre",
+                        obscurttext: false),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    Sifreeeeekontrol(controller: sifreee, hintext: "Şifre", obscurttext: false),
+                    Sifreeeeekontrol(
+                        controller: tekrarsifreee,
+                        hintext: "Şifre(Tekrar)",
+                        obscurttext: false),
 
-                    SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                    Sifreeeeekontrol(controller: tekrarsifreee, hintext: "Şifre(Tekrar)", obscurttext: false),
-
-                    SizedBox(height: 15,),
-
-
-
-
-
-
-                    SizedBox(height: 26,),
+                    const SizedBox(
+                      height: 26,
+                    ),
 
                     SizedBox(
-                      width: ekrangenisligi/1.3,
-                      child: LoginButton(onTap: (){
-                        iletisimbilgilerinegecismetodu();
-
-                      },
+                      width: ekrangenisligi / 1.3,
+                      child: LoginButton(
+                        onTap: () {
+                          iletisimbilgilerinegecismetodu();
+                        },
                         text: "Devam",
                       ),
                     ),
-
-
-
-
-
                   ],
                 ),
               ),
@@ -351,60 +394,55 @@ class _sonkullaniciSayfamErenState extends State<sonkullaniciSayfamEren> {
         ),
       ),
     );
-
   }
 }
-
-
-
-
 
 class Sonkullanici extends StatelessWidget {
   final TextEditingController controller;
   final String hintext;
   final bool obscurttext;
 
-  Sonkullanici({super.key, required this.controller, required this.hintext, required this.obscurttext});
+  Sonkullanici(
+      {super.key,
+      required this.controller,
+      required this.hintext,
+      required this.obscurttext});
 // Validator
 
-  String? advalidate(String? value){
-    if(value==null || value.isEmpty ){
+  String? advalidate(String? value) {
+    if (value == null || value.isEmpty) {
       return "Zorunlu alan!!!";
-
     }
 
     return null;
-
   }
 
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    //
     return SizedBox(
-      width: ekrangenisligi/1.1,
+      width: ekrangenisligi / 1.1,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-
           boxShadow: [
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
           ],
         ),
         child: TextFormField(
-
           keyboardType: TextInputType.text,
           controller: controller,
           obscureText: obscurttext,
@@ -413,66 +451,62 @@ class Sonkullanici extends StatelessWidget {
               border: InputBorder.none,
               filled: true,
               fillColor: Colors.white,
-
               hintText: hintext,
-              hintStyle: TextStyle(color: Colors.grey.shade400)
-          ),
+              hintStyle: TextStyle(color: Colors.grey.shade400)),
         ),
       ),
     );
   }
 }
 
-
-// TARİH 
-
+// TARİH
 
 class Tarihhh extends StatelessWidget {
   final TextEditingController controller;
   final String hintext;
   final bool obscurttext;
 
-  Tarihhh({super.key, required this.controller, required this.hintext, required this.obscurttext});
+  Tarihhh(
+      {super.key,
+      required this.controller,
+      required this.hintext,
+      required this.obscurttext});
 // Validator
 
-  String? advalidate(String? value){
-    if(value==null || value.isEmpty ){
+  String? advalidate(String? value) {
+    if (value == null || value.isEmpty) {
       return "Zorunlu alan!!!";
-
     }
 
     return null;
-
   }
 
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+
     return SizedBox(
-      width: ekrangenisligi/1.1,
+      width: ekrangenisligi / 1.1,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-
           boxShadow: [
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
           ],
         ),
         child: TextFormField(
-
           keyboardType: TextInputType.number,
           controller: controller,
           obscureText: obscurttext,
@@ -481,10 +515,8 @@ class Tarihhh extends StatelessWidget {
               border: InputBorder.none,
               filled: true,
               fillColor: Colors.white,
-
               hintText: hintext,
-              hintStyle: TextStyle(color: Colors.grey.shade400)
-          ),
+              hintStyle: TextStyle(color: Colors.grey.shade400)),
         ),
       ),
     );
@@ -493,61 +525,56 @@ class Tarihhh extends StatelessWidget {
 
 // Kimlik No
 
-
 class TCkimliknoistemesayfasi extends StatelessWidget {
   final TextEditingController controller;
   final String hintext;
   final bool obscurttext;
 
-  TCkimliknoistemesayfasi({super.key, required this.controller, required this.hintext, required this.obscurttext});
+  TCkimliknoistemesayfasi(
+      {super.key,
+      required this.controller,
+      required this.hintext,
+      required this.obscurttext});
 // Validator
-  String? tcvalidate(String? value){
-    if(value==null || value.isEmpty ){
+  String? tcvalidate(String? value) {
+    if (value == null || value.isEmpty) {
       return "Kimlik numaranızı giriniz!!!";
-
     }
-    if(value.length < 11){
-      return  "11 haneli olacak şekilde giriniz";
-
+    if (value.length < 11) {
+      return "11 haneli olacak şekilde giriniz";
     }
-    if(value.length > 11){
-      return  "11 haneli olacak şekilde giriniz";
-
+    if (value.length > 11) {
+      return "11 haneli olacak şekilde giriniz";
     }
-    if(value.length==11){
-
-    }
+    if (value.length == 11) {}
     return null;
-
   }
+
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
-      width: ekrangenisligi/1.1,
+      width: ekrangenisligi / 1.1,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-
           boxShadow: [
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
           ],
         ),
         child: TextFormField(
-
           keyboardType: TextInputType.number,
           controller: controller,
           obscureText: obscurttext,
@@ -556,18 +583,13 @@ class TCkimliknoistemesayfasi extends StatelessWidget {
               border: InputBorder.none,
               filled: true,
               fillColor: Colors.white,
-
               hintText: hintext,
-              hintStyle: TextStyle(color: Colors.grey.shade400)
-          ),
+              hintStyle: TextStyle(color: Colors.grey.shade400)),
         ),
       ),
     );
   }
 }
-
-
-
 
 // ŞİFRE KONTROL
 class Sifreeeeekontrol extends StatelessWidget {
@@ -575,58 +597,53 @@ class Sifreeeeekontrol extends StatelessWidget {
   final String hintext;
   final bool obscurttext;
 
-  Sifreeeeekontrol({super.key, required this.controller, required this.hintext, required this.obscurttext});
+  Sifreeeeekontrol(
+      {super.key,
+      required this.controller,
+      required this.hintext,
+      required this.obscurttext});
 // Validator
 
-  String? validatesifeapp(String? value){
-    if(value==null || value.isEmpty ){
+  String? validatesifeapp(String? value) {
+    if (value == null || value.isEmpty) {
       return "Zorunlu alan!!";
-
     }
-    if(value.length < 4){
-      return  "Şifrenizi 4 haneli olacak şekilde giriniz";
-
+    if (value.length < 4) {
+      return "Şifrenizi 4 haneli olacak şekilde giriniz";
     }
-    if(value.length > 4){
-      return  "Şifrenizi 4 haneli olacak şekilde giriniz";
-
+    if (value.length > 4) {
+      return "Şifrenizi 4 haneli olacak şekilde giriniz";
     }
-    if(value.length==4){
-
-    }
+    if (value.length == 4) {}
     return null;
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+
     return SizedBox(
-      width: ekrangenisligi/1.1,
+      width: ekrangenisligi / 1.1,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-
           boxShadow: [
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(5.0, 5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(5.0, 5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
             BoxShadow(
-              color:  Colors.grey.shade200,
-              offset: Offset(-5.0, -5.0),
+              color: Colors.grey.shade200,
+              offset: const Offset(-5.0, -5.0),
               blurRadius: 20,
               spreadRadius: 1.0,
             ),
           ],
         ),
         child: TextFormField(
-
           keyboardType: TextInputType.text,
           controller: controller,
           obscureText: obscurttext,
@@ -635,10 +652,8 @@ class Sifreeeeekontrol extends StatelessWidget {
               border: InputBorder.none,
               filled: true,
               fillColor: Colors.white,
-
               hintText: hintext,
-              hintStyle: TextStyle(color: Colors.grey.shade400)
-          ),
+              hintStyle: TextStyle(color: Colors.grey.shade400)),
         ),
       ),
     );
