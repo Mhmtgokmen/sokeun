@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:sokeun/model/indentity_model.dart';
+import 'package:sokeun/model/login_model.dart';
+import 'package:sokeun/model/provinces_model.dart';
+import 'package:sokeun/providers/login_user_provider.dart';
+import 'package:sokeun/providers/provinces_provider.dart';
+import 'package:sokeun/screen/register/register_contact_info.dart';
+import 'package:sokeun/service/api.service.dart';
+import 'package:dio/dio.dart';
 
 import '../../../widgets/login_button.dart';
-import '../register_contact_info.dart';
 
-class SonKullaniciSayfa extends StatefulWidget {
+class SonKullaniciSayfa extends ConsumerStatefulWidget {
   const SonKullaniciSayfa({super.key});
 
   @override
-  State<SonKullaniciSayfa> createState() => _SonKullaniciSayfaState();
+  ConsumerState<SonKullaniciSayfa> createState() => _SonKullaniciSayfaState();
 }
 
-class _SonKullaniciSayfaState extends State<SonKullaniciSayfa> {
+class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
   final isimmm = TextEditingController();
   final soyisimmm = TextEditingController();
   final kimlikkartii = TextEditingController();
@@ -24,26 +32,95 @@ class _SonKullaniciSayfaState extends State<SonKullaniciSayfa> {
   final gomlekbeden = TextEditingController();
   final sifreee = TextEditingController();
   final tekrarsifreee = TextEditingController();
+  late ApiService apiService;
 
   final Formsonkullanici = GlobalKey<FormState>();
 
-  void iletisimbilgilerinegecismetodu() {
+  Future<void> iletisimbilgilerinegecismetodu() async {
+    apiService = ApiService();
+    String firstname = isimmm.text.trim();
+    String lastname = soyisimmm.text.trim();
+    String identity = kimlikkartii.text.trim();
+    String mail = mailadresii.text.trim();
+    String team = tuttugutakimmm.text.trim();
+    String pantsSize = pantolonbeden.text.trim();
+    String shirtSize = gomlekbeden.text.trim();
+    String password = sifreee.text.trim();
+    String passwordConfrim = tekrarsifreee.text.trim();
+
+    LoginResponse? user = ref.read(loginUserProvider);
+    final userPassword = ref.read(userPasswordProvider);
+    user!.data.firstname = firstname;
+    user.data.lastname = lastname;
+    user.data.citizenNumber = identity;
+    user.data.email = mail;
+    user.data.team = team;
+    user.data.pantsSize = pantsSize;
+    user.data.shirtSize = shirtSize;
+    user.data.bornCityId = selectedProvinceId;
+    user.data.gender = selectedGenderId.toString();
+    user.data.birthday = formattedDate;
+    userPassword.password = password;
+    userPassword.confirmPassword = passwordConfrim;
+
+    Map<String, dynamic> data = {
+      "identity": identity,
+      "firstname": firstname,
+      "lastname": lastname,
+      "birthday": formattedDate
+    };
     if (Formsonkullanici.currentState!.validate()) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const soniletisimbilgisialma()));
+      try {
+        Response response = await apiService.post(
+          "verify/identity",
+          data,
+          token: user.data.accessToken,
+        );
+        IdentityModel identityResponse;
+        if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.data;
+          identityResponse = IdentityModel.fromJson(responseData);
+          if (Formsonkullanici.currentState!.validate()) {
+            _showSnackBar(identityResponse.message);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const soniletisimbilgisialma()));
+          }
+        } else if (response.statusCode == 401) {
+          identityResponse = IdentityModel.fromJson(response.data);
+          _showSnackBar(identityResponse.message);
+        } else {
+          _showSnackBar("Beklenmeyen bir hata oluştu");
+        }
+      } catch (e) {
+        _showSnackBar("Bir hata oluştu. $e");
+      }
     }
   }
 
-  final List<String> itemss = [
-    'Kadın',
-    'Erkek',
-  ];
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
-  String? kadinerkeksecim;
+  final Map<String, int> items = {
+    'Erkek': 1,
+    'Kadın': 2,
+  };
+
+  String? selectedGender;
+  int? selectedGenderId;
+
+  ProvinceModel? selectedProvince;
+  int? selectedProvinceId;
 
   DateTime selectedDate = DateTime.now();
+  String formattedDate = "";
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -51,11 +128,15 @@ class _SonKullaniciSayfaState extends State<SonKullaniciSayfa> {
       initialDate: selectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
+      locale: const Locale('tr', 'TR'),
     );
-    if (picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
-        selectedDate = picked!;
+        selectedDate = picked;
       });
+    }
+    formattedDate =
+        "${selectedDate.year}-${selectedDate.month}-${selectedDate.day} ${selectedDate.hour}:${selectedDate.minute}:${selectedDate.second}";
   }
 
   @override
@@ -141,7 +222,7 @@ class _SonKullaniciSayfaState extends State<SonKullaniciSayfa> {
                                 ),
                               ],
                             ),
-                            items: itemss
+                            items: items.keys
                                 .map((String item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
@@ -155,10 +236,11 @@ class _SonKullaniciSayfaState extends State<SonKullaniciSayfa> {
                                       ),
                                     ))
                                 .toList(),
-                            value: kadinerkeksecim,
-                            onChanged: (String? valuee) {
+                            value: selectedGender,
+                            onChanged: (String? value) {
                               setState(() {
-                                kadinerkeksecim = valuee!;
+                                selectedGender = value!;
+                                selectedGenderId = items[value];
                               });
                             },
                             buttonStyleData: ButtonStyleData(
@@ -308,10 +390,114 @@ class _SonKullaniciSayfaState extends State<SonKullaniciSayfa> {
                       height: 15,
                     ),
 
-                    Sonkullanici(
-                        controller: dogumyeriii,
-                        hintext: "Doğum Yeri",
-                        obscurttext: false),
+                    DropdownButtonHideUnderline(child: Consumer(
+                      builder: (context, ref, child) {
+                        List<ProvinceModel> proviceItems =
+                            ref.watch(userProvinceProvider);
+                        if (proviceItems.isEmpty) {
+                          // varsayılan bir değer, mesela bir metin veya boş bir ProvinceModel
+                          selectedProvince = ProvinceModel(name: "");
+                        }
+                        return DropdownButton2<ProvinceModel>(
+                          isExpanded: true,
+                          hint: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Dogum Yeri',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          items: proviceItems
+                              .map((ProvinceModel item) =>
+                                  DropdownMenuItem<ProvinceModel>(
+                                    value: item,
+                                    child: Text(
+                                      item.name ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
+                              .toList(),
+                          value: selectedProvince,
+                          onChanged: (ProvinceModel? value) {
+                            setState(() {
+                              selectedProvince = value!;
+                              selectedProvinceId = value.id;
+                            });
+                            print("province id ${value!.id}");
+                          },
+                          buttonStyleData: ButtonStyleData(
+                            height: 50,
+                            width: ekrangenisligi / 1.1,
+                            padding: const EdgeInsets.only(left: 6, right: 6),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Colors.white,
+                              ),
+                              color: Colors.white,
+                            ),
+                            elevation: 2,
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                            ),
+                            iconSize: 14,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.grey,
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(5.0, 5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  offset: const Offset(-5.0, -5.0),
+                                  blurRadius: 20,
+                                  spreadRadius: 1.0,
+                                ),
+                              ],
+                            ),
+                            scrollbarTheme: ScrollbarThemeData(
+                              radius: const Radius.circular(20),
+                              thickness: MaterialStateProperty.all<double>(6),
+                              thumbVisibility:
+                                  MaterialStateProperty.all<bool>(true),
+                            ),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                            padding: EdgeInsets.only(left: 14, right: 14),
+                          ),
+                        );
+                      },
+                    )),
 
                     const SizedBox(
                       height: 15,
@@ -608,13 +794,13 @@ class Sifreeeeekontrol extends StatelessWidget {
     if (value == null || value.isEmpty) {
       return "Zorunlu alan!!";
     }
-    if (value.length < 4) {
-      return "Şifrenizi 4 haneli olacak şekilde giriniz";
+    if (value.length < 6) {
+      return "Şifrenizi 6 haneli olacak şekilde giriniz";
     }
-    if (value.length > 4) {
-      return "Şifrenizi 4 haneli olacak şekilde giriniz";
+    if (value.length > 6) {
+      return "Şifrenizi 6 haneli olacak şekilde giriniz";
     }
-    if (value.length == 4) {}
+    if (value.length == 6) {}
     return null;
   }
 

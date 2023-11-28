@@ -84,6 +84,8 @@ class UserData {
   int? districtId;
   String? postalCode;
   String? deliveryAddress;
+  String? deliveryProvinceId;
+  String? deliveryDistrictId;
   bool? isAddressEqualToDelivery;
   String? smsCode;
   String? emailVerifiedAt;

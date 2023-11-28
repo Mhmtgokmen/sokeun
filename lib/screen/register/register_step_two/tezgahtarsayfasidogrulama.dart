@@ -924,7 +924,7 @@ class soyADBilgiisiisteme extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -993,7 +993,7 @@ class TCkimliknoistemesayfasi extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1057,7 +1057,7 @@ class Dogumtarihi extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1121,7 +1121,7 @@ class Dogumyeriisayfam extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1185,7 +1185,7 @@ class MAiLADRESisayfam extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1249,7 +1249,7 @@ class Cinsiyetkontrolsayfam extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1313,7 +1313,7 @@ class ilkontroletmesayfammm extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1377,7 +1377,7 @@ class ilceekontroletmesayfammm extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1441,7 +1441,7 @@ class Bayisayfammm extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1509,7 +1509,7 @@ class Sifrekontrolsayfam extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(
@@ -1577,7 +1577,7 @@ class SifreTekrarkontroledildisayfam extends StatelessWidget {
   Widget build(BuildContext context) {
     var ekranAyari = MediaQuery.of(context);
     var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
+    // var ekranyukseklikayari = ekranAyari.size.height;
     return SizedBox(
       width: ekrangenisligi / 1.1,
       child: Container(

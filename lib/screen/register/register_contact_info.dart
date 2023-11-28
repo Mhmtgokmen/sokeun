@@ -64,21 +64,21 @@ class _soniletisimbilgisialmaState
       "user_type": roleId.toString(),
       "identity": user.data.citizenNumber,
       "gender": user.data.gender,
-      "team": null,
-      "pants_size": "",
-      "shirt_size": "",
-      "born_city_id": user.data.bornCityId.toString(),
+      "team": user.data.team,
+      "pants_size": user.data.pantsSize,
+      "shirt_size": user.data.shirtSize,
+      "born_city_id": user.data.bornCityId,
       "is_address_equal_to_delivery": isTextFieldVisible ? "1" : "0", // 1 or 0
       "delivery_address": isTextFieldVisible ? address : deliveryAddress,
-      "company_name": "",
-      "tax": "",
+      "company_name": user.data.companyName,
+      "tax": user.data.tax,
       "delivery_province_id":
-          isTextFieldVisible ? selectedProvinceId.toString() : selectedDeliveryProvinceId.toString(),
+          isTextFieldVisible ? selectedProvinceId : selectedDeliveryProvinceId,
       "delivery_district_id": isTextFieldVisible
-          ? selectedDistricts!.id.toString()
-          : selectedDeliveryDistricts!.id.toString(),
-      "tax_number": "",
-      "document_name": "",
+          ? selectedDistricts!.id
+          : selectedDeliveryDistricts!.id,
+      "tax_number": user.data.taxNumber,
+      "document_name": user.data.documentName,
       "document_number": user.data.documentNumber,
       "password": password.password,
       "password_confirm": password.confirmPassword

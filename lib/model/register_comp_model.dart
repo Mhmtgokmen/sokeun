@@ -44,65 +44,65 @@ class RegisterComplateModel {
 }
 
 class Data {
-    int? id;
-    int? adminUserId;
+    int id;
+    int adminUserId;
     int? adminUserRolesId;
-    dynamic adminUserLevelsId;
+    int? adminUserLevelsId;
     String? username;
     String? firstname;
     String? lastname;
-    String? phone;
+    String phone;
     String? email;
-    dynamic certificateNumber;
+    String? certificateNumber;
     String? citizenNumber;
     String? gender;
-    dynamic birthday;
-    int? points;
+    String? birthday;
+    int points;
     String? team;
     String? pantsSize;
     String? shirtSize;
     String? contactNumber;
-    String? bornCityId;
-    dynamic documentName;
-    dynamic documentNumber;
-    dynamic companyName;
-    dynamic tax;
-    dynamic taxNumber;
+    int? bornCityId;
+    String? documentName;
+    String? documentNumber;
+    String? companyName;
+    String? tax;
+    String? taxNumber;
     String? nation;
     String? address;
-    dynamic shippingAddress;
-    String? provinceId;
-    String? districtId;
-    dynamic postalCode;
+    String? shippingAddress;
+    int? provinceId;
+    int? districtId;
+    String? postalCode;
     String? deliveryAddress;
     String? deliveryProvinceId;
     String? deliveryDistrictId;
-    int? isAddressEqualToDelivery;
-    dynamic smsCode;
-    dynamic emailVerifiedAt;
+    bool? isAddressEqualToDelivery;
+    String? smsCode;
+    String? emailVerifiedAt;
     int? isConfirmed;
     int? registerState;
     int? status;
     int? isBlocked;
-    dynamic whereKnow;
+    String? whereKnow;
     DateTime? createdAt;
     DateTime? updatedAt;
 
     Data({
-        this.id,
-        this.adminUserId,
+        required this.id,
+        required this.adminUserId,
         this.adminUserRolesId,
         this.adminUserLevelsId,
         this.username,
         this.firstname,
         this.lastname,
-        this.phone,
+        required this.phone,
         this.email,
         this.certificateNumber,
         this.citizenNumber,
         this.gender,
         this.birthday,
-        this.points,
+        required this.points,
         this.team,
         this.pantsSize,
         this.shirtSize,
@@ -153,7 +153,7 @@ class Data {
         String? pantsSize,
         String? shirtSize,
         String? contactNumber,
-        String? bornCityId,
+        int? bornCityId,
         dynamic documentName,
         dynamic documentNumber,
         dynamic companyName,
@@ -162,13 +162,13 @@ class Data {
         String? nation,
         String? address,
         dynamic shippingAddress,
-        String? provinceId,
-        String? districtId,
+        int? provinceId,
+        int? districtId,
         dynamic postalCode,
         String? deliveryAddress,
         String? deliveryProvinceId,
         String? deliveryDistrictId,
-        int? isAddressEqualToDelivery,
+        bool? isAddressEqualToDelivery,
         dynamic smsCode,
         dynamic emailVerifiedAt,
         int? isConfirmed,
