@@ -1,58 +1,45 @@
-import 'package:uuid/uuid.dart';
+class Cart {
 
-class GiftCardModel {
-  late final String? id;
-   String? giftId; 
-  final String? giftName;
-  final int? giftPointNumber;
-  final int? giftQuantity;
-  final String? giftPoint;
-  final String? giftPointButton;
+  late final int? id;
+  final String? productId;
+  final String? productName;
+  final int? initialPrice;
+  final int? productPrice;
+  final int? quantity;
+  final String? unitTag;
+  final String? image;
 
-  GiftCardModel({
-    required this.id,
-    required this.giftName,
-    this.giftId,
-    required this.giftPoint,
-    required this.giftPointButton,
-    required this.giftPointNumber,
-    required this.giftQuantity,
-  }) {
-    giftId = Uuid().v4();
-  }
+  Cart({
+    required this.id ,
+    required this.productId,
+    required this.productName,
+    required this.initialPrice,
+    required this.productPrice,
+    required this.quantity,
+    required this.unitTag,
+    required this.image
+  });
 
-  // JSON'dan nesne oluşturma
-  factory GiftCardModel.fromJson(Map<String, dynamic> json) {
-    return GiftCardModel(
-      id: json['id'] ?? 0,
-      giftId: json['giftId'],
-      giftName: json['giftName'],
-      giftPointNumber: json['giftPointNumber'],
-      giftQuantity: json['giftQuantity'],
-      giftPoint: json['giftPoint'],
-      giftPointButton: json['giftPointButton'],
-    );
-  }
+  Cart.fromMap(Map<dynamic , dynamic>  res)
+  : id = res['id'],
+  productId = res["productId"],
+  productName = res["productName"],
+  initialPrice = res["initialPrice"],
+  productPrice = res["productPrice"],
+  quantity = res["quantity"],
+  unitTag = res["unitTag"],
+  image = res["image"];
 
-  // Nesneyi JSON'a çevirme
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toMap(){
     return {
-      'id': id,
-      'giftId': giftId,
-      'giftName': giftName,
-      'giftPointNumber': giftPointNumber,
-      'giftQuantity': giftQuantity,
-      'giftPoint': giftPoint,
-      'giftPointButton': giftPointButton,
+      'id' : id ,
+      'productId' : productId,
+      'productName' :productName,
+      'initialPrice' : initialPrice,
+      'productPrice' : productPrice,
+      'quantity' : quantity,
+      'unitTag' : unitTag,
+      'image' : image,
     };
   }
-
-  @override
-  String toString() {
-    return 'GiftCardModel{id: $id, giftId: $giftId, giftName: $giftName, '
-        'giftPointNumber: $giftPointNumber, giftQuantity: $giftQuantity, '
-        'giftPoint: $giftPoint, giftPointButton: $giftPointButton}';
-  }
-
-  static fromMap(Map<String, Object?> e) {}
 }

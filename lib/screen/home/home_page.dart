@@ -6,7 +6,6 @@ import 'package:sokeun/widgets/earn_points_tab_bar.dart';
 import 'choose_gift.dart';
 import 'package:sokeun/anasayfabildirimsayfasi/test_message.dart';
 
-
 // ANA SAYFA HOME PAGE
 
 class homePagesCreen extends StatefulWidget {
@@ -34,7 +33,6 @@ class _homePagesCreenState extends State<homePagesCreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
                 const SizedBox(
                   height: 2,
                 ),
@@ -52,25 +50,24 @@ class _homePagesCreenState extends State<homePagesCreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-
                             const SizedBox(
                               height: 11,
                             ),
-
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const SizedBox(width: 5,),
-
-                                  GestureDetector(
-                                      onTap: (){
-
-                                      },
-                                      child: const Icon(Icons.help_outline_sharp,color: Colors.white,),
+                                  const SizedBox(
+                                    width: 5,
                                   ),
-
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: const Icon(
+                                      Icons.help_outline_sharp,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                   const Padding(
                                     padding: EdgeInsets.only(left: 90),
                                     child: Text(
@@ -79,7 +76,6 @@ class _homePagesCreenState extends State<homePagesCreen> {
                                           color: Colors.white, fontSize: 24),
                                     ),
                                   ),
-
                                   Padding(
                                     padding: const EdgeInsets.only(left: 60),
                                     child: IconButton(
@@ -98,7 +94,6 @@ class _homePagesCreenState extends State<homePagesCreen> {
                               ),
                             ),
                             const Spacer(),
-
                             Padding(
                               padding: const EdgeInsets.only(bottom: 4),
                               child: Row(
@@ -109,7 +104,8 @@ class _homePagesCreenState extends State<homePagesCreen> {
                                   ),
                                   SizedBox(
                                       width: ekrangenisligi / 2,
-                                      child: Image.asset("assetss/foto/img.png")),
+                                      child:
+                                          Image.asset("assetss/foto/img.png")),
                                 ],
                               ),
                             ),
@@ -133,9 +129,8 @@ class _homePagesCreenState extends State<homePagesCreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                const ChoosegiffScreen()));
-                             //     urunpuanlariiiiScreenPAGEEEEE()));
+                              builder: (context) => const ProductListScreen()));
+                      //     urunpuanlariiiiScreenPAGEEEEE()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -163,24 +158,30 @@ class _homePagesCreenState extends State<homePagesCreen> {
                               children: [
                                 Row(
                                   children: [
-                                    const SizedBox(width: 10,),
-
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
                                     SizedBox(
-                                        height: ekranyukseklikayari/14,
-                                        child: Image.asset("assetss/homescreenassets/urunp.png",)),
-
-                                    const SizedBox(width: 30,),
-
+                                        height: ekranyukseklikayari / 14,
+                                        child: Image.asset(
+                                          "assetss/homescreenassets/urunp.png",
+                                        )),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      child: Text("Hediyeler",style: TextStyle(color:Colors.red[700],
-                                      fontSize: ekrangenisligi/19,fontWeight: FontWeight.bold,
-                                      ),),
+                                      child: Text(
+                                        "Hediyeler",
+                                        style: TextStyle(
+                                          color: Colors.red[700],
+                                          fontSize: ekrangenisligi / 19,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
@@ -203,7 +204,8 @@ class _homePagesCreenState extends State<homePagesCreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const cekilisPageScreeen()));
+                              builder: (context) =>
+                                  const cekilisPageScreeen()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -231,24 +233,30 @@ class _homePagesCreenState extends State<homePagesCreen> {
                               children: [
                                 Row(
                                   children: [
-                                    const SizedBox(width: 10,),
-
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
                                     SizedBox(
-                                        height: ekranyukseklikayari/13,
-                                        child: Image.asset("assetss/homescreenassets/kampanyalar.png",)),
-
-                                    const SizedBox(width: 20,),
-
+                                        height: ekranyukseklikayari / 13,
+                                        child: Image.asset(
+                                          "assetss/homescreenassets/kampanyalar.png",
+                                        )),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      child: Text("Kampanyalar",style: TextStyle(color:Colors.white,
-                                        fontSize: ekrangenisligi/19,fontWeight: FontWeight.bold,
-                                      ),),
+                                      child: Text(
+                                        "Kampanyalar",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: ekrangenisligi / 19,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
@@ -366,7 +374,8 @@ class _homePagesCreenState extends State<homePagesCreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const islemlersayfamPAgeeeeee()));
+                              builder: (context) =>
+                                  const islemlersayfamPAgeeeeee()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -400,7 +409,8 @@ class _homePagesCreenState extends State<homePagesCreen> {
                                       padding: const EdgeInsets.only(left: 15),
                                       child: SizedBox(
                                           width: ekrangenisligi / 1.7,
-                                          child: Image.asset("assetss/homescreenassets/img_5.png")),
+                                          child: Image.asset(
+                                              "assetss/homescreenassets/img_5.png")),
                                     ),
                                   ],
                                 )
@@ -421,9 +431,11 @@ class _homePagesCreenState extends State<homePagesCreen> {
                   height: ekranyukseklikayari / 11.7,
                   child: GestureDetector(
                     onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>const TestmessageScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TestmessageScreen()));
                     },
-
                     child: Container(
                         decoration: BoxDecoration(
                           boxShadow: [
@@ -448,24 +460,32 @@ class _homePagesCreenState extends State<homePagesCreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-
                                 Row(
                                   children: [
-                                    const SizedBox(width: 15,),
-                                    Icon(Icons.mail,color: Colors.red[600],size: ekrangenisligi/10,),
-                                    const SizedBox(width: 20,),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Icon(
+                                      Icons.mail,
+                                      color: Colors.red[600],
+                                      size: ekrangenisligi / 10,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      child: Text("Destek talebi",style: TextStyle(color:Colors.red[700],
-                                        fontSize: ekrangenisligi/19,fontWeight: FontWeight.bold,
-                                      ),),
+                                      child: Text(
+                                        "Destek talebi",
+                                        style: TextStyle(
+                                          color: Colors.red[700],
+                                          fontSize: ekrangenisligi / 19,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-
-
                                   ],
                                 )
-
-
                               ],
                             ),
                           ),
@@ -484,7 +504,11 @@ class _homePagesCreenState extends State<homePagesCreen> {
                   height: ekranyukseklikayari / 7,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const puankazanbildirimScreeen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const puankazanbildirimScreeen()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -515,7 +539,8 @@ class _homePagesCreenState extends State<homePagesCreen> {
                                   children: [
                                     SizedBox(
                                         width: ekrangenisligi / 1.1,
-                                        child: Image.asset("assetss/foto/img_12.png")),
+                                        child: Image.asset(
+                                            "assetss/foto/img_12.png")),
                                   ],
                                 )
                               ],
@@ -524,8 +549,6 @@ class _homePagesCreenState extends State<homePagesCreen> {
                         )),
                   ),
                 ),
-
-
               ],
             ),
           ),

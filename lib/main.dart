@@ -72,7 +72,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ChangeNotifierProvider(
-      create: (context) => GiftCardProvider(),
+      create: (context) => CartProvider(),
       child: MaterialApp(
         title: 'Sokeun',
         localizationsDelegates: const [

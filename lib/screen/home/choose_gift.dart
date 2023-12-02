@@ -1,546 +1,218 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:sokeun/model/gift_card_model.dart';
 import 'package:sokeun/providers/db_helper.dart';
 import 'package:sokeun/providers/gift_card_provider.dart';
-import 'shop_screen.dart';
-import 'package:badges/badges.dart' as badges;
+import 'package:sokeun/screen/home/shop_screen.dart';
 
-class ChoosegiffScreen extends StatefulWidget {
-  const ChoosegiffScreen({super.key});
+class ProductListScreen extends StatefulWidget {
+  const ProductListScreen({Key? key}) : super(key: key);
 
   @override
-  State<ChoosegiffScreen> createState() => _ChoosegiffScreenState();
+  _ProductListScreenState createState() => _ProductListScreenState();
 }
 
-class _ChoosegiffScreenState extends State<ChoosegiffScreen> {
-  final Hediyeara = TextEditingController();
-
-  final List<String> tumuitems = [
-    '',
-    '',
-    '',
-    '',
+class _ProductListScreenState extends State<ProductListScreen> {
+  List<String> productName = [
+    'PS5 Oyun - Demons Souls',
+    'PS5 Oyun - Demons Souls',
+    'PS5 Oyun - Demons Souls',
+    'PS5 Oyun - Demons Souls',
+    'PS5 Oyun - Demons Souls',
+    'PS5 Oyun - Demons Souls',
+    'PS5 Oyun - Demons Souls',
   ];
-
-  final List<String> artanitems = [
-    '',
-    '',
-    '',
-    '',
+  List<String> productUnit = [
+    'Puan',
+    'Puan',
+    'Puan',
+    'Puan',
+    'Puan',
+    'Puan',
+    'Puan',
   ];
-
-  String? tumuitemscontrol;
-  String? artanitemskontrol;
-
-  final String selectedPhoto_1 =
-      'assetss/hediyesec_assets/img.png'; // Gösterilecek fotoğrafın yolu
-  final String selectedPhoto_2 =
-      'assetss/hediyesec_assets/img_1.png'; // Gösterilecek fotoğrafın yolu
-  final String selectedPhoto_3 =
-      'assetss/hediyesec_assets/img_2.png'; // Gösterilecek fotoğrafın yolu
-  final String selectedPhoto_4 =
-      'assetss/hediyesec_assets/img_2.png'; // Gösterilecek fotoğrafın yolu
-
-
+  List<int> productPrice = [150, 160, 170, 180, 190, 200, 210];
+  List<String> productImage = [
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png',
+  ];
 
   DBHelper? dbHelper = DBHelper();
 
   @override
   Widget build(BuildContext context) {
-    var ekranAyari = MediaQuery.of(context);
-    var ekrangenisligi = ekranAyari.size.width;
-    var ekranyukseklikayari = ekranAyari.size.height;
-    final cart = Provider.of<GiftCardProvider>(context);
-
+    final cart = Provider.of<CartProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        actions: [
-          //   child: IconButton(
-          //     onPressed: () {
-          //       Navigator.push(context,
-          //           MaterialPageRoute(builder: (context) => ShopScreen()));
-          //     },
-          //     icon: Icon(
-          //       Icons.shopping_cart,
-          //       color: Colors.red[600],
-          //     ),
-
-          //   ),
-          Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: badges.Badge(
-                position: badges.BadgePosition.topEnd(top: 0, end: 0),
-                badgeContent: Consumer<GiftCardProvider>(
-                  builder: (context, cart, child) {
-                    return Text(
-                      cart.getCounter().toString(),
-                      style: TextStyle(color: Colors.white),
-                    );
-                  },
-                  child: IconButton(
-                    onPressed: () {
-
-                      
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ShopScreen()));
-                    },
-                    icon: Icon(
-                      Icons.shopping_cart,
-                      size: 10,
-                      color: Colors.red[600],
-                    ),
-                  ),
-                ),
-              ))
-        ],
-        title: Text(
-          "Hediye Seç",
-          style: TextStyle(color: Colors.red[600], fontWeight: FontWeight.bold),
-        ),
+        title: Text('Hediyelerim'),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Column(
-            children: [
-              Container(
-                width: ekrangenisligi / 1.02,
-                height: 47,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey.shade200,
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ShopScreen()));
+            },
+            child: Center(
+              child: badges.Badge(
+                showBadge: true,
+                badgeContent: Consumer<CartProvider>(
+                  builder: (context, value, child) {
+                    return Text(value.getCounter().toString(),
+                        style: TextStyle(color: Colors.white));
+                  },
                 ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: ekrangenisligi / 2.1,
-                      height: 47,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.red[600],
-                      ),
+                child: Icon(Icons.shopping_bag_outlined),
+              ),
+            ),
+          ),
+          SizedBox(width: 20.0)
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                itemCount: productName.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Text(
-                                "Standart Usta",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Image(
+                                height: 100,
+                                width: 100,
+                                image: NetworkImage(
+                                    productImage[index].toString()),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      productName[index].toString(),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      productUnit[index].toString() +
+                                          " " +
+                                          r"₺" +
+                                          productPrice[index].toString(),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () {
+                                          print(index);
+                                          print(index);
+                                          print(productName[index].toString());
+                                          print(productPrice[index].toString());
+                                          print(productPrice[index]);
+                                          print('1');
+                                          print(productUnit[index].toString());
+                                          print(productImage[index].toString());
+
+                                          dbHelper!
+                                              .insert(Cart(
+                                                  id: index,
+                                                  productId: index.toString(),
+                                                  productName:
+                                                      productName[index]
+                                                          .toString(),
+                                                  initialPrice:
+                                                      productPrice[index],
+                                                  productPrice:
+                                                      productPrice[index],
+                                                  quantity: 1,
+                                                  unitTag: productUnit[index]
+                                                      .toString(),
+                                                  image: productImage[index]
+                                                      .toString()))
+                                              .then((value) {
+                                            cart.addTotalPrice(double.parse(
+                                                productPrice[index]
+                                                    .toString()));
+                                            cart.addCounter();
+
+                                            final snackBar = SnackBar(
+                                              backgroundColor: Colors.green,
+                                              content: Text(
+                                                  'Hediye sepete eklendi..'),
+                                              duration: Duration(seconds: 1),
+                                            );
+
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }).onError((error, stackTrace) {
+                                            print("error" + error.toString());
+                                            final snackBar = SnackBar(
+                                                backgroundColor: Colors.red,
+                                                content: Text(
+                                                    'Bu hediye zaten eklendi..'),
+                                                duration: Duration(seconds: 1));
+
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 35,
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: const Center(
+                                            child: Text(
+                                              'Hemen Satın Al',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              )),
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      "Kullanılabilir Puan\n              100",
-                      style: TextStyle(
-                        color: Colors.red[600],
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: 22,
-              ),
-
-              SizedBox(
-                width: ekrangenisligi / 1.1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade200,
-                        offset: const Offset(5.0, 5.0),
-                        blurRadius: 10,
-                        spreadRadius: 1.0,
-                      ),
-                      BoxShadow(
-                        color: Colors.grey.shade200,
-                        offset: const Offset(-5.0, -5.0),
-                        blurRadius: 20,
-                        spreadRadius: 1.0,
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    controller: Hediyeara,
-                    obscureText: false,
-                    // validator: validateTelefon,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: 'Hediye ara...',
-                        icon: Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                        hintStyle: TextStyle(color: Colors.grey.shade400)),
-                  ),
-                ),
-              ),
-
-              SizedBox(
-                height: 25,
-              ),
-
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2<String>(
-                    isExpanded: true,
-                    hint: Row(
-                      children: [
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Tümü',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    items: tumuitems
-                        .map((String item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ))
-                        .toList(),
-                    value: tumuitemscontrol,
-                    onChanged: (String? valuee) {
-                      setState(() {
-                        tumuitemscontrol = valuee!;
-                      });
-                    },
-                    buttonStyleData: ButtonStyleData(
-                      height: 50,
-                      width: ekrangenisligi / 2.2,
-                      padding: const EdgeInsets.only(left: 14, right: 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: Colors.red,
-                        ),
-                        color: Colors.red[600],
-                      ),
-                      elevation: 2,
-                    ),
-                    iconStyleData: const IconStyleData(
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      iconSize: 14,
-                      iconEnabledColor: Colors.white,
-                      iconDisabledColor: Colors.grey,
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                      maxHeight: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: Colors.red.shade200,
-                      ),
-                      offset: const Offset(-20, 0),
-                      scrollbarTheme: ScrollbarThemeData(
-                        radius: const Radius.circular(40),
-                        thickness: MaterialStateProperty.all<double>(6),
-                        thumbVisibility: MaterialStateProperty.all<bool>(true),
-                      ),
-                    ),
-                    menuItemStyleData: const MenuItemStyleData(
-                      height: 40,
-                      padding: EdgeInsets.only(left: 14, right: 14),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2<String>(
-                    isExpanded: true,
-                    hint: Row(
-                      children: [
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Artan',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    items: artanitems
-                        .map((String item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ))
-                        .toList(),
-                    value: artanitemskontrol,
-                    onChanged: (String? valuee) {
-                      setState(() {
-                        artanitemskontrol = valuee!;
-                      });
-                    },
-                    buttonStyleData: ButtonStyleData(
-                      height: 50,
-                      width: ekrangenisligi / 2.2,
-                      padding: const EdgeInsets.only(left: 14, right: 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: Colors.white,
-                        ),
-                        color: Colors.white,
-                      ),
-                      elevation: 2,
-                    ),
-                    iconStyleData: const IconStyleData(
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Colors.black,
-                      ),
-                      iconSize: 14,
-                      iconEnabledColor: Colors.white,
-                      iconDisabledColor: Colors.grey,
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                      maxHeight: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: Colors.grey.shade200,
-                      ),
-                      offset: const Offset(-20, 0),
-                      scrollbarTheme: ScrollbarThemeData(
-                        radius: const Radius.circular(40),
-                        thickness: MaterialStateProperty.all<double>(6),
-                        thumbVisibility: MaterialStateProperty.all<bool>(true),
-                      ),
-                    ),
-                    menuItemStyleData: const MenuItemStyleData(
-                      height: 40,
-                      padding: EdgeInsets.only(left: 14, right: 14),
-                    ),
-                  ),
-                ),
-              ]),
-
-              SizedBox(
-                height: 15,
-              ),
-
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-
-              //     Image.asset(selectedPhoto_1,
-              //     width: ekrangenisligi/2,
-              //     ),
-              //     Image.asset(selectedPhoto_2,
-              //       width: ekrangenisligi/2,
-              //     ),
-
-              //   ],
-              // ),
-
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Image.asset(
-              //       selectedPhoto_3,
-              //       width: ekrangenisligi / 2,
-              //     ),
-              //     Image.asset(
-              //       selectedPhoto_4,
-              //       width: ekrangenisligi / 2,
-              //     ),
-              //   ],
-              // ),
-
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      giftBoxSection(ekrangenisligi: ekrangenisligi),
-                      giftBoxSection(ekrangenisligi: ekrangenisligi),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      giftBoxSection(ekrangenisligi: ekrangenisligi),
-                      giftBoxSection(ekrangenisligi: ekrangenisligi),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class giftBoxSection extends StatelessWidget {
-  const giftBoxSection({
-    super.key,
-    required this.ekrangenisligi,
-  });
-
-  final double ekrangenisligi;
-
-  @override
-  Widget build(BuildContext context) {
-    final cart = Provider.of<GiftCardProvider>(context);
-
-    return Container(
-      width: 150,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0.0, 1.0),
-            blurRadius: 5.0,
-            spreadRadius: 0.0,
+                  );
+                }),
           ),
         ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assetss/hediyesec_assets/gift_image.png",
-              height: 130,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: ekrangenisligi / 50),
-              child: Text(
-                "PS5 Oyun- Demons Souls",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "179",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                        fontSize: 18,
-                      ),
-                    ),
-                    Text(
-                      "Puan",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () async {
-                    try {
-                      await DBHelper().insert(
-                        GiftCardModel(
-                          id: null,
-                          giftId: "",
-                          giftName: "PS5 Oyun- Demons Souls",
-                          giftPoint: "Puan",
-                          giftPointButton:
-                              "assetss/hediyesec_assets/choose_button.png",
-                          giftPointNumber: 179,
-                          giftQuantity: 1,
-                        ),
-                      );
-                      Provider.of<GiftCardProvider>(context, listen: false)
-                          .addCounter();
-                      print("Box is added to card");
-                    } catch (error) {
-                      print(error.toString());
-                    }
-                  },
-                  child: Image.asset(
-                    "assetss/hediyesec_assets/choose_button.png",
-                    height: 30,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
