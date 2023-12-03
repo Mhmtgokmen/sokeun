@@ -330,14 +330,6 @@ class _ShopScreenState extends State<ShopScreen> {
                 child: Column(
                   children: [
                     ReusableWidget(
-                      title: 'Total',
-                      value: r'₺' + value.getTotalPrice().toStringAsFixed(2),
-                    ),
-                    ReusableWidget(
-                      title: 'Kampanya 5%',
-                      value: r'₺' + '20',
-                    ),
-                    ReusableWidget(
                       title: 'Total Tutar',
                       value: r'₺' + value.getTotalPrice().toStringAsFixed(2),
                     )
