@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sokeun/model/admin_user_role_model.dart';
 import 'package:sokeun/model/login_model.dart';
-import 'package:sokeun/model/provinces_model.dart';
-import 'package:sokeun/providers/admin_user_level_provider.dart';
-import 'package:sokeun/providers/admin_user_model_provider.dart';
 import 'package:sokeun/providers/login_user_provider.dart';
-import 'package:sokeun/providers/provinces_provider.dart';
+import 'package:sokeun/screen/register/kayitScreeen/OnaySayfasiScreen.dart';
 import 'package:sokeun/screen/register/register_page.dart';
 import 'package:sokeun/screen/register/register_step_one.dart';
 import 'package:sokeun/service/api.service.dart';
 import 'package:sokeun/utility/auth_utility.dart';
 import 'package:sokeun/widgets/login_button.dart';
-import '../../model/admin_user_level.dart';
 import 'package:dio/dio.dart';
+import 'package:sokeun/widgets/start_bottom_nav_bar.dart';
 
 // DOĞRULAMA 1. SAYFA
 
@@ -29,8 +25,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
   final numarakontrol = TextEditingController();
   final sifrekontroletmegiris = TextEditingController();
   late ApiService apiService;
-  // final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-  //     GlobalKey<ScaffoldMessengerState>();
+
   void ilkdefagiris() async {
     if (_formkey.currentState!.validate()) {
       apiService = ApiService();
@@ -51,19 +46,38 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
           LoginResponse loginResponse = LoginResponse.fromJson(responseData);
           ref.read(loginUserProvider.notifier).state = loginResponse;
           ref.read(loginPasswordProvider.notifier).state = password;
-          AuthUtility.saveToken(loginResponse.data.accessToken,loginResponse.data.registerState.toString(),loginResponse.data.isConfirmed.toString());
+          AuthUtility.saveToken(
+              loginResponse.data.accessToken,
+              loginResponse.data.registerState.toString(),
+              loginResponse.data.isConfirmed.toString());
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(loginResponse.message),
               duration: const Duration(seconds: 2),
             ),
           );
-          // ignore: use_build_context_synchronously
-          Navigator.push(
-              context,
+          if (loginResponse.data.registerState == 1) {
+            if (loginResponse.data.isConfirmed == 1) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const bottomnavbarscreen(),
+                ),
+              );
+            } else {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      const OnaySonScccreeeeeeeen(),
+                ),
+              );
+            }
+          } else {
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                  builder: (context) => const LoginaltButonGiris()));
-          print("Token: ${loginResponse.data.accessToken}");
+                builder: (BuildContext context) => const LoginaltButonGiris(),
+              ),
+            );
+          }
         } else if (response.statusCode == 401) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -91,106 +105,100 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
     }
   }
 
-  void PasswordForm() {
+  void passwordForm() {
     if (_formkey.currentState!.validate()) {
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>bottomnavbarscreen()));
     }
   }
 
-  void loginAppSetting() async {
-    apiService = ApiService();
+  // void loginAppSetting() async {
+  //   apiService = ApiService();
 
-    Map<String, dynamic> data = {
-      "admin_user_id": "6",
-    };
+  //   Map<String, dynamic> data = {
+  //     "admin_user_id": "11",
+  //   };
 
-    try {
-      var response = await apiService.post("app-settings", data);
+  //   try {
+  //     var response = await apiService.post("app-settings", data);
 
-      if (response.statusCode == 200) {
-        if (response.data["status"] == true) {
-          var adminUserRoles = response.data["data"]["admin_user_role"] ?? [];
-          var adminUserLevels = response.data["data"]["admin_user_level"] ?? [];
-          var userProvinces = response.data["data"]["provinces"] ?? [];
+  //     if (response.statusCode == 200) {
+  //       if (response.data["status"] == true) {
+  //         var adminUserRoles = response.data["data"]["admin_user_role"] ?? [];
+  //         var adminUserLevels = response.data["data"]["admin_user_level"] ?? [];
+  //         var userProvinces = response.data["data"]["provinces"] ?? [];
 
-          List<ProvinceModel> provinces =
-              userProvinces.map<ProvinceModel>((json) {
-            return ProvinceModel.fromJson(json);
-          }).toList();
-          ref.read(userProvinceProvider.notifier).state = provinces;
+  //         List<ProvinceModel> provinces =
+  //             userProvinces.map<ProvinceModel>((json) {
+  //           return ProvinceModel.fromJson(json);
+  //         }).toList();
+  //         ref.read(userProvinceProvider.notifier).state = provinces;
 
-          // List<Districts> districts = userDistricts.map<Districts>((json) {
-          //   return Districts.fromJson(json);
-          // }).toList();
-          // ref.read(userDistrictsProvider.notifier).state = districts;
+  //         // List<Districts> districts = userDistricts.map<Districts>((json) {
+  //         //   return Districts.fromJson(json);
+  //         // }).toList();
+  //         // ref.read(userDistrictsProvider.notifier).state = districts;
 
-          List<AdminUserLevel> level =
-              adminUserLevels.map<AdminUserLevel>((json) {
-            return AdminUserLevel.fromJson(json);
-          }).toList();
-          ref.read(adminUserLevelProvider.notifier).state = level;
+  //         List<AdminUserLevel> level =
+  //             adminUserLevels.map<AdminUserLevel>((json) {
+  //           return AdminUserLevel.fromJson(json);
+  //         }).toList();
+  //         ref.read(adminUserLevelProvider.notifier).state = level;
 
-          List<AdminUserRole> roles = adminUserRoles.map<AdminUserRole>((json) {
-            return AdminUserRole.fromJson(json);
-          }).toList();
-          ref.read(adminUserRoleProvider.notifier).state = roles;
-        } else {
-          print("API yanıtı false durumu döndürdü.");
-        }
-      } else {
-        print(
-            "API isteği ${response.statusCode} durum kodu ile başarısız oldu.");
-      }
-    } catch (error) {
-      print("API isteği sırasında hata oluştu: $error");
-    }
-    // List<ProvinceModel> provinces = [];
-    // List<Districts> districts = [];
-    // List<AdminUserRole> roles = [];
-    // Map<String, dynamic> data = {
-    //   "admin_user_id": "6",
-    // };
+  //         List<AdminUserRole> roles = adminUserRoles.map<AdminUserRole>((json) {
+  //           return AdminUserRole.fromJson(json);
+  //         }).toList();
+  //         ref.read(adminUserRoleProvider.notifier).state = roles;
+  //       } else {
+  //         print("API yanıtı false durumu döndürdü.");
+  //       }
+  //     } else {
+  //       print(
+  //           "API isteği ${response.statusCode} durum kodu ile başarısız oldu.");
+  //     }
+  //   } catch (error) {
+  //     print("API isteği sırasında hata oluştu: $error");
+  //   }
+  // List<ProvinceModel> provinces = [];
+  // List<Districts> districts = [];
+  // List<AdminUserRole> roles = [];
+  // Map<String, dynamic> data = {
+  //   "admin_user_id": "6",
+  // };
 
-    // List<AdminUserLevel> level = [];
-    // Map<String, dynamic> veri = {
-    //   "admin_user_id": "6",
-    // };
+  // List<AdminUserLevel> level = [];
+  // Map<String, dynamic> veri = {
+  //   "admin_user_id": "6",
+  // };
 
-    // apiService.post("app-settings", data).then((value) {
-    //   if (value.statusCode == 200) {
-    //     if (value.data["status"] == true) {
-    //       var adminUserRoles = value.data["data"]["admin_user_role"];
-    //       var adminUserLevels = value.data["data"]["admin_user_level"];
-    //       var userProvinces = value.data["data"]["provinces"];
-    //       var userDistricts = value.data["data"]["provinces"]["districts"];
+  // apiService.post("app-settings", data).then((value) {
+  //   if (value.statusCode == 200) {
+  //     if (value.data["status"] == true) {
+  //       var adminUserRoles = value.data["data"]["admin_user_role"];
+  //       var adminUserLevels = value.data["data"]["admin_user_level"];
+  //       var userProvinces = value.data["data"]["provinces"];
+  //       var userDistricts = value.data["data"]["provinces"]["districts"];
 
-    //       provinces = userProvinces.map<ProvinceModel>((json) {
-    //         return ProvinceModel.fromJson(json);
-    //       }).toList();
-    //       ref.read(userProvinceProvider.notifier).state = provinces;
-    //       districts = userDistricts.map<Districts>((json) {
-    //         return Districts.fromJson(json);
-    //       }).toList();
-    //       ref.read(userDistrictsProvider.notifier).state = districts;
-    //       level = adminUserLevels.map<AdminUserLevel>((json) {
-    //         return AdminUserLevel.fromJson(json);
-    //       }).toList();
-    //       ref.read(adminUserLevelProvider.notifier).state = level;
+  //       provinces = userProvinces.map<ProvinceModel>((json) {
+  //         return ProvinceModel.fromJson(json);
+  //       }).toList();
+  //       ref.read(userProvinceProvider.notifier).state = provinces;
+  //       districts = userDistricts.map<Districts>((json) {
+  //         return Districts.fromJson(json);
+  //       }).toList();
+  //       ref.read(userDistrictsProvider.notifier).state = districts;
+  //       level = adminUserLevels.map<AdminUserLevel>((json) {
+  //         return AdminUserLevel.fromJson(json);
+  //       }).toList();
+  //       ref.read(adminUserLevelProvider.notifier).state = level;
 
-    //       roles = adminUserRoles.map<AdminUserRole>((json) {
-    //         return AdminUserRole.fromJson(json);
-    //       }).toList();
-    //       ref.read(adminUserRoleProvider.notifier).state = roles;
-    //     }
-    //   }
-    // });
-  }
-
-  @override
-  void initState() {
-    loginAppSetting();
-    super.initState();
-  }
+  //       roles = adminUserRoles.map<AdminUserRole>((json) {
+  //         return AdminUserRole.fromJson(json);
+  //       }).toList();
+  //       ref.read(adminUserRoleProvider.notifier).state = roles;
+  //     }
+  //   }
+  // });
+  // }
 
   // Validator
 

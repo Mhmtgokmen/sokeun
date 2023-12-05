@@ -22,7 +22,8 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
   void uyeliktipisonrakiekran() {
     LoginResponse? user = ref.read(loginUserProvider);
     user!.data.nation = selectedNation;
-    List<AdminUserRole> roleItems = ref.watch(adminUserRoleProvider);
+
+    List<AdminUserRole> roleItems = ref.read(adminUserRoleProvider);
 
     AdminUserRole selectedRole = roleItems
         .firstWhere((role) => role.adminUserType.name == selectedValueson);
@@ -43,10 +44,8 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const BayiSayfamScreeen()));
     } else if (selectedRole.adminUserType.name == 'Müşteri') {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const SonKullaniciSayfa()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SonKullaniciSayfa()));
     }
   }
 
@@ -106,7 +105,7 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Text(
-                              "Telefon Numaranız: ${userLoginInformation?.data.phone}",
+                              "Telefon Numaranız: ${userLoginInformation?.data.phone ?? ""}",
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -188,7 +187,6 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                                     selectedNation = value!;
                                     selectedNationId = nation[value];
                                   });
-                                  print("Gender id:$selectedNationId");
                                 },
                                 buttonStyleData: ButtonStyleData(
                                   height: 50,
@@ -239,8 +237,8 @@ class _LoginaltButonGirisState extends ConsumerState<LoginaltButonGiris> {
                             ),
                             DropdownButtonHideUnderline(
                               child: Consumer(builder: (context, ref, child) {
-                                List<AdminUserRole> roleItems =
-                                    ref.read(adminUserRoleProvider);
+                                final roleItems =
+                                    ref.watch(adminUserRoleProvider);
                                 print("Roller $roleItems");
                                 return DropdownButton2(
                                   isExpanded: true,

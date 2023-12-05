@@ -34,21 +34,21 @@ class _ManuelQrCodeState extends ConsumerState<ManuelQrCode> {
       );
       if (response.statusCode == 200) {
         print(response.data['message']);
-        _showSnackBar(response.data['message']);
+        showSnackBar(response.data['message']);
       } else if (response.statusCode == 404) {
         print(response.data['message']);
-        _showSnackBar(response.data['message']);
+        showSnackBar(response.data['message']);
       } else {
         print("Bir hata oluştu");
-        _showSnackBar("Bir hata oluştu tekrar deneyiniz");
+        showSnackBar("Bir hata oluştu tekrar deneyiniz");
       }
     } catch (e) {
       print("hata Hata : $e");
-      _showSnackBar("Bir hata oluştu tekrar deneyiniz!");
+      showSnackBar("Bir hata oluştu tekrar deneyiniz!");
     }
   }
 
-  void _showSnackBar(String message) {
+  void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),

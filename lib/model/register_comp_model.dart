@@ -4,228 +4,232 @@
 
 import 'dart:convert';
 
-RegisterComplateModel registerComplateModelFromJson(String str) => RegisterComplateModel.fromJson(json.decode(str));
+RegisterComplateModel registerComplateModelFromJson(String str) =>
+    RegisterComplateModel.fromJson(json.decode(str));
 
-String registerComplateModelToJson(RegisterComplateModel data) => json.encode(data.toJson());
+String registerComplateModelToJson(RegisterComplateModel data) =>
+    json.encode(data.toJson());
 
 class RegisterComplateModel {
-    bool status;
-    String message;
-    Data? data;
+  bool status;
+  String message;
+  Data? data;
 
-    RegisterComplateModel({
-        required this.status,
-        required this.message,
-        this.data,
-    });
+  RegisterComplateModel({
+    required this.status,
+    required this.message,
+    this.data,
+  });
 
-    RegisterComplateModel copyWith({
-        bool? status,
-        String? message,
-        Data? data,
-    }) => 
-        RegisterComplateModel(
-            status: status ?? this.status,
-            message: message ?? this.message,
-            data: data ?? this.data,
-        );
+  RegisterComplateModel copyWith({
+    bool? status,
+    String? message,
+    Data? data,
+  }) =>
+      RegisterComplateModel(
+        status: status ?? this.status,
+        message: message ?? this.message,
+        data: data ?? this.data,
+      );
 
-    factory RegisterComplateModel.fromJson(Map<String, dynamic> json) => RegisterComplateModel(
+  factory RegisterComplateModel.fromJson(Map<String, dynamic> json) =>
+      RegisterComplateModel(
         status: json["status"],
         message: json["message"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": data?.toJson(),
-    };
+      };
 }
 
 class Data {
-    int id;
-    int adminUserId;
-    int? adminUserRolesId;
-    int? adminUserLevelsId;
-    String? username;
-    String? firstname;
-    String? lastname;
-    String phone;
-    String? email;
-    String? certificateNumber;
-    String? citizenNumber;
-    String? gender;
-    String? birthday;
-    int points;
-    String? team;
-    String? pantsSize;
-    String? shirtSize;
-    String? contactNumber;
-    int? bornCityId;
-    String? documentName;
-    String? documentNumber;
-    String? companyName;
-    String? tax;
-    String? taxNumber;
-    String? nation;
-    String? address;
-    String? shippingAddress;
-    int? provinceId;
-    int? districtId;
-    String? postalCode;
-    String? deliveryAddress;
-    String? deliveryProvinceId;
-    String? deliveryDistrictId;
-    bool? isAddressEqualToDelivery;
-    String? smsCode;
-    String? emailVerifiedAt;
-    int? isConfirmed;
-    int? registerState;
-    int? status;
-    int? isBlocked;
-    String? whereKnow;
-    DateTime? createdAt;
-    DateTime? updatedAt;
+  int id;
+  int adminUserId;
+  int? adminUserRolesId;
+  int? adminUserLevelsId;
+  String? username;
+  String? firstname;
+  String? lastname;
+  String phone;
+  String? email;
+  String? certificateNumber;
+  String? citizenNumber;
+  String? gender;
+  String? birthday;
+  int points;
+  String? team;
+  String? pantsSize;
+  String? shirtSize;
+  String? contactNumber;
+  int? bornCityId; //
+  String? documentName;
+  String? documentNumber;
+  String? companyName;
+  String? tax;
+  String? taxNumber;
+  String? nation;
+  String? address;
+  String? shippingAddress;
+  int? provinceId; //
+  int? districtId; //
+  String? postalCode;
+  String? deliveryAddress;
+  String? deliveryProvinceId;
+  String? deliveryDistrictId;
+  bool? isAddressEqualToDelivery; //
+  String? smsCode;
+  String? emailVerifiedAt;
+  int? isConfirmed;
+  int? registerState;
+  int? status;
+  int? isBlocked;
+  String? whereKnow;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
-    Data({
-        required this.id,
-        required this.adminUserId,
-        this.adminUserRolesId,
-        this.adminUserLevelsId,
-        this.username,
-        this.firstname,
-        this.lastname,
-        required this.phone,
-        this.email,
-        this.certificateNumber,
-        this.citizenNumber,
-        this.gender,
-        this.birthday,
-        required this.points,
-        this.team,
-        this.pantsSize,
-        this.shirtSize,
-        this.contactNumber,
-        this.bornCityId,
-        this.documentName,
-        this.documentNumber,
-        this.companyName,
-        this.tax,
-        this.taxNumber,
-        this.nation,
-        this.address,
-        this.shippingAddress,
-        this.provinceId,
-        this.districtId,
-        this.postalCode,
-        this.deliveryAddress,
-        this.deliveryProvinceId,
-        this.deliveryDistrictId,
-        this.isAddressEqualToDelivery,
-        this.smsCode,
-        this.emailVerifiedAt,
-        this.isConfirmed,
-        this.registerState,
-        this.status,
-        this.isBlocked,
-        this.whereKnow,
-        this.createdAt,
-        this.updatedAt,
-    });
+  Data({
+    required this.id,
+    required this.adminUserId,
+    this.adminUserRolesId,
+    this.adminUserLevelsId,
+    this.username,
+    this.firstname,
+    this.lastname,
+    required this.phone,
+    this.email,
+    this.certificateNumber,
+    this.citizenNumber,
+    this.gender,
+    this.birthday,
+    required this.points,
+    this.team,
+    this.pantsSize,
+    this.shirtSize,
+    this.contactNumber,
+    this.bornCityId,
+    this.documentName,
+    this.documentNumber,
+    this.companyName,
+    this.tax,
+    this.taxNumber,
+    this.nation,
+    this.address,
+    this.shippingAddress,
+    this.provinceId,
+    this.districtId,
+    this.postalCode,
+    this.deliveryAddress,
+    this.deliveryProvinceId,
+    this.deliveryDistrictId,
+    this.isAddressEqualToDelivery,
+    this.smsCode,
+    this.emailVerifiedAt,
+    this.isConfirmed,
+    this.registerState,
+    this.status,
+    this.isBlocked,
+    this.whereKnow,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-    Data copyWith({
-        int? id,
-        int? adminUserId,
-        int? adminUserRolesId,
-        dynamic adminUserLevelsId,
-        String? username,
-        String? firstname,
-        String? lastname,
-        String? phone,
-        String? email,
-        dynamic certificateNumber,
-        String? citizenNumber,
-        String? gender,
-        dynamic birthday,
-        int? points,
-        String? team,
-        String? pantsSize,
-        String? shirtSize,
-        String? contactNumber,
-        int? bornCityId,
-        dynamic documentName,
-        dynamic documentNumber,
-        dynamic companyName,
-        dynamic tax,
-        dynamic taxNumber,
-        String? nation,
-        String? address,
-        dynamic shippingAddress,
-        int? provinceId,
-        int? districtId,
-        dynamic postalCode,
-        String? deliveryAddress,
-        String? deliveryProvinceId,
-        String? deliveryDistrictId,
-        bool? isAddressEqualToDelivery,
-        dynamic smsCode,
-        dynamic emailVerifiedAt,
-        int? isConfirmed,
-        int? registerState,
-        int? status,
-        int? isBlocked,
-        dynamic whereKnow,
-        DateTime? createdAt,
-        DateTime? updatedAt,
-    }) => 
-        Data(
-            id: id ?? this.id,
-            adminUserId: adminUserId ?? this.adminUserId,
-            adminUserRolesId: adminUserRolesId ?? this.adminUserRolesId,
-            adminUserLevelsId: adminUserLevelsId ?? this.adminUserLevelsId,
-            username: username ?? this.username,
-            firstname: firstname ?? this.firstname,
-            lastname: lastname ?? this.lastname,
-            phone: phone ?? this.phone,
-            email: email ?? this.email,
-            certificateNumber: certificateNumber ?? this.certificateNumber,
-            citizenNumber: citizenNumber ?? this.citizenNumber,
-            gender: gender ?? this.gender,
-            birthday: birthday ?? this.birthday,
-            points: points ?? this.points,
-            team: team ?? this.team,
-            pantsSize: pantsSize ?? this.pantsSize,
-            shirtSize: shirtSize ?? this.shirtSize,
-            contactNumber: contactNumber ?? this.contactNumber,
-            bornCityId: bornCityId ?? this.bornCityId,
-            documentName: documentName ?? this.documentName,
-            documentNumber: documentNumber ?? this.documentNumber,
-            companyName: companyName ?? this.companyName,
-            tax: tax ?? this.tax,
-            taxNumber: taxNumber ?? this.taxNumber,
-            nation: nation ?? this.nation,
-            address: address ?? this.address,
-            shippingAddress: shippingAddress ?? this.shippingAddress,
-            provinceId: provinceId ?? this.provinceId,
-            districtId: districtId ?? this.districtId,
-            postalCode: postalCode ?? this.postalCode,
-            deliveryAddress: deliveryAddress ?? this.deliveryAddress,
-            deliveryProvinceId: deliveryProvinceId ?? this.deliveryProvinceId,
-            deliveryDistrictId: deliveryDistrictId ?? this.deliveryDistrictId,
-            isAddressEqualToDelivery: isAddressEqualToDelivery ?? this.isAddressEqualToDelivery,
-            smsCode: smsCode ?? this.smsCode,
-            emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
-            isConfirmed: isConfirmed ?? this.isConfirmed,
-            registerState: registerState ?? this.registerState,
-            status: status ?? this.status,
-            isBlocked: isBlocked ?? this.isBlocked,
-            whereKnow: whereKnow ?? this.whereKnow,
-            createdAt: createdAt ?? this.createdAt,
-            updatedAt: updatedAt ?? this.updatedAt,
-        );
+  Data copyWith({
+    int? id,
+    int? adminUserId,
+    int? adminUserRolesId,
+    dynamic adminUserLevelsId,
+    String? username,
+    String? firstname,
+    String? lastname,
+    String? phone,
+    String? email,
+    dynamic certificateNumber,
+    String? citizenNumber,
+    String? gender,
+    dynamic birthday,
+    int? points,
+    String? team,
+    String? pantsSize,
+    String? shirtSize,
+    String? contactNumber,
+    int? bornCityId,
+    dynamic documentName,
+    dynamic documentNumber,
+    dynamic companyName,
+    dynamic tax,
+    dynamic taxNumber,
+    String? nation,
+    String? address,
+    dynamic shippingAddress,
+    int? provinceId,
+    int? districtId,
+    dynamic postalCode,
+    String? deliveryAddress,
+    String? deliveryProvinceId,
+    String? deliveryDistrictId,
+    bool? isAddressEqualToDelivery,
+    dynamic smsCode,
+    dynamic emailVerifiedAt,
+    int? isConfirmed,
+    int? registerState,
+    int? status,
+    int? isBlocked,
+    dynamic whereKnow,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      Data(
+        id: id ?? this.id,
+        adminUserId: adminUserId ?? this.adminUserId,
+        adminUserRolesId: adminUserRolesId ?? this.adminUserRolesId,
+        adminUserLevelsId: adminUserLevelsId ?? this.adminUserLevelsId,
+        username: username ?? this.username,
+        firstname: firstname ?? this.firstname,
+        lastname: lastname ?? this.lastname,
+        phone: phone ?? this.phone,
+        email: email ?? this.email,
+        certificateNumber: certificateNumber ?? this.certificateNumber,
+        citizenNumber: citizenNumber ?? this.citizenNumber,
+        gender: gender ?? this.gender,
+        birthday: birthday ?? this.birthday,
+        points: points ?? this.points,
+        team: team ?? this.team,
+        pantsSize: pantsSize ?? this.pantsSize,
+        shirtSize: shirtSize ?? this.shirtSize,
+        contactNumber: contactNumber ?? this.contactNumber,
+        bornCityId: bornCityId ?? this.bornCityId,
+        documentName: documentName ?? this.documentName,
+        documentNumber: documentNumber ?? this.documentNumber,
+        companyName: companyName ?? this.companyName,
+        tax: tax ?? this.tax,
+        taxNumber: taxNumber ?? this.taxNumber,
+        nation: nation ?? this.nation,
+        address: address ?? this.address,
+        shippingAddress: shippingAddress ?? this.shippingAddress,
+        provinceId: provinceId ?? this.provinceId,
+        districtId: districtId ?? this.districtId,
+        postalCode: postalCode ?? this.postalCode,
+        deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+        deliveryProvinceId: deliveryProvinceId ?? this.deliveryProvinceId,
+        deliveryDistrictId: deliveryDistrictId ?? this.deliveryDistrictId,
+        isAddressEqualToDelivery:
+            isAddressEqualToDelivery ?? this.isAddressEqualToDelivery,
+        smsCode: smsCode ?? this.smsCode,
+        emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+        isConfirmed: isConfirmed ?? this.isConfirmed,
+        registerState: registerState ?? this.registerState,
+        status: status ?? this.status,
+        isBlocked: isBlocked ?? this.isBlocked,
+        whereKnow: whereKnow ?? this.whereKnow,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         adminUserId: json["admin_user_id"],
         adminUserRolesId: json["admin_user_roles_id"],
@@ -257,9 +261,10 @@ class Data {
         districtId: json["district_id"],
         postalCode: json["postal_code"],
         deliveryAddress: json["delivery_address"],
-        deliveryProvinceId: json["delivery_province_id"],
-        deliveryDistrictId: json["delivery_district_id"],
-        isAddressEqualToDelivery: json["is_address_equal_to_delivery"],
+        deliveryProvinceId: json["delivery_province_id"].toString(),
+        deliveryDistrictId: json["delivery_district_id"].toString(),
+        isAddressEqualToDelivery:
+            json["is_address_equal_to_delivery"] == 1 ? true : false,
         smsCode: json["sms_code"],
         emailVerifiedAt: json["email_verified_at"],
         isConfirmed: json["is_confirmed"],
@@ -267,11 +272,15 @@ class Data {
         status: json["status"],
         isBlocked: json["is_blocked"],
         whereKnow: json["where_know"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    );
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "admin_user_id": adminUserId,
         "admin_user_roles_id": adminUserRolesId,
@@ -305,7 +314,8 @@ class Data {
         "delivery_address": deliveryAddress,
         "delivery_province_id": deliveryProvinceId,
         "delivery_district_id": deliveryDistrictId,
-        "is_address_equal_to_delivery": isAddressEqualToDelivery,
+        "is_address_equal_to_delivery":
+            isAddressEqualToDelivery ?? (isAddressEqualToDelivery! ? 1 : 0),
         "sms_code": smsCode,
         "email_verified_at": emailVerifiedAt,
         "is_confirmed": isConfirmed,
@@ -315,5 +325,5 @@ class Data {
         "where_know": whereKnow,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-    };
+      };
 }

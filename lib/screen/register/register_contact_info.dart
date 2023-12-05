@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:sokeun/model/login_model.dart';
@@ -9,6 +11,7 @@ import 'package:sokeun/providers/provinces_provider.dart';
 import 'package:sokeun/screen/register/kayitScreeen/OnaySayfasiScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sokeun/service/api.service.dart';
+import 'package:sokeun/utility/auth_utility.dart';
 import '../../widgets/login_button.dart';
 import 'package:dio/dio.dart';
 
@@ -50,6 +53,7 @@ class _soniletisimbilgisialmaState
     LoginResponse? user = ref.read(loginUserProvider);
     final password = ref.read(userPasswordProvider);
     final roleId = ref.read(selectedAdminUserRoleProvider);
+    String? token = await AuthUtility.getToken();
 
     Map<String, dynamic> data = {
       "username": "",
@@ -58,46 +62,48 @@ class _soniletisimbilgisialmaState
       "email": user.data.email,
       "nation": user.data.nation,
       "address": address,
-      "province_id": selectedProvinceId.toString(),
-      "district_id": selectedDistricts!.id.toString(),
+      "province_id": selectedProvinceId,
+      "district_id": selectedDistricts!.id,
       "contact_number": contactNumber,
-      "user_type": roleId.toString(),
+      "user_type": roleId,
       "identity": user.data.citizenNumber,
       "gender": user.data.gender,
       "team": user.data.team,
       "pants_size": user.data.pantsSize,
       "shirt_size": user.data.shirtSize,
       "born_city_id": user.data.bornCityId,
-      "is_address_equal_to_delivery": isTextFieldVisible ? "1" : "0", // 1 or 0
+      "is_address_equal_to_delivery": isTextFieldVisible ? 1 : 0, // 1 or 0
       "delivery_address": isTextFieldVisible ? address : deliveryAddress,
       "company_name": user.data.companyName,
       "tax": user.data.tax,
-      "delivery_province_id":
-          isTextFieldVisible ? selectedProvinceId : selectedDeliveryProvinceId,
+      "delivery_province_id": isTextFieldVisible
+          ? selectedProvinceId.toString()
+          : selectedDeliveryProvinceId.toString(),
       "delivery_district_id": isTextFieldVisible
-          ? selectedDistricts!.id
-          : selectedDeliveryDistricts!.id,
+          ? selectedDistricts!.id.toString()
+          : selectedDeliveryDistricts!.id.toString(),
       "tax_number": user.data.taxNumber,
       "document_name": user.data.documentName,
       "document_number": user.data.documentNumber,
       "password": password.password,
       "password_confirm": password.confirmPassword
     };
+
     if (Soniletisimkey.currentState!.validate()) {
       if (telnoizinvermeenalt == false) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Kutuları onaylayın")));
       }
-      print(user.data.accessToken);
       try {
         Response response = await apiService.post(
           "https://development.coneexa.com/api/register-complete",
           data,
-          token: user.data.accessToken,
+          token: token,
         );
         RegisterComplateModel registerResponse;
         if (response.statusCode == 200) {
-          Map<String, dynamic> responseDate = response.data;
+          Map<String, dynamic> responseDate =  response.data;
+          print(json.encode(response.data));
           registerResponse = RegisterComplateModel.fromJson(responseDate);
           print("Model $responseDate");
           if (Soniletisimkey.currentState!.validate()) {
@@ -176,24 +182,24 @@ class _soniletisimbilgisialmaState
   ];
   @override
   void initState() {
-    LoginResponse? user = ref.read(loginUserProvider);
-    final password = ref.read(userPasswordProvider);
-    final roleId = ref.read(selectedAdminUserRoleProvider);
+    // LoginResponse? user = ref.read(loginUserProvider);
+    // final password = ref.read(userPasswordProvider);
+    // final roleId = ref.read(selectedAdminUserRoleProvider);
 
-    print("role :$roleId");
+    // print("role :$roleId");
 
-    print("adı :${user!.data.firstname}");
-    print("soy ad :${user.data.lastname}");
-    print("Dogum Trihi :${user.data.birthday}");
-    print("email :${user.data.email}");
-    print("borncity :${user.data.bornCityId}");
-    print("gender :${user.data.gender}");
-    print("tc :${user.data.citizenNumber}");
-    print("document :${user.data.documentNumber}");
-    print("tel :${user.data.phone}");
-    print("şifre :${password.password}");
-    print("şifret :${password.confirmPassword}");
-    print("nation :${user.data.nation}");
+    // print("adı :${user!.data.firstname}");
+    // print("soy ad :${user.data.lastname}");
+    // print("Dogum Trihi :${user.data.birthday}");
+    // print("email :${user.data.email}");
+    // print("borncity :${user.data.bornCityId}");
+    // print("gender :${user.data.gender}");
+    // print("tc :${user.data.citizenNumber}");
+    // print("document :${user.data.documentNumber}");
+    // print("tel :${user.data.phone}");
+    // print("şifre :${password.password}");
+    // print("şifret :${password.confirmPassword}");
+    // print("nation :${user.data.nation}");
     super.initState();
   }
 

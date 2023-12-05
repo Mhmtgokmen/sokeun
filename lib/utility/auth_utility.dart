@@ -9,7 +9,7 @@ class AuthUtility {
     }
     final box = await Hive.openBox<String>('token');
     final token = box.get('token');
-    // await box.close();
+    await box.close();
 
     return token;
   }

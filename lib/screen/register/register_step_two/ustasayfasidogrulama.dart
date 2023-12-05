@@ -8,6 +8,7 @@ import 'package:sokeun/providers/login_user_provider.dart';
 import 'package:sokeun/providers/provinces_provider.dart';
 import 'package:sokeun/screen/register/register_contact_info.dart';
 import 'package:sokeun/service/api.service.dart';
+import 'package:sokeun/utility/auth_utility.dart';
 import 'package:sokeun/widgets/login_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
@@ -47,6 +48,8 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     String password = sifrekontrol.text.trim();
     String passwordConfirm = tekrarSifrekontroletme.text.trim();
 
+    String? token = await AuthUtility.getToken();
+
     LoginResponse? user = ref.read(loginUserProvider);
     final userPassword = ref.read(userPasswordProvider);
     user?.data.firstname = firstname;
@@ -72,7 +75,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
         Response response = await apiService.post(
           "verify/identity",
           data,
-          token: user?.data.accessToken,
+          token: token,
         );
         IdentityModel identityResponse;
 
@@ -100,7 +103,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
           identityResponse = IdentityModel.fromJson(response.data);
           // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
+            SnackBar(
               content: Text(identityResponse.message),
               duration: Duration(seconds: 2),
             ),
@@ -132,7 +135,6 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
 
   @override
   void initState() {
-    print(widget.role.id);
     super.initState();
   }
 
@@ -142,7 +144,6 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
     'Erkek': 1,
     'Kadın': 2,
   };
-
 
   String? selectedGender;
   int? selectedGenderId;
