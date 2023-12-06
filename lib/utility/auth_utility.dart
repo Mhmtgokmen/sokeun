@@ -50,4 +50,16 @@ class AuthUtility {
       print("Hata oluştu: $e");
     }
   }
+
+  static Future<bool> deleteToken() async {
+    await Hive.initFlutter();
+    if (Hive.isBoxOpen('token')) {
+      await Hive.openBox<String>('token');
+    }
+    final box = await Hive.openBox<String>('token');
+    await box.delete('token');
+    await box.close();
+
+    return true;
+  }
 }
