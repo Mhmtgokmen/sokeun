@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sokeun/screen/home/qr_screen.dart';
+import 'package:sokeun/screen/home/manuel_qr_code_screen.dart';
 // TABS ÇEKİLİŞ
 class cekilisScreeenPAGEE extends StatefulWidget {
   const cekilisScreeenPAGEE({super.key});
@@ -86,6 +87,7 @@ class _cekilisScreeenPAGEEState extends State<cekilisScreeenPAGEE> {
                             height: ekranyuksekligi / 14.7,
                             child: GestureDetector(
                               onTap: () {
+
                                 showModalBottomSheet(
                                     context: context,
                                     backgroundColor: Colors.white,
@@ -121,11 +123,18 @@ class _cekilisScreeenPAGEEState extends State<cekilisScreeenPAGEE> {
                                               SizedBox(
                                                 height: 5,
                                               ),
+
                                               SizedBox(
                                                 width: ekrangenisligi / 1.8,
                                                 height: ekranyuksekligi / 16,
-                                                child: Image.asset(
-                                                    "assetss/foto/img_43.png"),
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ManuelQrCode()));
+
+                                                  },
+                                                  child: Image.asset(
+                                                      "assetss/foto/img_43.png"),
+                                                ),
                                               ),
                                             ],
                                           ),

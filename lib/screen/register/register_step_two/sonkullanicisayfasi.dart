@@ -151,7 +151,7 @@ class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            "Son Kullanıcı",
+            "Müşteri",
             style:
                 TextStyle(color: Colors.red[800], fontWeight: FontWeight.bold),
           ),
@@ -170,7 +170,7 @@ class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
                       height: 10,
                     ),
 
-                    Sonkullanici(
+                    tutulantakim(
                         controller: isimmm,
                         hintext: "İsim",
                         obscurttext: false),
@@ -179,7 +179,7 @@ class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
                       height: 15,
                     ),
 
-                    Sonkullanici(
+                    tutulantakim(
                         controller: soyisimmm,
                         hintext: "Soyisim",
                         obscurttext: false),
@@ -503,7 +503,7 @@ class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
                       height: 15,
                     ),
 
-                    Sonkullanici(
+                    tutulantakim(
                         controller: mailadresii,
                         hintext: "Mail Adresi",
                         obscurttext: false),
@@ -514,7 +514,7 @@ class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
 
                     // Sonkullanici(controller: cinsiyet, hintext: "Cinsiyet", obscurttext: false),
 
-                    Sonkullanici(
+                    tutulantakim(
                         controller: tuttugutakimmm,
                         hintext: "Tuttuğu Takım",
                         obscurttext: false),
@@ -541,7 +541,7 @@ class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
                       height: 15,
                     ),
 
-                    Sifreeeeekontrol(
+                    Sonkullanici(
                         controller: sifreee,
                         hintext: "Şifre",
                         obscurttext: false),
@@ -550,7 +550,7 @@ class _SonKullaniciSayfaState extends ConsumerState<SonKullaniciSayfa> {
                       height: 15,
                     ),
 
-                    Sifreeeeekontrol(
+                    Sonkullanici(
                         controller: tekrarsifreee,
                         hintext: "Şifre(Tekrar)",
                         obscurttext: false),
@@ -629,7 +629,7 @@ class Sonkullanici extends StatelessWidget {
           ],
         ),
         child: TextFormField(
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
           controller: controller,
           obscureText: obscurttext,
           validator: advalidate,
@@ -834,6 +834,70 @@ class Sifreeeeekontrol extends StatelessWidget {
           controller: controller,
           obscureText: obscurttext,
           validator: validatesifeapp,
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              filled: true,
+              fillColor: Colors.white,
+              hintText: hintext,
+              hintStyle: TextStyle(color: Colors.grey.shade400)),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+class tutulantakim extends StatelessWidget {
+  final TextEditingController controller;
+  final String hintext;
+  final bool obscurttext;
+
+  tutulantakim(
+      {super.key,
+        required this.controller,
+        required this.hintext,
+        required this.obscurttext});
+// Validator
+
+  String? advalidate(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Zorunlu alan!!!";
+    }
+
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var ekranAyari = MediaQuery.of(context);
+    var ekrangenisligi = ekranAyari.size.width;
+    //
+    return SizedBox(
+      width: ekrangenisligi / 1.1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              offset: const Offset(5.0, 5.0),
+              blurRadius: 20,
+              spreadRadius: 1.0,
+            ),
+            BoxShadow(
+              color: Colors.grey.shade200,
+              offset: const Offset(-5.0, -5.0),
+              blurRadius: 20,
+              spreadRadius: 1.0,
+            ),
+          ],
+        ),
+        child: TextFormField(
+          keyboardType: TextInputType.text,
+          controller: controller,
+          obscureText: obscurttext,
+          validator: advalidate,
           decoration: InputDecoration(
               border: InputBorder.none,
               filled: true,

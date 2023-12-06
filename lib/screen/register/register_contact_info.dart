@@ -45,6 +45,11 @@ class _soniletisimbilgisialmaState
   bool iletisimBilgileriGonderiAdresineKopyala = false;
 
   Future<void> onayaGecmeMetodu() async {
+    if (Soniletisimkey.currentState!.validate()) {
+      if (telnoizinvermeenalt == false) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Kutuları onaylayın")));
+      }
     apiService = ApiService();
     String address = adreskontroletme.text.trim();
     String deliveryAddress = gonderiadresikontrol.text.trim();
@@ -102,7 +107,7 @@ class _soniletisimbilgisialmaState
         );
         RegisterComplateModel registerResponse;
         if (response.statusCode == 200) {
-          Map<String, dynamic> responseDate =  response.data;
+          Map<String, dynamic> responseDate = response.data;
           print(json.encode(response.data));
           registerResponse = RegisterComplateModel.fromJson(responseDate);
           print("Model $responseDate");
@@ -116,10 +121,17 @@ class _soniletisimbilgisialmaState
                 ),
               );
               // ignore: use_build_context_synchronously
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const OnaySonScccreeeeeeeen()));
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => OnaySonScccreeeeeeeen()),
+                    (route) => false,
+              );
+
+              //Navigator.push(
+                //  context,
+                //  MaterialPageRoute(
+                 //     builder: (context) => const OnaySonScccreeeeeeeen()));
             } else {
               // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(
@@ -168,6 +180,7 @@ class _soniletisimbilgisialmaState
     //             builder: (context) => const OnaySonScccreeeeeeeen()));
     //   }
     // }
+  }
   }
 
   late final List<String> itemssnerdenduydun = [
@@ -1038,7 +1051,7 @@ class Telefonnumarasayfamm extends StatelessWidget {
 
   String? advalidate(String? value) {
     if (value == null || value.isEmpty) {
-      return null;
+      return "Zorunlu alan!!!";
     }
 
     return null;

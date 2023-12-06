@@ -108,7 +108,7 @@ class _BayiSayfamScreeenState extends State<BayiSayfamScreeen> {
                     Sifreeeeekontrol(
                       controller: sifreeee,
                       hintext: "Şifre",
-                      obscurttext: false,
+                      obscurttext : false,
                     ),
                     const SizedBox(
                       height: 15,
@@ -116,7 +116,8 @@ class _BayiSayfamScreeenState extends State<BayiSayfamScreeen> {
                     Sifreeeeekontrol(
                       controller: sifreeeekontroll,
                       hintext: "Şifre(Tekrar)",
-                      obscurttext: false,
+                        obscurttext : false,
+
                     ),
                     const SizedBox(
                       height: 30,
@@ -455,7 +456,7 @@ class Sifreeeeekontrol extends StatelessWidget {
           ],
         ),
         child: TextFormField(
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
           controller: controller,
           obscureText: obscurttext,
           validator: validatesifeapp,
@@ -534,3 +535,4 @@ class BelgeAdiii extends StatelessWidget {
     );
   }
 }
+

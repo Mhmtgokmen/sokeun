@@ -329,7 +329,8 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                       Meslekiyeterlilikscreen(
                           controller: meslekyeterlilikkontrol,
                           hintext: "Mesleki Yeterlilik Belgesi No",
-                          obscurttext: false),
+                          obscurttext: false
+                      ),
 
                       const SizedBox(
                         height: 14,
@@ -571,7 +572,7 @@ class _ustasayfasiScreeeenDState extends ConsumerState<ustasayfasiScreeeenD> {
                         height: 14,
                       ),
 
-                      Sifrekontrolsayfam(
+                      SifreTekrarkontroledildisayfam(
                           controller: sifrekontrol,
                           hintext: "Şifre",
                           obscurttext: true),
@@ -924,7 +925,7 @@ class Meslekiyeterlilikscreen extends StatelessWidget {
           ],
         ),
         child: TextFormField(
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
           controller: controller,
           obscureText: obscurttext,
           validator: advalidate,
@@ -1252,7 +1253,7 @@ class SifreTekrarkontroledildisayfam extends StatelessWidget {
           ],
         ),
         child: TextFormField(
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
           controller: controller,
           obscureText: true,
           validator: Sifrevalidate,
