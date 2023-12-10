@@ -28,15 +28,8 @@ class _ORtatusyuvarlakScreeenKodokutmaState
                   onTap: () {},
                   child: Image.asset("assetss/earn_points_qr_assets/img.png")))
         ],
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        leading:  Icon(Icons.arrow_back_ios_outlined,color: Colors.red[800],),
+
       ),
       backgroundColor: Colors.red[800],
       body: Center(

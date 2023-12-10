@@ -81,84 +81,114 @@ class _bottomnavbarscreenState extends State<bottomnavbarscreen> {
                   builder: (context) =>
                       const ORtatusyuvarlakScreeenKodokutma()));
 
+
           showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.white,
-              builder: (BuildContext context) {
-                return SizedBox(
+            context: context,
+            enableDrag: false,
+            isDismissible: false,
+            backgroundColor: Colors.white,
+            builder: (BuildContext context) {
+              return WillPopScope(
+                onWillPop: () async {
+                  // Geri tuşuna basıldığında buraya gelecek
+                  // Modal bottom sheet'i kapat
+
+                  // Bir önceki sayfaya geçişi engelle
+                  return false;
+                },
+                child: SizedBox(
                   height: ekranyuksekligi / 2.7,
                   child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        // KAMERA AÇMA
-                        SizedBox(
-                            width: ekrangenisligi / 1.3,
-                            child: Image.asset("assetss/foto/img_30.png")),
-                        const SizedBox(
-                          height: 19,
-                        ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  // Geri tuşuna basıldığında buraya gelecek
+                                  // Modal bottom sheet'i kapat
+                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>bottomnavbarscreen()), (route) => false);
 
-                        // KAMERA AÇMA
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const QrKodScreen()));
-                          },
-                          child: SizedBox(
-                            width: ekrangenisligi / 1.8,
-                            height: ekranyuksekligi / 16,
-                            child: Image.asset("assetss/foto/img_44.png"),
+                                },
+                                icon: Icon(Icons.arrow_back_ios_outlined, color: Colors.black),
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        // KODU MANUEL GİRME
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ManuelQrCode()));
-                          },
-                          child: SizedBox(
-                            width: ekrangenisligi / 1.8,
-                            height: ekranyuksekligi / 16,
-                            child: Image.asset("assetss/foto/img_43.png"),
+                          const SizedBox(height: 2),
+                          SizedBox(
+                              width: ekrangenisligi / 1.3,
+                              child: Image.asset("assetss/foto/img_30.png")),
+                          const SizedBox(
+                            height: 19,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                          width: ekrangenisligi / 1.8,
-                          height: ekranyuksekligi / 16,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.grey.shade200,
+
+                          // KAMERA AÇMA
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const QrKodScreen()));
+                            },
+                            child: SizedBox(
+                              width: ekrangenisligi / 1.8,
+                              height: ekranyuksekligi / 16,
+                              child: Image.asset("assetss/foto/img_44.png"),
                             ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset("assetss/foto/img_42.png"),
-                                ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          // KODU MANUEL GİRME
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const ManuelQrCode()));
+                            },
+                            child: SizedBox(
+                              width: ekrangenisligi / 1.8,
+                              height: ekranyuksekligi / 16,
+                              child: Image.asset("assetss/foto/img_43.png"),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: ekrangenisligi / 1.8,
+                            height: ekranyuksekligi / 16,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.grey.shade200,
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset("assetss/foto/img_42.png"),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                );
-              });
+                ),
+              );
+
+
+
+
+            },
+          );
+
         },
       ),
     );
