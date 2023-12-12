@@ -123,7 +123,7 @@ class _telnoilksayfaState extends ConsumerState<telnoilksayfa> {
     apiService = ApiService();
 
     Map<String, dynamic> data = {
-      "admin_user_id": "6",
+      "admin_user_id": "1",
     };
 
     try {

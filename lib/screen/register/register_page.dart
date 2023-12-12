@@ -24,7 +24,7 @@ class _KayitScreenPageViewState extends ConsumerState<KayitScreenPageView> {
 
       Map<String, dynamic> data = {
         "phone": phoneNumber,
-        "admin_user_id": "6",
+        "admin_user_id": "1",
         "is_debug": "true"
       };
       try {

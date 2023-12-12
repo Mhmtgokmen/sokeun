@@ -28,7 +28,6 @@ class _cekilisPageScreeenState extends State<cekilisPageScreeen> {
           ),
         ),
         centerTitle: true,
-
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -40,9 +39,6 @@ class _cekilisPageScreeenState extends State<cekilisPageScreeen> {
                 child: SizedBox(
                     width: ekrangenisligi / 1,
                     child: Image.asset("assetss/foto/img_22.png")),
-                
-
-
               ),
             ],
           ),
