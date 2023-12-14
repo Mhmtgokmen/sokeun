@@ -113,7 +113,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     apiService = ApiService();
 
     Map<String, dynamic> data = {
-      "admin_user_id": "7",
+      "admin_user_id": "1",
     };
 
     try {

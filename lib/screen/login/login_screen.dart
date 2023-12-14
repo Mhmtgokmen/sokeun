@@ -361,13 +361,13 @@ class MyTextField extends StatelessWidget {
     if (value == null || value.isEmpty) {
       return "Telefon numarası giriniz!!!";
     }
-    if (value.length < 10) {
+    if (value.length < 13) {
       return "Telefon numarasını 10 haneli olacak şekilde giriniz";
     }
-    if (value.length > 10) {
+    if (value.length > 13) {
       return "Telefon numarasını 10 haneli olacak şekilde giriniz";
     }
-    if (value.length == 10) {}
+    if (value.length == 13) {}
     return null;
   }
 

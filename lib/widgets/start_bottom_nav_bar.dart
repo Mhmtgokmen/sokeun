@@ -18,9 +18,9 @@ class bottomnavbarscreen extends StatefulWidget {
 
 class _bottomnavbarscreenState extends State<bottomnavbarscreen> {
   var sayfalar = [
-    const homePagesCreen(),
+    const HomePageScreen(),
     const puankazanbildirimScreeen(),
-    const cekilisPageScreeen(),
+    const CekilisPageScreen(),
     const profileScreen()
   ];
   int sayfatakip = 0;

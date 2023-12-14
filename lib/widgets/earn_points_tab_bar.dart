@@ -23,13 +23,13 @@ class _puankazanbildirimScreeenState extends State<puankazanbildirimScreeen> {
         child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
-            //  indicatorWeight: 2,
-            //  enableFeedback: true,
+              //  indicatorWeight: 2,
+              //  enableFeedback: true,
               isScrollable: true,
               indicatorColor: Colors.red,
               unselectedLabelColor: Colors.red[600],
               labelColor: Colors.red[800],
-              tabs: [
+              tabs: const [
                 Tab(
                   text: "Kod ile",
                 ),
@@ -53,11 +53,11 @@ class _puankazanbildirimScreeenState extends State<puankazanbildirimScreeen> {
             ),
             centerTitle: true,
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               kodilepuankazanScreeenPAGEE(),
               VideokodilepuankazanScreeenPAGEE(),
-              ANKETCOZVideokodilepuankazanScreeenPAGEE(),
+              EarnBySurvey(),
               cekilisScreeenPAGEE(),
             ],
           ),
