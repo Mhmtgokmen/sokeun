@@ -215,7 +215,7 @@ void _showCustomAlert(BuildContext context, String? content) {
           const SizedBox(height: 40),
           Text(
             content ?? "",
-            style: const TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.black,fontSize: 13),
           ),
         ],
       ),
